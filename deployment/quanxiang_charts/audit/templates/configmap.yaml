@@ -1,0 +1,58 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: audit
+  namespace: {{ .Values.namespace }}
+
+data:
+  config.yml: |
+    # port 端口
+    # e.g :80
+    port: :80
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    # geoIP IP解析库
+    # https://www.maxmind.com/en/geoip2-city
+    geoIP: ../GeoLite2-City.mmdb
+
+    #  -------------------- handler --------------------
+    handler:
+      # topic kafka topic
+      topic:
+        - audit-log
+      # group kafka group
+      group: audit
+      numOfProcessor: 3
+      buffer: 100
+
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: 0
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    # -------------------- elastic --------------------
+    elastic:
+      {{- with .Values.config.elastic.host }}
+      host:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      log: {{ .Values.config.elastic.log }}
+
+    # -------------------- kafka --------------------
+    kafka:
+      {{- with .Values.config.kafka.broker }}
+      broker:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

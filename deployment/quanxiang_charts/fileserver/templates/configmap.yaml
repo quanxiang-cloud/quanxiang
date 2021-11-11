@@ -1,0 +1,56 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: fileserver
+  namespace: {{ .Values.namespace }}
+
+data:
+  config.yml: |
+    # port 端口
+    port: :80
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    # -------------------- mysql --------------------
+    mysql:
+      db: {{ .Values.config.mysql.db }}
+      host: {{ .Values.config.mysql.host }}
+      user: {{ .Values.config.mysql.user }}
+      password: {{ .Values.config.mysql.password }}
+      log: {{ .Values.config.mysql.log }}
+
+    # -------------------- maxSize --------------------
+    # maxSize limit the size of the uploaded file, default 30MB
+    maxSize: 31457280
+
+    # -------------------- storage --------------------
+    storage:
+      option: {{ .Values.config.storage.option }}
+      urlExpire: {{ .Values.config.storage.urlExpire }}
+      partExpire: {{ .Values.config.storage.partExpire }}
+      launch: {{ .Values.config.storage.launch }}  # launch all configurations use the S3 protocol,default false
+      storages:
+        {{- with .Values.config.storage.storages }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+    # -------------------- blob ----------------------
+    blob:
+      template: /blob/{{.AppID}}/{{.MD5}}/{{.FileName}}
+      # tempPath temporary decompression path, default program path
+      tempPath:

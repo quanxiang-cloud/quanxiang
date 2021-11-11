@@ -1,0 +1,71 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: qxp-web-home
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: qxp-web-home
+    version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  annotations:
+    deployment.kubernetes.io/revision: '23'
+    kubesphere.io/creator: markduan
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qxp-web-home
+      app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+      version: v1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: qxp-web-home
+        version: v1
+        app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+      annotations:
+        kubesphere.io/containerSecrets: '{"qxp-web-home":"docker"}'
+        kubesphere.io/restartedAt: '2021-04-01T06:49:38.541Z'
+        logging.kubesphere.io/logsidecar-config: '{}'
+        sidecar.istio.io/inject: 'false'
+    spec:
+      volumes:
+        - name: volume
+          configMap:
+            name: qxp-web-home-config
+            defaultMode: 420
+      containers:
+        - name: qxp-web-home
+          image: {{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          ports:
+            - name: home
+              containerPort: 80
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: volume
+              readOnly: true
+              mountPath: /qxp-web/etc
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: default
+      serviceAccount: default
+      securityContext: {}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      affinity: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+

@@ -1,0 +1,26 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: oauth2c
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: oauth2c
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    kubesphere.io/alias-name: oauth2client
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: oauth2c
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 80
+  selector:
+    app: oauth2c
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+  type: {{ .Values.service.type }}
+  sessionAffinity: None

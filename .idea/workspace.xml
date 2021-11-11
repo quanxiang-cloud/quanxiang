@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6c1aa8d5-8a6d-4a5d-95d8-0249e429564b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/configs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/configs.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/app-center/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/application/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/audit/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/dispatcher/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/templates/service.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/fileserver/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flow/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/flowengine/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/form/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/goalie/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/goalie/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/goalie/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/goalie/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/goalie/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/goalie/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/goalie/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/templates/ingress.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/templates/service.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/keeper/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/templates/service.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/kms/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/templates/de.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/message/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/nurturing/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/templates/service.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2c/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/oauth2s/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/templates/ingress.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/organizations/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/templates/de.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/polyapi/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/process/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-home/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-nginx/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/qxp-web-portal/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/.helmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/Chart.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/templates/NOTES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/templates/_helpers.tpl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/templates/deployment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/templates/service.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/templates/tests/test-connection.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/structor/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/configs.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/configs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/middlerwareInstall.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/middlerwareInstall.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/deployment" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="20fK5ox9iKJ3tqkpsGWRDNqmQXI" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="go.vgo" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="quanxiang" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$" />
+      <package value="quanxiangInstall" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="quanxiang" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <package value="quanxiangInstall" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="373" y="164" key="SettingsEditor" timestamp="1636431785275">
+      <screen x="0" y="25" width="1680" height="1025" />
+    </state>
+    <state x="373" y="164" key="SettingsEditor/0.25.1680.1025@0.25.1680.1025" timestamp="1636431785275" />
+    <state x="541" y="282" width="597" height="548" key="find.popup" timestamp="1636611743679">
+      <screen x="0" y="25" width="1680" height="1025" />
+    </state>
+    <state x="541" y="282" width="597" height="548" key="find.popup/0.25.1680.1025@0.25.1680.1025" timestamp="1636611743679" />
+  </component>
+</project>

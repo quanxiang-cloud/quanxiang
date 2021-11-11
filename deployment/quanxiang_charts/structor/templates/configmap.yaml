@@ -1,0 +1,97 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: structor
+  namespace: {{ .Values.namespace }}
+
+data:
+  config.yml: |
+    # port 端口
+    # e.g :80
+    port: :80
+    processPort: :8080
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    # -------------------- mongo --------------------
+    mongo:
+      {{- with .Values.config.mongo.hosts }}
+      hosts:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      direct: {{ .Values.config.mongo.direct }}
+      credential:
+        authMechanism: {{ .Values.config.mongo.credential.authMechanism }}
+        authSource: {{ .Values.config.mongo.credential.authSource }}
+        username: {{ .Values.config.mongo.credential.username }}
+        password: {{ .Values.config.mongo.credential.password }}
+        passwordSet: {{ .Values.config.mongo.credential.passwordSet }}
+
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    # -------------------- service --------------------
+    service:
+      db: structor
+    # -------------------- service --------------------
+    redis:
+      {{- with .Values.config.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.config.redis.username }}
+      password: {{ .Values.config.redis.password }}
+
+
+    # -------------------- kafka --------------------
+    kafka:
+      {{- with .Values.config.kafka.broker }}
+      broker:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    swaggerPath: /configs/swagger
+
+  swagger: >-
+    {"host":"","swagger":"2.0","info":{"title":"structor","version":"last","description":"表单引擎","contact":{"name":"","url":"","email":""}},"tags":[],"schemes":["http"],"basePath":"/","consumes":["application/json"],"produces":["application/json"],"paths":{"{{.PathCreate}}":{"post":{"x-open-request":true,"tags":[],"parameters":[{"description":"body
+    inputs","in":"body","name":"root","schema":{"properties":{"entity":{"description":"entity","properties":{{.FilterProperties}},"type":"object"}},"required":["entity"],"type":"object"}}],"responses":{"200":{"description":"","schema":{"description":"response
+    schema.","properties":{"code":{"title":"0:success, others:
+    error","type":"number"},"data":{"properties":{"entity":{"properties":{{.Properties}},"type":"object"}},"type":"object"},"msg":{"title":"error
+    message when code is not
+    0","type":"string"}},"type":"object"}}},"consumes":["application/json"],"produces":["application/json"],"summary":"","description":"","deprecated":false,"security":null,"operationId":"{{.OperateIDCreate}}"}},"{{.PathDelete}}":{"post":{"x-open-request":true,"tags":null,"parameters":[{"description":"body
+    inputs","in":"body","name":"root","schema":{"properties":{"query":{"properties":{"terms":{"properties":{"_id":{"items":{"type":"string"},"type":"array"}},"type":"object"}},"type":"object"}},"required":["query"],"type":"object"}}],"responses":{"200":{"description":"","schema":{"description":"response
+    schema.","properties":{"code":{"title":"0:success, others:
+    error","type":"number"},"data":{"properties":{"errorCount":{"type":"number"}},"type":"object"},"msg":{"title":"error
+    message when code is not
+    0","type":"string"}},"type":"object"}}},"consumes":["application/json"],"produces":["application/json"],"summary":"","description":"","deprecated":false,"security":null,"operationId":"{{.OperateIDDelete}}"}},"{{.PathSearch}}":{"post":{"x-open-request":true,"tags":null,"parameters":[{"description":"body
+    inputs","in":"body","name":"root","schema":{"properties":{"page":{"type":"number"},"query":{"properties":{"bool":{"properties":{"must":{"items":{"type":"object"},"type":"array"},"must_not":{"items":{"type":"object"},"type":"array"},"should":{"items":{"type":"object"},"type":"array"}},"type":"object"},"match":{"type":"object"},"range":{"type":"object"},"term":{"type":"object"},"terms":{"type":"object"}},"type":"object"},"size":{"type":"number"},"sort":{"items":{"type":"string"},"type":"array"}},"required":[],"type":"object"}}],"responses":{"200":{"description":"","schema":{"description":"response
+    schema.","properties":{"code":{"title":"0:success, others:
+    error","type":"number"},"data":{"properties":{"entities":{"description":"entity","items":{"properties":{{.Properties}},"type":"object"},"type":"array"},"total":{"type":"number"}},"type":"object"},"msg":{"title":"error
+    message when code is not
+    0","type":"string"}},"type":"object"}}},"consumes":["application/json"],"produces":["application/json"],"summary":"","description":"","deprecated":false,"security":null,"operationId":"{{.OperateIDSearch}}"}},"{{.PathGet}}":{"post":{"x-open-request":true,"tags":null,"parameters":[{"description":"body
+    inputs","in":"body","name":"root","schema":{"properties":{"query":{"properties":{"term":{"properties":{"_id":{"type":"string"}},"type":"object"}},"type":"object"}},"required":["entity","query"],"type":"object"}}],"responses":{"200":{"description":"","schema":{"description":"response
+    schema.","properties":{"code":{"title":"0:success, others:
+    error","type":"number"},"data":{"properties":{"entity":{"properties":{{.Properties}},"type":"object"}},"type":"object"},"msg":{"title":"error
+    message when code is not
+    0","type":"string"}},"type":"object"}}},"consumes":["application/json"],"produces":["application/json"],"summary":"","description":"","deprecated":false,"security":null,"operationId":"{{.OperateIDGet}}"}},"{{.PathUpdate}}":{"post":{"x-open-request":true,"tags":null,"parameters":[{"description":"body
+    inputs","in":"body","name":"root","schema":{"properties":{"entity":{"description":"entity","properties":{{.FilterProperties}},"type":"object"},"query":{"properties":{"term":{"properties":{"_id":{"type":"string"}},"type":"object"}},"type":"object"}},"required":["entity","query"],"type":"object"}}],"responses":{"200":{"description":"","schema":{"description":"response
+    schema.","properties":{"code":{"title":"0:success, others:
+    error","type":"number"},"data":{"properties":{{.Properties}},"type":"object"},"msg":{"title":"error
+    message when code is not
+    0","type":"string"}},"type":"object"}}},"consumes":["application/json"],"produces":["application/json"],"summary":"","description":"","deprecated":false,"security":null,"operationId":"{{.OperateIDUpdate}}"}}},"x-auth":{"extra":{},"type":"system"}}

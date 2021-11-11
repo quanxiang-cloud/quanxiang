@@ -1,0 +1,64 @@
+#Middleware Services 中间件服务
+mysql:
+  enabled: true
+  rootPassword: qxp1234     #It is required to set the root user password if enabled equal to true    设置root用户密码 enabled为true时必填
+redis:
+  enabled: true
+  password: cXhwMTIzNA==    #The password here is the base64 code of the password. For example, the base64 code of qxp1234 is cxhwmjm0cg==  这里的password为密码的base64编码，比如qxp1234的base64编码为cXhwMjM0Cg==
+kafka:
+  enabled: true
+elastic:
+  enabled: true
+mongo:
+  enabled: true
+  rootPassword: qxp1234  #Set Mongo password. Required when enabled is true 设置mongo密码，enabled为true时必填
+minio:
+  enabled: true
+  accessKey: Minio   #Set minio accessKey. Required when enabled is true   设置minio accessKey，enabled为true时必填
+  secretKey: Minio123456 #Set Mongo secretKey. Required when enabled is true  设置minio secretKey，enabled为true时必填
+#Service profile 服务的配置文件
+image:
+  repo: quanxiang
+  tag: latest
+imagePullSecrets: "lowcode"
+config:
+  mysql:
+    host: mysql:3306     #如果上面中间件配置中mysql.enabled为true此处为mysql，否则请根据您的设置填写mysql host地址和端口
+    user: root     #如果上面中间件配置中mysql.enabled为true此处为root，否则请根据您的设置填写mysql用户名
+    password: qxp1234   #如果上面中间件配置中mysql.enabled为true此处为上述中间件配置中的rootPassword，否则请根据您的设置填写mysql密码
+    log: true
+  redis:
+    addrs:
+      - example-distributedrediscluster-0:6379     #如果上面中间件配置中redis.enabled为true此处不需要更改，否则请根据您的设置填写redis ip地址和端口
+      - example-distributedrediscluster-1:6379
+      - example-distributedrediscluster-2:6379
+    username:
+    password: qxp1234    #如果上面中间件配置中redis.enabled为true此处为上述中间件配置中的redis.password，否则请根据您的设置填写您的redis密码
+  elastic:
+    host:
+      - http://elasticsearch-client:9200  #如果上面中间件配置中elastic.enabled为true此处配置不需要改动，否则请根据您的设置填写您的elasticsearch服务的ip和端口
+    log: true
+  kafka:
+    broker:
+      - kafka:9092  #如果上面中间件配置中kafka.enabled为true此处不需要改动，否则请根据您的设置填写您kafka集群的ip和端口
+  mongo:
+    hosts:
+      - mongodb:27017   #如果上面中间件配置中mongo.enabled为true此处不需要改动，否则请根据您的设置填写您mongo集群的ip和端口
+    direct: false
+    credential:
+      authMechanism: SCRAM-SHA-1
+      authSource: admin
+      username: root  #如果上面中间件配置中mongo.enabled为true此处不需要改动,否则请根据您的设置设置您的用户名
+      password: qxp1234 #如果上面中间件配置中mongo.enabled为true此处为mongo.rootPassword,否则请根据您的设置设置您的密码
+      passwordSet: false
+  email:
+    emails:
+      - { emailfrom: "XXX@XXX.com",username: "XXX",aliasname: "别名",password: "XXX",host: "邮件服务器地址",port: 111 }  #设置email信息以接收验证码
+  storage:
+    option: minio
+    urlExpire: 600
+    partExpire: 604800
+    launch: false  # launch all configurations use the S3 protocol,default false
+    storages:
+      - { name: minio,protocol: http,domain: minio:9000,accessKey: Minio, secretKey: Minio123456,location: us-east-1,bucketName: default } #如果minio.enabled为true 此处不需要改动，否则请根据您的minio的信息填写
+

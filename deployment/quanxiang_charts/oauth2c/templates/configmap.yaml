@@ -1,0 +1,62 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: oauth2c
+  namespace: {{ .Values.namespace }}
+
+data:
+  config.yml: |
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    http:
+      port: 80
+      #超时秒计算
+      readHeaderTimeOut: 15
+      writeTimeOut: 600
+      maxHeaderBytes: 1048576
+
+    #-------------------oauth2client端配置---------------------
+    client:
+      #token失效小时计
+      accessTokenExp: 2
+      refreshTokenExp: 24
+      authServerURL: http://oauth2s
+      selfHost: http://oauth2c
+
+    #-------------------redis配置-----------------
+    redis:
+      {{- with .Values.config.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.config.redis.username }}
+      password: {{ .Values.config.redis.password }}
+
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    #  -------------------- appAPIs --------------------
+    appAPIs:
+     allURL: http://application/api/v1/application/all
+     clientURL: http://application/api/v1/application/clientID
+    #  -------------------- orgAPIS --------------------
+    orgAPI:
+     loginURL: http://org/api/v1/org/checkPWD

@@ -1,0 +1,57 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: warden
+  namespace: lowcode
+  annotations:
+    kubesphere.io/alias-name: warden
+    kubesphere.io/creator: weitao
+    kubesphere.io/description: jwt协议认证服务
+data:
+  config.yml: |
+    # port 端口
+    # e.g :80
+    port: :80
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    #  -------------------- jwt token --------------------
+    jwtConfig:
+      #token失效小时计
+      accessTokenExp: 2
+      refreshTokenExp: 24
+      jwtKey: "4d8c5e9f-c7ab-41bf-86d3-e984889283be@20201231"
+
+
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    #-------------------redis配置-----------------
+    redis:
+      {{- with .Values.config.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.config.redis.username }}
+      password: {{ .Values.config.redis.password }}
+
+    #  -------------------- orgAPIS --------------------
+    orgAPI:
+      loginURL: http://org/api/v1/org/checkPWD

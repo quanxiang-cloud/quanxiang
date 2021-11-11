@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: qxp-web-portal
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: qxp-web-portal
+    version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  annotations:
+    kubesphere.io/alias-name: qxp-web-portal
+    kubesphere.io/creator: markduan
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  type: NodePort
+  ports:
+    - name: portal
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: qxp-web-portal
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+

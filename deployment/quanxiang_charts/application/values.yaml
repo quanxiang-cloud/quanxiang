@@ -1,0 +1,83 @@
+image:
+  name: application
+  repo: quanxiang
+  tag: latest
+namespace: ""
+imagePullSecrets: ""
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+nameOverride: ""
+fullnameOverride: ""
+websocket_hostname: ""
+home_hostname: ""
+portal_hostname: ""
+serviceAccount:
+  name: ""
+podSecurityContext: {}
+securityContext: {}
+config:
+  mysql:
+    host: mysql:3306
+    db: application
+    user: root
+    password: qxp1234
+    log: true
+  redis:
+    addrs:
+    - example-distributedrediscluster-0:6379
+    - example-distributedrediscluster-1:6379
+    - example-distributedrediscluster-2:6379
+    username: ""
+    password: qxp1234
+  elastic:
+    host:
+    - http://elasticsearch-client:9200
+    log: true
+  kafka:
+    broker:
+    - kafka:9092
+  mongo:
+    hosts:
+    - mongodb:27017
+    driect: false
+    credential:
+      authMechanism: SCRAM-SHA-1
+      authSource: admin
+      username: root
+      password: qxp1234
+      passwordSet: false
+  storage:
+    option: minio
+    urlExpire: 600
+    partExpire: 604800
+    launch: false
+    storages:
+    - location: us-east-1
+      bucketName: default
+      name: minio
+      protocol: http
+      domain: minio:9000
+      accessKey: Minio
+      secretKey: Minio123456
+  email:
+    emails:
+    - emailfrom: XXX@XXX.com
+      username: XXX
+      aliasname: 别名
+      password: XXX
+      host: 邮件服务器地址
+      port: 111
+ingress:
+  enabled: false
+  hosts:
+  - host: lowcode.quanxiangyun.com
+    paths:
+    - fullName: application
+      path: /
+      svcPort: 80
+app:
+  kubernetes:
+    io:
+      name: backend

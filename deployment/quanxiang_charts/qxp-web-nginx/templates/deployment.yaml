@@ -1,0 +1,60 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: qxp-web-nginx
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: qxp-web-nginx
+    version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  annotations:
+    deployment.kubernetes.io/revision: '1'
+    kubesphere.io/creator: markduan
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qxp-web-nginx
+      version: v1
+      app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: qxp-web-nginx
+        version: v1
+        app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+      annotations:
+        kubesphere.io/containerSecrets: '{"container-hdjghs":"docker"}'
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+        - name: container-hdjghs
+          image: {{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          ports:
+            - name: http-nginx
+              containerPort: 80
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: default
+      serviceAccount: default
+      securityContext: {}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      affinity: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+
