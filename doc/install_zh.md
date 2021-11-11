@@ -49,3 +49,8 @@ quanxiang项目是go语言编写的可以运行于各种架构机器上的全象
 
 以 project-admin 用户登录 KubeSphere Web 控制台，进入您的项目，从左侧导航栏进入项目设置下的高级设置页面，然后点击设置网关
 ，选择LoadBalancer，在选择 LoadBalancer 前，您必须先配置负载均衡器。负载均衡器的 IP 地址将与网关绑定以便内部的服务和路由可以访问，您可以使用 [PorterLB](https://github.com/kubesphere/openelb) 作为负载均衡器
+
+> (6)配置访问
+
+如果是内网网关，需要在访问主机上配置hosts文件 `网关地址 portal.qxp.com home.qxp.com`
+浏览器访问上述域名，初始用户名密码为：`Admin@Admin.com/654321a..`

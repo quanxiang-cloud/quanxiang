@@ -53,3 +53,8 @@ Log in to kubesphere web console as project admin user, enter your project, ente
 , select loadbalancer. Before selecting loadbalancer, you must configure the load balancer. The IP address of the load balancer will be bound to the gateway so that internal services and routes can be used
 
 To access, you can use [porterlb](https://github.com/kubesphere/openelb) As load balancer
+
+> (6)Configure access
+
+Configure access. If it is an intranet gateway, you need to configure the hosts file on the access host `Gateway IP portal.qxp.com home.qxp.com`
+The browser accesses the above domain name, and the initial user name and password are：`Admin@Admin.com/654321a..
