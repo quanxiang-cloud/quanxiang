@@ -11,14 +11,16 @@
  QuanXiang cloud is a powerful, pluggable open source low-code platform.
 </p>
 
+[中文](./README_zh.md)
+
 # Introduction
 
+QuanxiangCloud is a powerful, pluggable open source low-code platform, which can help to quckly 
 
 # Getting Started
 
-Comming soon
+[Deploy QuanxiangCloud](./doc/install.md) [中文](./doc/install_zh.md)
 
 # Contributing
 
-
-Comming soon
+Coming soon
