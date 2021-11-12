@@ -15,7 +15,7 @@
 
 # Introduction
 
-QuanxiangCloud is a powerful, pluggable open source low-code platform, which can help to quckly deploy QuanxiangCloud platform.
+QuanxiangCloud is a powerful, pluggable open source low-code platform, which can help to deploy QuanxiangCloud platform quickly.
 
 # Getting Started
 
