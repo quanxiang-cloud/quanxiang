@@ -8,41 +8,218 @@
   </a>
 </p>
 <p align="center">
- QuanXiang cloud is a powerful, pluggable open source low-code platform.
+  <b> QuanXiang cloud is a powerful, pluggable open source low-code platform.</b>
 </p>
 
-[英文](./README.md)
+----
 
-**# 概述**
 
-全象云低代码平台是一个基于云原生的、完全容器化的工具和平台，用于辅助构建企业各类数字化应用。作为一个集低代码开发能力、 身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，全象云平台能够支持快速构建应用、便捷维护管理应用、企业存量业务与全象云构建业务的集成。
 
-全象云平台的能力归纳为为四类：应用开发能力、API 管理能力、系统连接能力以及生态共创能力。
+> [English](./README.md) | 中文
 
-- ***应用开发能力：*** 平台提供云上无代码和低代码两种应用开发模式，屏蔽了技术的复杂度。作为通用的低代码工具，既可以可视化构建简单的表单应用、自动化应用，也可以自定义外部或移动端应用，还可以用于生成专用的低代码平台。
+## QuanXiang 是什么
 
-- ***API管理能力：*** 平台实现了对外部 API 进行代理，使得在应用开发时能够像使用本地数据源一样，使用或组合使用外部数据源。
+QuanXiang（全象云低代码平台）是一个基于云原生的、完全容器化的工具和平台，用于辅助构建企业各类数字化应用。作为一个集低代码开发能力、 身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，全象云平台能够支持快速构建应用、便捷维护管理应用、企业存量业务与全象云构建业务的集成。
 
-- ***系统连接能力：*** 平台提供丰富的开发接口和强大的插件机制，实现与外部独立的系统进行通信或集成，进而构建更复杂的应用；多个集成到全象云平台的系统能够相互连接，使用彼此的功能。
 
-- ***生态共创能力：*** 平台支持多个层级的对接，包括对接应用市场、组件市场、接口市场等。
 
-除此之外，全象云平台还为前端和移动端开发工程师提供了丰富的自定义功能，包括组件、页面、应用模板级别的自定义，以及为后端开发工程师提供了 FaaS 能力，结合 API 编排能力。
+## 平台功能
 
-# 快速开始
+QuanXiang 围绕应用设计、开发、部署、运维全生命周期管理，构建低代码生态，为企业的信息化数智化建设赋能。平台核心能力如下：
 
-全象云低代码平台现阶段仅提供在K8S上进行部署，现阶段仅提供KubeSphere发行版上的安装部署，后续会提供更多K8S的发行版支持。
+<details>
+  <summary><b> 🚀快速应用开发</b></summary>
+  <li>可视化设计器：用户通过简单的拖拽、参数配置等方式就能完成页面设计、工作流编排、数据模型设计和角色权限的定义。
+  <li>表单引擎：系统提供丰富的页面组件，能够满足页面呈现的自定义组件需求。
+  <li>工作流引擎：包含灵活的触发方式和丰富的流程组件，支持多种触发方式，表单数据触发、时间触发、表单时间触发等。同时提供审批、填写等人为节点处理，同时支持数据新增、数据更新等自动流程节点处理。同时提供规则引擎的能力，满足复杂业务下的逻辑定义。
+  </details>
 
-## 安装
+<details>
+  <summary><b>☁️多云部署和运维</b></summary>
+  <li>QuanXiang 基于 Kubernetes 的容器化部署方案，CI/CD 持续交付部署，为应用的平滑部署、稳定运行保驾护航，大大降低了应用上线后迭代升级的风险和复杂度。
+  <li>支持不同云厂商的部署及运维。
+  <li>平台提供系统日志，支持查看所有操作记录。
+  </details>
 
-[一键安装全象低代码平台](./doc/install_zh.md)
+<details>
+  <summary><b>🤖 多端兼容适配</b></summary>
+  平台应用均可一次设计，在多端灵活适配。目前支持一键发布为 WEB 应用、Native APP、微信小程序。
+  </details>
 
-# 功能列表
+<details>
+  <summary><b>🧑‍💻灵活组织管理</b></summary>
+  <li>企业通讯录：提供多种管理通讯录方式，帮助企业快速完成组织的构建。
+  <li>角色管理：企业角色权限按需细分，保障平台账户访问安全和数据安全。
+</details>
 
-- 表单引擎
+<details>
+  <summary><b>🗂系统连接能力</b></summary>
+  <li>平台内部支持跨应用间的数据连接，提供了不同粒度的数据连接能力，包括：表与表之间的数据联动更新、字段与字段间的联动交互。
+  <li>平台支持不同粒度的方案集成，包括组件集成、页面集成、应用集成。能够最大程度上提升企业开发过程中的代码复用率。
+  </details>
 
-- 数据模型
+<details>
+  <summary><b>🧩可插拔的架构</b></summary>
+  QuanXiang 是云原生、分布式架构的平台系统。各个核心服务（聚合类服务除外）采用完全解藕的、低内聚的方式设计，服务之间通过API 接口进   行访问。
+  </details>
 
-- API代理
 
-- 工作流
+
+## 架构说明
+
+QuanXiang（全象云低代码平台） 将前端与后端分离，是一个云原生、完全容器化、微服务架构的软件平台。平台可以部署于所有基于 [Kubernetes](https://kubernetes.io/) 的开发的容器平台，同时支持原生 Kubernetes 系统。平台分为：应用层，对接层，数据处理层及基础层。
+
+- **应用层**：提供灵活的表单引擎，可视化流程引擎，复杂功能规则引擎等，同时支持多端适配，包括 WEB 端、Native APP、微信小程序、H5 等。
+- **对接层**：用于实现前后端功能对接，同时支持第三方 API 接入，FaaS 插件及应用接入等。
+- **数据处理层**：将前端业务请求数据处理成基础层需要的格式并存储。
+- **基础层**：所有业务的基础支撑平台，包括数据库，存储，容器平台等。
+
+![architecture](/doc/images/architecture.png)
+
+----
+
+
+
+## 快速安装
+
+全象云低代码平台提供了一套快速安装程序，使用者只需一条指令即可安装全象云低代码平台，目前支持 [在 KubeSphere 环境中安装](#在Kubesphere环境中安装（推荐使用）)。
+
+### 前提条件
+
+已安装好 Kubernetes  环境。
+
+### 在 Kubesphere 环境中安装（推荐使用）
+
+#### 第 1 步：安装 KubeSphere
+
+安装 KubeSphere 有两种方式：
+
+- 直接安装 KubeSphere，详细步骤参见 [官方文档](https://kubesphere.io/docs/)。
+- 安装  [KubeSphere(R)（QKE） ](https://docsv3.qingcloud.com/container/qke/)（**推荐**），可以一键部署高可用的 KubeSphere 集群，并支持集群自动巡检和修复。
+
+KubeSphere 部署环境的要求如下：
+
+| 节点类型    | 节点数量 | 资源要求                           |
+| :---------- | :------- | :--------------------------------- |
+| master      | 1        | CPU：4 核， 内存：8GB， 硬盘：80GB |
+| worker 节点 | 5        | CPU：4 核， 内存：8GB， 硬盘：80GB |
+
+> **注意**
+>
+> 如果集群将用于生产或者准生产的话，建议将 worker 节点的内存和硬盘至少提高 1 倍，中间件部分推荐使用云厂商提供的 PaaS 或者服务。
+
+#### 第 2 步：安装全象云低代码平台
+
+安装全象云低代码平台前，您首先需要确保满足以下条件，然后再从我们的 release 中可以选择您需要的版本。
+
+- 运行安装程序的系统可以访问 KubeSphere 集群。
+- 已正确安装 kubectl，如果没有请先 [安装 kubectl](!https://kubernetes.io/docs/tasks/tools/)。
+- 已正确配置 kubeconfig，若没配置请先完成配置。
+  - QKE  kubeconfig 可通过 QingCloud 控制台获取；
+  - KubeSphere  kubeconfig 请参见 [官方文档](!https://kubesphere.com.cn/docs/) 或者 [求助社区](!https://github.com/kubesphere) 完成配置。
+- 已安装 helm3，安装过程请参见 [官方文档](!https://helm.sh/docs/intro/install/)。
+
+##### 使用发行版
+
+如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](!https://github.com/quanxiang-cloud/quanxiang/releases)。***注意区别不同版本的系统架构***。
+
+##### 使用源码编译 
+
+需要先 git clone 项目源代码进行编译。需要注意的是修改指令中的 GOOS 和 GOARCH 以匹配系统架构，以 Linux amd64 为例：
+
+```bash
+ git clone https://github.com/quanxiang-cloud/quanxiang.git
+ cd quanxiang
+ git checkout master
+ CGO_ENABLED=0 GOOS=linux GOARCH=adm64 go build -o installApp main.go
+```
+
+> **说明**
+>
+> - GOOS 可用系统：darwin、Linux、windows、freebsd 等;
+> - GOARCH 可用架构：amd64、386、arm 等。
+
+
+
+#### 开始安装
+
+全象云低代码平台支持生产部署和试用部署：
+
+- 生产环境可以先部署好中间件，具体内容可以参考 [修改配置文件](#修改配置文件)。
+- 试用部署可以选择全部容器部署。
+
+
+
+##### 修改配置文件
+
+如果您已经部署好中间件服务，并打算将其用于全象低代码平台安装，可以在配置文件  `configs/configs.yml`  中将对应的中间件中 `enabled: true` 改为 `false`。**具体配置请参照下文内注释**。
+
+```bash shell
+  vim configs/configs.yml
+    #Middleware Services 中间件服务
+    mysql:
+      enabled: true
+      rootPassword: qxp1234     #It is required to set the root user password if enabled equal to true    设置root用户密码 enabled为true时必填
+    redis:
+      enabled: true
+      password: cXhwMTIzNA==    #The password here is the base64 code of the password. For example, the base64 code of qxp1234 is cxhwmjm0cg==  这里的password为密码的base64编码，比如qxp1234的base64编码为cXhwMjM0Cg==
+    kafka:
+              .....
+```
+
+##### 安装
+
+通过执行 `installApp` 指令来安装全象云低代码平台，试用版执行如下指令安装：
+
+```bash shell
+./installApp start -k ~/.kube/config -i -n lowcode
+```
+
+参数说明：
+
+| 参数                 | 作用                          | 使用说明                                                |
+| -------------------- | ----------------------------- | ------------------------------------------------------- |
+| -c/--configfile      | 配置文件路径                  | 当前项目 configs/configs.yml 的绝对或者相对路径。       |
+| -d/--deploymentFile  | 部署文件夹的路径              | 当前项目 deployment 文件夹的绝对或相对路径。            |
+| -k/--kubeconfig      | 访问 k8s 集群的配置文件路径   | 如果该文件在默认位置 ～/.kube/config 可以不指定该参数。 |
+| -i/--middlerwareInit | 中间件是否需要初始化          | 如果指定则对中间件进行初始化。                          |
+| -n/--namespace       | 服务部署于 k8s 集群的命名空间 | 如果不指定默认为 default。                              |
+
+##### 卸载
+
+通过执行 `installApp` 指令进行卸载操作：
+
+```bash shell
+./installApp uninstall -n lowcode
+```
+
+参数的详细解释如下：
+
+| 参数                      | 作用                                | 使用说明                                                     |
+| ------------------------- | ----------------------------------- | ------------------------------------------------------------ |
+| -d/--deploymentFile       | 部署文件夹的路径                    | 当前项目 deployment 文件夹的绝对或相对路径。                 |
+| -k/--kubeconfig           | 访问 k8s 集群的配置文件路径         | 如果该文件在默认位置 ～/.kube/config 可以不指定该参数。      |
+| -n/--namespace            | 卸载的服务部署于 k8s 集群的命名空间 | 如果不指定默认为 default。                                   |
+| -u/--uninstallMiddlerware | 是否需要卸载工具部署的中间件        | 若没有使用工具部署的中间件可以不引用此参数。若使用，卸载时报错没有此资源，忽略即可。 |
+
+#### 访问环境
+
+##### 配置网关
+
+参考 KubeSphere 的[官方文档](https://kubesphere.io/zh/docs/project-administration/project-gateway/)。我们推荐使用 LoadBalancer 方式配置网关。
+
+##### 配置访问
+
+访问 QuanxiangCloud 控制台，需要使用域名进行访问，可以配置 dns 或者指定本地 hosts 的方式进行访问。默认的用户名和密码是`Admin@Admin.com/654321a..`
+
+- 通过 http://portal.qxp.com 访问 QuanxiangCloud 的管理端控制台。
+- 通过 http://home.qxp.com 访问 QuanxiangCloud 的用户端。
+
+> **注意**
+>
+> 如果需要修改访问域名，可参见 kubesphere 的[官方文档](https://kubesphere.io/zh/docs/project-user-guide/application-workloads/routes/)。
+
+### 原生 KuberNetes 环境上安装
+
+ 敬请期待。
+
