@@ -3,7 +3,7 @@ image:
   repo: quanxiang
   tag: latest
 namespace: ""
-imagePullSecrets: ""
+imagePullSecrets: lowcode
 service:
   type: ClusterIP
   port: 80
@@ -58,7 +58,7 @@ config:
       bucketName: default
       name: minio
       protocol: http
-      domain: minio:9000
+      domain: home.qxp.com
       accessKey: Minio
       secretKey: Minio123456
   email:

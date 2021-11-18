@@ -1,231 +1,55 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : staging
- Source Server Type    : MySQL
- Source Server Version : 50729
- Source Host           : 192.168.208.253:3306
- Source Schema         : polyapi
-
- Target Server Type    : MySQL
- Target Server Version : 50729
- File Encoding         : 65001
-
- Date: 26/10/2021 16:01:45
-*/
 CREATE DATABASE polyapi;
 USE polyapi;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for api_namespace
--- ----------------------------
+/*--------------------------------------------------------------------------------------------------------------------------*/
 DROP TABLE IF EXISTS `api_namespace`;
 CREATE TABLE `api_namespace` (
-  `id` varchar(64) NOT NULL COMMENT 'unique id',
-  `owner` varchar(64) DEFAULT NULL COMMENT 'owner id',
-  `owner_name` varchar(64) DEFAULT NULL COMMENT 'owner name',
-  `parent` varchar(320) NOT NULL DEFAULT '' COMMENT 'full namespace path, eg: /a/b/c',
-  `namespace` varchar(64) NOT NULL COMMENT 'global namespace, inmutable',
-  `title` varchar(64) DEFAULT NULL COMMENT 'alias of namespace, mutable',
-  `desc` varchar(256) DEFAULT '',
-  `access` int(11) NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
-  `active` tinyint(4) DEFAULT '1' COMMENT '1 ok, 0 disable',
-  `create_at` datetime DEFAULT NULL COMMENT 'create time',
-  `update_at` datetime DEFAULT NULL COMMENT 'update time',
-  `delete_at` datetime DEFAULT NULL COMMENT 'delete time',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_global_name` (`parent`,`namespace`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    `id` 		    VARCHAR(64) 	NOT NULL COMMENT 'unique id',
+    `owner` 	    VARCHAR(64) 	COMMENT 'owner id',
+    `owner_name` 	VARCHAR(64) 	COMMENT 'owner name',
+    `parent`        VARCHAR(320) 	NOT NULL DEFAULT '' COMMENT 'full namespace path, eg: /a/b/c',
+    `namespace`     VARCHAR(64) 	NOT NULL  COMMENT 'global namespace, inmutable',
+    `sub_count`     INT(10) DEFAULT 0 NOT NULL COMMENT 'count of sub namespace',
+    `title` 	    VARCHAR(64) 	COMMENT 'alias of namespace, mutable',
+    `desc` 		    VARCHAR(256) 	DEFAULT '',
 
--- ----------------------------
--- Table structure for api_permit_elem
--- ----------------------------
-DROP TABLE IF EXISTS `api_permit_elem`;
-CREATE TABLE `api_permit_elem` (
-  `id` varchar(64) NOT NULL COMMENT 'unique id',
-  `owner` varchar(64) DEFAULT NULL COMMENT 'owner id',
-  `owner_name` varchar(64) DEFAULT NULL COMMENT 'owner name',
-  `group_path` varchar(448) DEFAULT NULL COMMENT 'permitgroup path',
-  `elem_type` varchar(10) DEFAULT NULL COMMENT 'raw/poly/ckey/ns/service',
-  `elem_id` varchar(64) DEFAULT NULL COMMENT 'element id',
-  `elem_path` varchar(512) DEFAULT NULL COMMENT 'element path',
-  `desc` varchar(256) DEFAULT '',
-  `elem_pri` int(11) NOT NULL COMMENT 'privilege for this elem, 1,2,4,8,16,32 CRUDGX',
-  `content` text COMMENT 'permission detail JSON, for api field control',
-  `active` tinyint(4) DEFAULT '1' COMMENT '1 ok, 0 disable',
-  `create_at` datetime DEFAULT NULL COMMENT 'create time',
-  `update_at` datetime DEFAULT NULL COMMENT 'update time',
-  `delete_at` datetime DEFAULT NULL COMMENT 'delete time',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_group_elem` (`group_path`,`elem_type`,`elem_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    `access` 	    INT(11) 	    NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
+    `active`        TINYINT         DEFAULT 1 COMMENT '1 ok, 0 disable',
+    `valid`         TINYINT         DEFAULT 1 COMMENT '1 valid, 0 invalid',
 
--- ----------------------------
--- Table structure for api_permit_grant
--- ----------------------------
-DROP TABLE IF EXISTS `api_permit_grant`;
-CREATE TABLE `api_permit_grant` (
-  `id` varchar(64) NOT NULL COMMENT 'unique id',
-  `owner` varchar(64) DEFAULT NULL COMMENT 'owner id',
-  `owner_name` varchar(64) DEFAULT NULL COMMENT 'owner name',
-  `group_path` varchar(448) DEFAULT NULL COMMENT 'permitgroup path',
-  `grant_type` varchar(10) DEFAULT NULL COMMENT 'app/user/key/usergroup',
-  `grant_id` varchar(64) DEFAULT NULL COMMENT 'element id',
-  `grant_name` varchar(64) DEFAULT NULL COMMENT 'element name',
-  `grant_pri` int(11) NOT NULL COMMENT 'privilege for this group, 1,2,4,8,16,32 CRUDGX',
-  `desc` varchar(256) DEFAULT '',
-  `active` tinyint(4) DEFAULT '1' COMMENT '1 ok, 0 disable',
-  `create_at` datetime DEFAULT NULL COMMENT 'create time',
-  `update_at` datetime DEFAULT NULL COMMENT 'update time',
-  `delete_at` datetime DEFAULT NULL COMMENT 'delete time',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_group_grant` (`group_path`,`grant_type`,`grant_id`),
-  KEY `idx_grant` (`grant_type`,`grant_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    `create_at`     DATETIME 		COMMENT 'create time',
+    `update_at`     DATETIME 		COMMENT 'update time',
+    `delete_at`     DATETIME 		COMMENT 'delete time',
+    UNIQUE KEY `idx_global_name` (`parent`, `namespace`),
+    PRIMARY KEY (`id`)
+)ENGINE=INNODB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Table structure for api_permit_group
--- ----------------------------
-DROP TABLE IF EXISTS `api_permit_group`;
-CREATE TABLE `api_permit_group` (
-  `id` varchar(64) NOT NULL COMMENT 'unique id',
-  `owner` varchar(64) DEFAULT NULL COMMENT 'owner id',
-  `owner_name` varchar(64) DEFAULT NULL COMMENT 'owner name',
-  `namespace` varchar(384) NOT NULL COMMENT 'belong namespace',
-  `name` varchar(64) NOT NULL COMMENT 'permit group name',
-  `title` varchar(64) DEFAULT NULL COMMENT 'alias, mutable',
-  `desc` varchar(256) DEFAULT '',
-  `access` int(11) NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
-  `active` tinyint(4) DEFAULT '1' COMMENT '1 ok, 0 disable',
-  `create_at` datetime DEFAULT NULL COMMENT 'create time',
-  `update_at` datetime DEFAULT NULL COMMENT 'update time',
-  `delete_at` datetime DEFAULT NULL COMMENT 'delete time',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_global_name` (`namespace`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for api_poly
--- ----------------------------
-DROP TABLE IF EXISTS `api_poly`;
-CREATE TABLE `api_poly` (
-  `id` varchar(64) NOT NULL COMMENT 'unique id',
-  `owner` varchar(64) DEFAULT NULL COMMENT 'owner id',
-  `owner_name` varchar(64) DEFAULT NULL COMMENT 'owner name',
-  `namespace` varchar(384) NOT NULL COMMENT 'belong full namespace, eg: /a/b/c',
-  `name` varchar(64) NOT NULL COMMENT 'name',
-  `title` varchar(64) DEFAULT NULL COMMENT 'alias of name, mutable',
-  `desc` varchar(256) DEFAULT '',
-  `access` int(11) NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
-  `active` tinyint(4) DEFAULT '1' COMMENT '1 ok, 0 disable',
-  `method` varchar(16) NOT NULL COMMENT 'method',
-  `arrange` text COMMENT 'arrange',
-  `doc` text COMMENT 'api doc',
-  `script` text COMMENT 'build result, JS script',
-  `create_at` datetime DEFAULT NULL COMMENT 'create time',
-  `update_at` datetime DEFAULT NULL COMMENT 'update time',
-  `build_at` datetime DEFAULT NULL COMMENT 'build time',
-  `delete_at` datetime DEFAULT NULL COMMENT 'delete time',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_global_name` (`namespace`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for api_raw
--- ----------------------------
-DROP TABLE IF EXISTS `api_raw`;
-CREATE TABLE `api_raw` (
-  `id` varchar(64) NOT NULL COMMENT 'unique id',
-  `owner` varchar(64) DEFAULT NULL COMMENT 'owner id',
-  `owner_name` varchar(64) DEFAULT NULL COMMENT 'owner name',
-  `namespace` varchar(384) NOT NULL COMMENT 'belong full namespace, eg: /a/b/c',
-  `name` varchar(64) NOT NULL COMMENT 'unique name',
-  `service` varchar(512) NOT NULL COMMENT 'belong service full path, eg: /a/b/c/servicesX',
-  `title` varchar(64) DEFAULT NULL COMMENT 'alias of name, mutable',
-  `desc` varchar(256) DEFAULT '',
-  `version` varchar(32) DEFAULT NULL,
-  `path` varchar(512) NOT NULL COMMENT 'relative path, eg: /api/foo/bar',
-  `url` varchar(512) NOT NULL COMMENT 'full path, eg: https://api.xxx.com/api/foo/bar',
-  `action` varchar(64) DEFAULT '' COMMENT 'action on path',
-  `method` varchar(16) NOT NULL COMMENT 'method',
-  `content` text,
-  `doc` text COMMENT 'api doc',
-  `access` int(11) NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
-  `active` tinyint(4) DEFAULT '1' COMMENT '1 ok, 0 disable',
-  `schema` varchar(16) NOT NULL COMMENT 'from service, http/https',
-  `host` varchar(128) NOT NULL COMMENT 'eg: api.xxx.com:8080',
-  `auth_type` varchar(32) NOT NULL COMMENT 'none/system/signature/cookie/oauth2...',
-  `create_at` datetime DEFAULT NULL COMMENT 'create time',
-  `update_at` datetime DEFAULT NULL COMMENT 'update time',
-  `delete_at` datetime DEFAULT NULL COMMENT 'delete time',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_global_name` (`namespace`,`name`),
-  UNIQUE KEY `idx_unique_path` (`namespace`,`url`,`action`,`method`,`version`),
-  KEY `idx_service` (`service`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for api_service
--- ----------------------------
+/*--------------------------------------------------------------------------------------------------------------------------*/
 DROP TABLE IF EXISTS `api_service`;
 CREATE TABLE `api_service` (
-  `id` varchar(64) NOT NULL COMMENT 'unique id',
-  `owner` varchar(64) DEFAULT NULL COMMENT 'owner id',
-  `owner_name` varchar(64) DEFAULT NULL COMMENT 'owner name',
-  `namespace` varchar(384) NOT NULL COMMENT 'full namespace path, eg: a/b/c',
-  `name` varchar(64) NOT NULL COMMENT 'service name, unique in namespace',
-  `title` varchar(64) DEFAULT NULL COMMENT 'alias of service, mutable',
-  `desc` varchar(256) DEFAULT '',
-  `access` int(11) NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
-  `active` tinyint(4) DEFAULT '1' COMMENT '1 ok, 0 disable',
-  `schema` varchar(16) NOT NULL COMMENT 'http/https',
-  `host` varchar(128) NOT NULL COMMENT 'eg: api.xxx.com:8080',
-  `auth_type` varchar(32) NOT NULL COMMENT 'none/system/signature/cookie/oauth2...',
-  `authorize` text COMMENT 'JSON',
-  `create_at` datetime DEFAULT NULL COMMENT 'create time',
-  `update_at` datetime DEFAULT NULL COMMENT 'update time',
-  `delete_at` datetime DEFAULT NULL COMMENT 'delete time',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_global_name` (`namespace`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    `id` 		    VARCHAR(64) 	COMMENT 'unique id',
+    `owner` 	    VARCHAR(64) 	COMMENT 'owner id',
+    `owner_name` 	VARCHAR(64) 	COMMENT 'owner name',
+    `namespace`     VARCHAR(384) 	NOT NULL COMMENT 'full namespace path, eg: a/b/c',
+    `name`	        VARCHAR(64) 	NOT NULL COMMENT 'service name, unique in namespace',
+    `title` 	    VARCHAR(64) 	COMMENT 'alias of service, mutable',
+    `desc` 		    VARCHAR(256) 	DEFAULT '',
 
-SET FOREIGN_KEY_CHECKS = 1;
-insert  into `api_namespace`(`id`,`owner`,`owner_name`,`parent`,`namespace`,`title`,`desc`,`access`,`active`,`create_at`,`update_at`,`delete_at`) values
-('1','system','系统','-','system','内部系统','系统自动注册的API',0,1,'2021-09-16 11:40:19','2021-09-16 11:40:19',NULL),
-('1-0','system','系统','/system','poly','内部聚合','内部生成的聚合API',0,1,'2021-09-16 11:40:19','2021-09-16 11:40:19',NULL),
-('1-1','system','系统','/system','faas','函数服务','通过faas注册的API',0,1,'2021-09-16 11:40:19','2021-09-16 11:40:19',NULL),
-('1-2','system','系统','/system','app','app根目录','app根目录',0,1,'2021-09-16 11:40:19','2021-09-16 11:40:19',NULL),
-('1-3','system','系统','/system','form','表单模型','通过form注册的API',0,1,'2021-09-16 11:40:19','2021-09-16 11:40:19',NULL);
+    `access` 	    INT(11) 	 	NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
+    `active`        TINYINT         DEFAULT 1 COMMENT '1 ok, 0 disable',
+    `schema` 	    VARCHAR(16) 	NOT NULL COMMENT 'http/https',
+    `host` 		    VARCHAR(128) 	NOT NULL COMMENT 'eg: api.xxx.com:8080',
+    `auth_type`     VARCHAR(32)     NOT NULL COMMENT 'none/system/signature/cookie/oauth2...',
+    `authorize`     TEXT            COMMENT 'JSON',
 
-/*Data for the table `api_poly` */
-
-insert  into `api_poly`(`id`,`owner`,`owner_name`,`namespace`,`name`,`title`,`desc`,`access`,`active`,`method`,`arrange`,`doc`,`script`,`create_at`,`update_at`,`build_at`,`delete_at`) values
-('poly_ABIJPi2ckYlIKgMEKiTbFDw0CCpLxLLvf1_eSzIS4S_p','system','系统','/system/poly','permissionInit','初始化权限组','',3,0,'POST','{\n  \"namespace\": \"/system/poly\",\n  \"name\": \"permissionInit\",\n  \"desc\": \"structor permissionInit\",\n  \"version\": \"v1.0.0\",\n  \"id\": \"/system/poly/permissionInit\",\n  \"encoding\": \"\",\n  \"nodes\": [\n    {\n      \"name\": \"start\",\n      \"type\": \"input\",\n      \"desc\": \"the only entrance of the arrange\",\n      \"nextNodes\": [\n        \"req1\"\n      ],\n      \"detail\": {\n        \"inputs\": [\n          {\n            \"type\": \"string\",\n            \"name\": \"appID\",\n            \"title\": \"应用ID\",\n            \"data\": null,\n            \"in\": \"body\",\n            \"required\": true\n          },\n          {\n            \"type\": \"string\",\n            \"name\": \"name\",\n            \"title\": \"应用名\",\n            \"data\": null,\n            \"in\": \"body\",\n            \"required\": true\n          },\n          {\n            \"type\": \"string\",\n            \"name\": \"description\",\n            \"title\": \"应用描述\",\n            \"data\": null,\n            \"in\": \"body\"\n          },\n          {\n            \"type\": \"string\",\n            \"name\": \"types\",\n            \"title\": \"应用描述\",\n            \"data\": null,\n            \"in\": \"body\"\n          },\n          {\n            \"type\": \"array\",\n            \"name\": \"scopes\",\n            \"data\": [\n              {\n                \"type\": \"number\",\n                \"name\": \"type\",\n                \"data\": null\n              },\n              {\n                \"type\": \"string\",\n                \"name\": \"id\",\n                \"data\": null\n              },\n              {\n                \"type\": \"string\",\n                \"name\": \"name\",\n                \"data\": null\n              }\n            ],\n            \"in\": \"body\",\n            \"required\": true\n          }\n        ]\n      }\n    },\n    {\n      \"name\": \"req1\",\n      \"type\": \"request\",\n      \"desc\": \"create\",\n      \"nextNodes\": [\n        \"cond1\",\n        \"end\"\n      ],\n      \"detail\": {\n        \"rawPath\": \"/system/form/base_pergroup_create\",\n        \"inputs\": [\n          {\n            \"type\": \"path\",\n            \"name\": \"appID\",\n            \"field\": \"start.appID\",\n            \"data\": null,\n            \"in\": \"path\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"name\",\n            \"field\": \"start.name\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"description\",\n            \"field\": \"start.description\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"types\",\n            \"field\": \"start.types\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"array\",\n            \"name\": \"_\",\n            \"data\": [\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app\',start.appID)\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID,\'customer\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID,\'structor\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID,\'form\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/structor\',\'form\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/structor\',\'custom\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/form\',\'form\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/form\',\'custom\')\"\n              }\n            ],\n            \"in\": \"\"\n          }\n        ]\n      }\n    },\n    {\n      \"name\": \"cond1\",\n      \"type\": \"if\",\n      \"desc\": \"req1 is ok\",\n      \"nextNodes\": [],\n      \"detail\": {\n        \"cond\": {\n          \"op\": \"\",\n          \"type\": \"exprcmp\",\n          \"name\": \"\",\n          \"data\": {\n            \"lvalue\": {\n              \"type\": \"number\",\n              \"name\": \"\",\n              \"field\": \"req1.code\",\n              \"data\": null\n            },\n            \"cmp\": \"eq\",\n            \"rvalue\": {\n              \"type\": \"number\",\n              \"name\": \"\",\n              \"data\": \"0\"\n            }\n          }\n        },\n        \"yes\": \"req2\",\n        \"no\": \"\"\n      }\n    },\n    {\n      \"name\": \"req2\",\n      \"type\": \"request\",\n      \"desc\": \"update\",\n      \"nextNodes\": [\n        \"end\"\n      ],\n      \"detail\": {\n        \"rawPath\": \"/system/form/base_pergroup_create\",\n        \"inputs\": [\n          {\n            \"type\": \"path\",\n            \"name\": \"appID\",\n            \"field\": \"start.appID\",\n            \"data\": null,\n            \"in\": \"path\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"id\",\n            \"field\": \"req1.data.id\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"scopes\",\n            \"field\": \"start.scopes\",\n            \"data\": null,\n            \"in\": \"\"\n          }\n        ]\n      }\n    },\n    {\n      \"name\": \"end\",\n      \"type\": \"output\",\n      \"desc\": \"the only end of this arrange\",\n      \"nextNodes\": null,\n      \"detail\": {\n        \"header\": null,\n        \"body\": {\n          \"type\": \"object\",\n          \"name\": \"\",\n          \"data\": [\n            {\n              \"type\": \"field\",\n              \"name\": \"\",\n              \"field\": \"req1\",\n              \"data\": null\n            },\n            {\n              \"type\": \"field\",\n              \"name\": \"\",\n              \"field\": \"req2\",\n              \"data\": null\n            }\n          ]\n        },\n        \"doc\": null\n      }\n    }\n  ]\n}','{\"x-id\":\"\",\"x-fmt-inout\":{\"method\":\"POST\",\"url\":\"/api/v1/polyapi/poly/request/system/poly/permissionInit\",\"input\":{\"inputs\":[{\"type\":\"string\",\"name\":\"Signature\",\"title\":\"参数签名\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\",\"mock\":\"J834jkhwrwkkjhkYIUYU9886876387\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"title\":\"登录授权码\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\",\"mock\":\"H3K56789lHIUkjfkslds\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"title\":\"数据格式\",\"desc\":\"application/json\",\"data\":\"application/json\",\"in\":\"header\",\"required\":true,\"mock\":\"application/json\"},{\"type\":\"object\",\"name\":\"root\",\"desc\":\"body inputs\",\"data\":[{\"type\":\"object\",\"name\":\"_signature\",\"title\":\"签名参数\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"timestamp\",\"name\":\"timestamp\",\"title\":\"时间戳\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"title\":\"版本\",\"desc\":\"1 only current\",\"data\":null},{\"type\":\"string\",\"name\":\"method\",\"title\":\"签名方法\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":\"HmacSHA256\"},{\"type\":\"string\",\"name\":\"access_key_id\",\"title\":\"密钥序号\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":\"KeiIY8098435rty\"}]},{\"type\":\"object\",\"name\":\"_signature\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"string\",\"name\":\"method\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":null},{\"type\":\"string\",\"name\":\"timestamp\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"desc\":\"1 only current\",\"data\":null},{\"type\":\"string\",\"name\":\"access_key_id\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":null}]},{\"type\":\"string\",\"name\":\"appID\",\"data\":null},{\"type\":\"string\",\"name\":\"description\",\"data\":null},{\"type\":\"string\",\"name\":\"name\",\"data\":null},{\"type\":\"array\",\"name\":\"scopes\",\"data\":[{\"type\":\"number\",\"name\":\"\",\"data\":null}]},{\"type\":\"string\",\"name\":\"types\",\"data\":null}],\"in\":\"body\"},{\"type\":\"string\",\"name\":\"Signature\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"desc\":\"application/json\",\"data\":null,\"in\":\"header\",\"required\":true}]},\"output\":{\"header\":null,\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":[{\"type\":\"object\",\"name\":\"\",\"data\":[{\"type\":\"number\",\"name\":\"code\",\"title\":\"0:success, others: error\",\"data\":null},{\"type\":\"object\",\"name\":\"data\",\"desc\":\"body response\",\"data\":[]},{\"type\":\"string\",\"name\":\"msg\",\"title\":\"error message when code is not 0\",\"data\":null}],\"in\":\"body\"}]},\"sampleInput\":[{\"header\":{\"Access-Token\":[\"H3K56789lHIUkjfkslds\",\"b_Mkq3Jc12\"],\"Content-Type\":[\"application/json\",\"hzzuZFbbNT\"],\"Signature\":[\"J834jkhwrwkkjhkYIUYU9886876387\",\"yiBm3qz6gH\"]},\"body\":{\"_signature\":{\"access_key_id\":\"b4mEi6GOa\",\"method\":\"3Dw\",\"timestamp\":\"v5c\",\"version\":11},\"appID\":\"JS\",\"description\":\"ShD8FdyZ0P\",\"name\":\"6GE0JGjWsF\",\"scopes\":[16],\"types\":\"DOLdwmNq8aT\"}},{\"header\":{\"Access-Token from oauth2\":[\"GfI_YvQ1lk\"],\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\":[\"NL83ndpEMQ\"],\"application/json\":[\"5G06AoDJQZ\"],\"参数签名\":[\"J834jkhwrwkkjhkYIUYU9886876387\"],\"数据格式\":[\"application/json\"],\"登录授权码\":[\"H3K56789lHIUkjfkslds\"]},\"body\":{\"appID\":\"b48\",\"description\":\"z5\",\"name\":\"mr0\",\"scopes\":[13],\"signature paramters of poly api server\":{\"\\\"HmacSHA256\\\" only current\":\"myeqdmkS\",\"1 only current\":13,\"access_key_id dispatched by poly api server\":\"BtExtt6kdO\",\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\":\"DJrGrqG\"},\"types\":\"KYEHfFwy\",\"签名参数\":{\"密钥序号\":\"KeiIY8098435rty\",\"时间戳\":\"2012-12-21T05:43:21CST\",\"版本\":14,\"签名方法\":\"HmacSHA256\"}}}],\"sampleOutput\":[{\"resp\":{\"code\":4,\"data\":{},\"msg\":\"wR5lGIClT\"}},{\"resp\":{\"0:success, others: error\":11,\"body response\":{},\"error message when code is not 0\":\"M1bxJ3Ifa\"}}]},\"x-swagger\":{\"x-consts\":null,\"host\":\"polyapi\",\"swagger\":\"2.0\",\"info\":{\"title\":\"polyapi\",\"version\":\"v1.0.0\",\"description\":\"auto generate at 2021-09-16T11:42:53CST\",\"contact\":{\"name\":\"\",\"url\":\"\",\"email\":\"\"}},\"schemes\":[\"http\"],\"basePath\":\"/\",\"paths\":{\"/api/v1/polyapi/poly/request//system/poly/permissionInit\":{\"post\":{\"x-consts\":null,\"operationId\":\"permissionInit\",\"parameters\":[{\"description\":\"body inputs\",\"in\":\"body\",\"name\":\"root\",\"schema\":{\"properties\":{\"_signature\":{\"description\":\"signature paramters of poly api server\",\"properties\":{\"access_key_id\":{\"description\":\"access_key_id dispatched by poly api server\",\"type\":\"string\"},\"method\":{\"description\":\"\\\"HmacSHA256\\\" only current\",\"type\":\"string\"},\"timestamp\":{\"description\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"type\":\"string\"},\"version\":{\"description\":\"1 only current\",\"type\":\"number\"}},\"type\":\"object\"},\"appID\":{\"tile\":\"应用ID\",\"type\":\"string\"},\"description\":{\"tile\":\"应用描述\",\"type\":\"string\"},\"name\":{\"tile\":\"应用名\",\"type\":\"string\"},\"scopes\":{\"items\":{\"type\":\"number\"},\"type\":\"array\"},\"types\":{\"tile\":\"应用描述\",\"type\":\"string\"}},\"required\":[\"appID\",\"name\",\"scopes\"],\"type\":\"object\"}},{\"description\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"in\":\"header\",\"name\":\"Signature\",\"type\":\"string\"},{\"description\":\"Access-Token from oauth2\",\"in\":\"header\",\"name\":\"Access-Token\",\"type\":\"string\"},{\"description\":\"application/json\",\"in\":\"header\",\"name\":\"Content-Type\",\"required\":true,\"type\":\"string\"}],\"responses\":{\"200\":{\"description\":\"\",\"schema\":{\"description\":\"response schema.\",\"properties\":{\"code\":{\"title\":\"0:success, others: error\",\"type\":\"number\"},\"data\":{\"description\":\"body response\",\"properties\":{},\"type\":\"object\"},\"msg\":{\"title\":\"error message when code is not 0\",\"type\":\"string\"}},\"type\":\"object\"},\"headers\":{}}},\"consumes\":[\"application/json\"],\"produces\":[\"application/json\"],\"summary\":\"permissionInit\",\"description\":\"structor permissionInit\"}}}}}','// qyTmpScript_/system/poly/permissionInit_permissionInit_2021-09-16T11:42:53CST\nvar _tmp = function(){\n  var d = { \"__input\": __input, } // qyAllLocalData\n\n  d.start = __input.body\n\n  d.start.header = d.start.header || {}\n  d.start.path = d.start.path || {}\n  if (true) { // req1, create\n    var _apiPath = format(\"http://structor/api/v1/structor/%v/base/permission/perGroup/create\" ,d.start.appID)\n    var _t = {\n      \"name\": d.start.name,\n      \"description\": d.start.description,\n      \"types\": d.start.types,\n      \"_\": [\n      pdCreateNS(\'/system/app\',d.start.appID),\n      pdCreateNS(\'/system/app/\'+d.start.appID,\'customer\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID,\'structor\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID,\'form\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/structor\',\'form\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/structor\',\'custom\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/form\',\'form\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/form\',\'custom\'),\n    ],\n    }\n    var _th = pdNewHttpHeader()\n    pdAddHttpHeader(_th, \"requestID\", d.__input.x.requestID)\n    pdAddHttpHeader(_th, \"Content-Type\", \"application/json\")\n\n    d.req1 = pdToJsobj(\"json\", pdHttpRequest(_apiPath, \"POST\", pdToJson(_t), _th, pdQueryUser(true)))\n  }\n  d.cond1 = { yes: false, }\n  if (d.req1.code==0) {\n    d.cond1.yes = true\n    if (true) { // req2, update\n      var _apiPath = format(\"http://structor/api/v1/structor/%v/base/permission/perGroup/create\" ,d.start.appID)\n      var _t = {\n        \"id\": d.req1.data.id,\n        \"scopes\": d.start.scopes,\n      }\n      var _th = pdNewHttpHeader()\n      pdAddHttpHeader(_th, \"requestID\", d.__input.x.requestID)\n      pdAddHttpHeader(_th, \"Content-Type\", \"application/json\")\n\n      d.req2 = pdToJsobj(\"json\", pdHttpRequest(_apiPath, \"POST\", pdToJson(_t), _th, pdQueryUser(true)))\n    }\n  }\n\n  d.end = {\n    \"req1\": d.req1,\n    \"req2\": d.req2,\n  }\n  return pdToJsonP(d.end)\n}; _tmp();\n','2021-09-16 11:42:08','2021-09-16 11:42:53','2021-09-16 11:42:54',NULL);
-
-/*Table structure for table `api_raw` */
-
-/*Data for the table `api_raw` */
-
-insert  into `api_raw`(`id`,`owner`,`owner_name`,`namespace`,`name`,`service`,`title`,`desc`,`version`,`path`,`url`,`action`,`method`,`content`,`doc`,`access`,`active`,`schema`,`host`,`auth_type`,`create_at`,`update_at`,`delete_at`) values
-('raw_AG-NJzeia5j9PhyrPd6RcAf96eABbK6n3qvGtJzqKjLv','system','系统','/system/form','base_pergroup_update','','','给用户组加入人员或者部门','last','/api/v1/structor/:appID/base/permission/perGroup/update','http://structor/api/v1/structor/:appID/base/permission/perGroup/update','','POST','{\"x-id\":\"raw_AG-NJzeia5j9PhyrPd6RcAf96eABbK6n3qvGtJzqKjLv\",\"x-action\":\"\",\"x-consts\":[],\"x-input\":{},\"x-output\":{\"header\":null,\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":null},\"basePath\":\"/\",\"path\":\"/api/v1/structor/:appID/base/permission/perGroup/update\",\"method\":\"POST\",\"encoding-in\":\"json\",\"encoding-out\":\"json\",\"summary\":\"给用户组加入人员或者部门\",\"desc\":\"\"}','{\"x-id\":\"\",\"x-fmt-inout\":{\"method\":\"POST\",\"url\":\"/api/v1/polyapi/raw/request/system/form/base_pergroup_update\",\"input\":{\"inputs\":[{\"type\":\"string\",\"name\":\"Signature\",\"title\":\"参数签名\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\",\"mock\":\"J834jkhwrwkkjhkYIUYU9886876387\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"title\":\"登录授权码\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\",\"mock\":\"H3K56789lHIUkjfkslds\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"title\":\"数据格式\",\"desc\":\"application/json\",\"data\":\"application/json\",\"in\":\"header\",\"required\":true,\"mock\":\"application/json\"},{\"type\":\"string\",\"name\":\"appID\",\"data\":null,\"in\":\"path\",\"required\":true},{\"type\":\"object\",\"name\":\"root\",\"data\":[{\"type\":\"object\",\"name\":\"_signature\",\"title\":\"签名参数\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"timestamp\",\"name\":\"timestamp\",\"title\":\"时间戳\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"title\":\"版本\",\"desc\":\"1 only current\",\"data\":null},{\"type\":\"string\",\"name\":\"method\",\"title\":\"签名方法\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":\"HmacSHA256\"},{\"type\":\"string\",\"name\":\"access_key_id\",\"title\":\"密钥序号\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":\"KeiIY8098435rty\"}]},{\"type\":\"string\",\"name\":\"id\",\"desc\":\"用户组权限id\",\"data\":null},{\"type\":\"array\",\"name\":\"scopes\",\"data\":[{\"type\":\"object\",\"name\":\"\",\"data\":[{\"type\":\"number\",\"name\":\"type\",\"desc\":\"1 人员 2 部门\",\"data\":null},{\"type\":\"string\",\"name\":\"id\",\"desc\":\"人员或者部门id\",\"data\":null},{\"type\":\"string\",\"name\":\"name\",\"desc\":\"人员或者部门名字\",\"data\":null}]}]}],\"in\":\"body\"}]},\"output\":{\"header\":null,\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":[{\"type\":\"object\",\"name\":\"\",\"desc\":\"successful operation\",\"data\":[{\"type\":\"number\",\"name\":\"code\",\"data\":null},{\"type\":\"object\",\"name\":\"data\",\"data\":[]},{\"type\":\"string\",\"name\":\"msg\",\"data\":null}],\"in\":\"body\"}]},\"sampleInput\":[{\"header\":{\"Access-Token\":[\"H3K56789lHIUkjfkslds\"],\"Content-Type\":[\"application/json\"],\"Signature\":[\"J834jkhwrwkkjhkYIUYU9886876387\"]},\"body\":{\"_hide\":{\"appID\":\"g55iiRi\"},\"_signature\":{\"access_key_id\":\"KeiIY8098435rty\",\"method\":\"HmacSHA256\",\"timestamp\":\"2012-12-21T05:43:21CST\",\"version\":13},\"id\":\"1O6Ksravy2\",\"scopes\":[{\"id\":\"GA\",\"name\":\"_0W\",\"type\":11}]}},{\"header\":{\"参数签名\":[\"J834jkhwrwkkjhkYIUYU9886876387\"],\"数据格式\":[\"application/json\"],\"登录授权码\":[\"H3K56789lHIUkjfkslds\"]},\"body\":{\"_hide\":{\"appID\":\"ipa\"},\"scopes\":[{\"1 人员 2 部门\":9,\"人员或者部门id\":\"032f\",\"人员或者部门名字\":\"8R\"}],\"用户组权限id\":\"1NO0AfGQfJ\",\"签名参数\":{\"密钥序号\":\"KeiIY8098435rty\",\"时间戳\":\"2012-12-21T05:43:21CST\",\"版本\":17,\"签名方法\":\"HmacSHA256\"}}}],\"sampleOutput\":[{\"resp\":{\"code\":13,\"data\":{},\"msg\":\"9EHwD39x\"}},{\"resp\":{\"code\":8,\"data\":{},\"msg\":\"tP_\"}}]},\"x-swagger\":{\"x-consts\":null,\"host\":\"structor\",\"swagger\":\"2.0\",\"info\":{\"title\":\"\",\"version\":\"last\",\"description\":\"auto generate at 2021-09-16T11:40:59CST\",\"contact\":{\"name\":\"\",\"url\":\"\",\"email\":\"\"}},\"schemes\":[\"http\"],\"basePath\":\"/\",\"paths\":{\"/api/v1/structor/:appID/base/permission/perGroup/update\":{\"post\":{\"x-consts\":[],\"operationId\":\"base_pergroup_update\",\"parameters\":[{\"name\":\"appID\",\"in\":\"path\",\"description\":\"\",\"required\":true,\"type\":\"string\"},{\"name\":\"root\",\"in\":\"body\",\"schema\":{\"type\":\"object\",\"title\":\"empty object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"用户组权限id\"},\"scopes\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"integer\",\"description\":\"1 人员 2 部门\"},\"id\":{\"type\":\"string\",\"description\":\"人员或者部门id\"},\"name\":{\"type\":\"string\",\"description\":\"人员或者部门名字\"}},\"required\":[\"type\",\"id\",\"name\"]}}},\"required\":[\"id\",\"scopes\"]}}],\"responses\":{\"200\":{\"description\":\"successful operation\",\"schema\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"code\":{\"type\":\"number\"},\"data\":{\"type\":\"object\",\"properties\":{}},\"msg\":{\"type\":\"string\"}}}}},\"consumes\":[\"application/json\"],\"produces\":[\"application/json\"],\"summary\":\"给用户组加入人员或者部门\",\"description\":\"\"}}}}}',0,1,'http','structor','none','2021-09-16 11:40:53','2021-09-16 11:41:01',NULL),
-('raw_ALAujp-yuZhVgRIbqTBqdS1E_XUu2lqptYCpiOnhmCTO','system','系统','/system/form','base_pergroup_create','','','创建用户组','last','/api/v1/structor/:appID/base/permission/perGroup/create','http://structor/api/v1/structor/:appID/base/permission/perGroup/create','','POST','{\"x-id\":\"raw_ALAujp-yuZhVgRIbqTBqdS1E_XUu2lqptYCpiOnhmCTO\",\"x-action\":\"\",\"x-consts\":[],\"x-input\":{},\"x-output\":{\"header\":null,\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":null},\"basePath\":\"/\",\"path\":\"/api/v1/structor/:appID/base/permission/perGroup/create\",\"method\":\"POST\",\"encoding-in\":\"json\",\"encoding-out\":\"json\",\"summary\":\"创建用户组\",\"desc\":\"\"}','{\"x-id\":\"\",\"x-fmt-inout\":{\"method\":\"POST\",\"url\":\"/api/v1/polyapi/raw/request/system/form/base_pergroup_create\",\"input\":{\"inputs\":[{\"type\":\"string\",\"name\":\"Signature\",\"title\":\"参数签名\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\",\"mock\":\"J834jkhwrwkkjhkYIUYU9886876387\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"title\":\"登录授权码\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\",\"mock\":\"H3K56789lHIUkjfkslds\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"title\":\"数据格式\",\"desc\":\"application/json\",\"data\":\"application/json\",\"in\":\"header\",\"required\":true,\"mock\":\"application/json\"},{\"type\":\"string\",\"name\":\"appID\",\"data\":null,\"in\":\"path\",\"required\":true},{\"type\":\"object\",\"name\":\"root\",\"data\":[{\"type\":\"object\",\"name\":\"_signature\",\"title\":\"签名参数\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"timestamp\",\"name\":\"timestamp\",\"title\":\"时间戳\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"title\":\"版本\",\"desc\":\"1 only current\",\"data\":null},{\"type\":\"string\",\"name\":\"method\",\"title\":\"签名方法\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":\"HmacSHA256\"},{\"type\":\"string\",\"name\":\"access_key_id\",\"title\":\"密钥序号\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":\"KeiIY8098435rty\"}]},{\"type\":\"string\",\"name\":\"name\",\"data\":null},{\"type\":\"string\",\"name\":\"description\",\"data\":null}],\"in\":\"body\"}]},\"output\":{\"header\":null,\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":[{\"type\":\"object\",\"name\":\"\",\"desc\":\"successful operation\",\"data\":[{\"type\":\"object\",\"name\":\"data\",\"data\":[{\"type\":\"string\",\"name\":\"id\",\"desc\":\"新增后，权限用户组id\",\"data\":null}]},{\"type\":\"string\",\"name\":\"msg\",\"data\":null},{\"type\":\"number\",\"name\":\"code\",\"data\":null}],\"in\":\"body\"}]},\"sampleInput\":[{\"header\":{\"Access-Token\":[\"H3K56789lHIUkjfkslds\"],\"Content-Type\":[\"application/json\"],\"Signature\":[\"J834jkhwrwkkjhkYIUYU9886876387\"]},\"body\":{\"_hide\":{\"appID\":\"Bs\"},\"_signature\":{\"access_key_id\":\"KeiIY8098435rty\",\"method\":\"HmacSHA256\",\"timestamp\":\"2012-12-21T05:43:21CST\",\"version\":11},\"description\":\"_Pv\",\"name\":\"jQZ\"}},{\"header\":{\"参数签名\":[\"J834jkhwrwkkjhkYIUYU9886876387\"],\"数据格式\":[\"application/json\"],\"登录授权码\":[\"H3K56789lHIUkjfkslds\"]},\"body\":{\"_hide\":{\"appID\":\"p5PbgmfQTX\"},\"description\":\"1iEhWu\",\"name\":\"NXMM4xmu4iZ\",\"签名参数\":{\"密钥序号\":\"KeiIY8098435rty\",\"时间戳\":\"2012-12-21T05:43:21CST\",\"版本\":16,\"签名方法\":\"HmacSHA256\"}}}],\"sampleOutput\":[{\"resp\":{\"code\":18,\"data\":{\"id\":\"YmckNM8Kp\"},\"msg\":\"Gt\"}},{\"resp\":{\"code\":16,\"data\":{\"新增后，权限用户组id\":\"YG1i3IhwF\"},\"msg\":\"Jt3gQQ\"}}]},\"x-swagger\":{\"x-consts\":null,\"host\":\"structor\",\"swagger\":\"2.0\",\"info\":{\"title\":\"\",\"version\":\"last\",\"description\":\"auto generate at 2021-09-16T11:40:59CST\",\"contact\":{\"name\":\"\",\"url\":\"\",\"email\":\"\"}},\"schemes\":[\"http\"],\"basePath\":\"/\",\"paths\":{\"/api/v1/structor/:appID/base/permission/perGroup/create\":{\"post\":{\"x-consts\":[],\"operationId\":\"base_pergroup_create\",\"parameters\":[{\"name\":\"appID\",\"in\":\"path\",\"description\":\"\",\"required\":true,\"type\":\"string\"},{\"name\":\"root\",\"in\":\"body\",\"schema\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[]}}],\"responses\":{\"200\":{\"description\":\"successful operation\",\"schema\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"code\":{\"type\":\"number\"},\"data\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"新增后，权限用户组id\"}}},\"msg\":{\"type\":\"string\"}},\"required\":[\"code\"]}}},\"consumes\":[\"application/json\"],\"produces\":[\"application/json\"],\"summary\":\"创建用户组\",\"description\":\"\"}}}}}',0,1,'http','structor','none','2021-09-16 11:40:51','2021-09-16 11:41:00',NULL);
-
-/*Table structure for table `api_service` */
-
-/*Data for the table `api_service` */
-
-insert  into `api_service`(`id`,`owner`,`owner_name`,`namespace`,`name`,`title`,`desc`,`access`,`active`,`schema`,`host`,`auth_type`,`authorize`,`create_at`,`update_at`,`delete_at`) values
-('1','system','系统','/system/app','form','表单','表单接口',0,1,'http','form','system',NULL,'2021-09-16 11:40:20','2021-09-16 11:40:20',NULL),
-('2','system','系统','/system/app','structor','表单底层','表单底层接口',0,1,'http','structor','system',NULL,'2021-09-16 11:40:20','2021-09-16 11:40:20',NULL);
-
-
-/*Data for the table `api_poly` */
-
-REPLACE  INTO `api_poly`(`id`,`owner`,`owner_name`,`namespace`,`name`,`title`,`desc`,`access`,`active`,`method`,`arrange`,`doc`,`script`,`create_at`,`update_at`,`build_at`,`delete_at`) values
-('poly_ABIJPi2ckYlIKgMEKiTbFDw0CCpLxLLvf1_eSzIS4S_p','system','系统','/system/poly','permissionInit','初始化权限组','',3,0,'POST','{\n  \"namespace\": \"/system/poly\",\n  \"name\": \"permissionInit\",\n  \"desc\": \"structor permissionInit\",\n  \"version\": \"v1.0.0\",\n  \"id\": \"/system/poly/permissionInit\",\n  \"encoding\": \"\",\n  \"nodes\": [\n    {\n      \"name\": \"start\",\n      \"type\": \"input\",\n      \"desc\": \"the only entrance of the arrange\",\n      \"nextNodes\": [\n        \"req1\"\n      ],\n      \"detail\": {\n        \"inputs\": [\n          {\n            \"type\": \"string\",\n            \"name\": \"appID\",\n            \"title\": \"应用ID\",\n            \"data\": null,\n            \"in\": \"body\",\n            \"required\": true\n          },\n          {\n            \"type\": \"string\",\n            \"name\": \"name\",\n            \"title\": \"应用名\",\n            \"data\": null,\n            \"in\": \"body\",\n            \"required\": true\n          },\n          {\n            \"type\": \"string\",\n            \"name\": \"description\",\n            \"title\": \"应用描述\",\n            \"data\": null,\n            \"in\": \"body\"\n          },\n          {\n            \"type\": \"string\",\n            \"name\": \"types\",\n            \"title\": \"应用描述\",\n            \"data\": null,\n            \"in\": \"body\"\n          },\n          {\n            \"type\": \"array\",\n            \"name\": \"scopes\",\n            \"data\": [\n              {\n                \"type\": \"number\",\n                \"name\": \"type\",\n                \"data\": null\n              },\n              {\n                \"type\": \"string\",\n                \"name\": \"id\",\n                \"data\": null\n              },\n              {\n                \"type\": \"string\",\n                \"name\": \"name\",\n                \"data\": null\n              }\n            ],\n            \"in\": \"body\",\n            \"required\": true\n          }\n        ]\n      }\n    },\n    {\n      \"name\": \"req1\",\n      \"type\": \"request\",\n      \"desc\": \"create\",\n      \"nextNodes\": [\n        \"cond1\",\n        \"end\"\n      ],\n      \"detail\": {\n        \"rawPath\": \"/system/form/base_pergroup_create\",\n        \"inputs\": [\n          {\n            \"type\": \"path\",\n            \"name\": \"appID\",\n            \"field\": \"start.appID\",\n            \"data\": null,\n            \"in\": \"path\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"name\",\n            \"field\": \"start.name\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"description\",\n            \"field\": \"start.description\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"types\",\n            \"field\": \"start.types\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"array\",\n            \"name\": \"_\",\n            \"data\": [\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app\',start.appID)\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID,\'customer\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID,\'structor\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID,\'form\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/structor\',\'form\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/structor\',\'custom\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/form\',\'form\')\"\n              },\n              {\n                \"type\": \"direct_expr\",\n                \"name\": \"\",\n                \"data\": \"pdCreateNS(\'/system/app/\'+start.appID+\'/form\',\'custom\')\"\n              }\n            ],\n            \"in\": \"\"\n          }\n        ]\n      }\n    },\n    {\n      \"name\": \"cond1\",\n      \"type\": \"if\",\n      \"desc\": \"req1 is ok\",\n      \"nextNodes\": [],\n      \"detail\": {\n        \"cond\": {\n          \"op\": \"\",\n          \"type\": \"exprcmp\",\n          \"name\": \"\",\n          \"data\": {\n            \"lvalue\": {\n              \"type\": \"number\",\n              \"name\": \"\",\n              \"field\": \"req1.code\",\n              \"data\": null\n            },\n            \"cmp\": \"eq\",\n            \"rvalue\": {\n              \"type\": \"number\",\n              \"name\": \"\",\n              \"data\": \"0\"\n            }\n          }\n        },\n        \"yes\": \"req2\",\n        \"no\": \"\"\n      }\n    },\n    {\n      \"name\": \"req2\",\n      \"type\": \"request\",\n      \"desc\": \"update\",\n      \"nextNodes\": [\n        \"end\"\n      ],\n      \"detail\": {\n        \"rawPath\": \"/system/form/base_pergroup_update\",\n        \"inputs\": [\n          {\n            \"type\": \"path\",\n            \"name\": \"appID\",\n            \"field\": \"start.appID\",\n            \"data\": null,\n            \"in\": \"path\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"id\",\n            \"field\": \"req1.data.id\",\n            \"data\": null,\n            \"in\": \"\"\n          },\n          {\n            \"type\": \"field\",\n            \"name\": \"scopes\",\n            \"field\": \"start.scopes\",\n            \"data\": null,\n            \"in\": \"\"\n          }\n        ]\n      }\n    },\n    {\n      \"name\": \"end\",\n      \"type\": \"output\",\n      \"desc\": \"the only end of this arrange\",\n      \"nextNodes\": null,\n      \"detail\": {\n        \"header\": null,\n        \"body\": {\n          \"type\": \"object\",\n          \"name\": \"\",\n          \"data\": [\n            {\n              \"type\": \"field\",\n              \"name\": \"\",\n              \"field\": \"req1\",\n              \"data\": null\n            },\n            {\n              \"type\": \"field\",\n              \"name\": \"\",\n              \"field\": \"req2\",\n              \"data\": null\n            }\n          ]\n        },\n        \"doc\": null\n      }\n    }\n  ]\n}','{\"x-id\":\"\",\"x-fmt-inout\":{\"method\":\"POST\",\"url\":\"/api/v1/polyapi/poly/request/system/poly/permissionInit\",\"input\":{\"inputs\":[{\"type\":\"string\",\"name\":\"Signature\",\"title\":\"参数签名\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\",\"mock\":\"J834jkhwrwkkjhkYIUYU9886876387\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"title\":\"登录授权码\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\",\"mock\":\"H3K56789lHIUkjfkslds\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"title\":\"数据格式\",\"desc\":\"application/json\",\"data\":\"application/json\",\"in\":\"header\",\"required\":true,\"mock\":\"application/json\"},{\"type\":\"object\",\"name\":\"root\",\"desc\":\"body inputs\",\"data\":[{\"type\":\"object\",\"name\":\"_signature\",\"title\":\"签名参数\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"timestamp\",\"name\":\"timestamp\",\"title\":\"时间戳\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"title\":\"版本\",\"desc\":\"1 only current\",\"data\":null},{\"type\":\"string\",\"name\":\"method\",\"title\":\"签名方法\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":\"HmacSHA256\"},{\"type\":\"string\",\"name\":\"access_key_id\",\"title\":\"密钥序号\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":\"KeiIY8098435rty\"}]},{\"type\":\"string\",\"name\":\"name\",\"data\":null},{\"type\":\"array\",\"name\":\"scopes\",\"data\":[{\"type\":\"number\",\"name\":\"\",\"data\":null}]},{\"type\":\"string\",\"name\":\"types\",\"data\":null},{\"type\":\"object\",\"name\":\"_signature\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"string\",\"name\":\"method\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":null},{\"type\":\"string\",\"name\":\"timestamp\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"desc\":\"1 only current\",\"data\":null},{\"type\":\"string\",\"name\":\"access_key_id\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":null}]},{\"type\":\"string\",\"name\":\"appID\",\"data\":null},{\"type\":\"string\",\"name\":\"description\",\"data\":null}],\"in\":\"body\"},{\"type\":\"string\",\"name\":\"Signature\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"desc\":\"application/json\",\"data\":null,\"in\":\"header\",\"required\":true}]},\"output\":{\"header\":null,\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":[{\"type\":\"object\",\"name\":\"\",\"data\":[{\"type\":\"number\",\"name\":\"code\",\"title\":\"0:success, others: error\",\"data\":null},{\"type\":\"object\",\"name\":\"data\",\"desc\":\"body response\",\"data\":[]},{\"type\":\"string\",\"name\":\"msg\",\"title\":\"error message when code is not 0\",\"data\":null}],\"in\":\"body\"}]},\"sampleInput\":[{\"header\":{\"Access-Token\":[\"H3K56789lHIUkjfkslds\",\"43nVrZEN5j\"],\"Content-Type\":[\"application/json\",\"li6sD0kAlj\"],\"Signature\":[\"J834jkhwrwkkjhkYIUYU9886876387\",\"AoQh4zQ_Je\"]},\"body\":{\"_signature\":{\"access_key_id\":\"xNHdsVdrJe\",\"method\":\"2E8O11Yh7\",\"timestamp\":\"BP\",\"version\":18},\"appID\":\"Q2nl_71z\",\"description\":\"D_qaQj9lcAi\",\"name\":\"_cf\",\"scopes\":[1],\"types\":\"CX2\"}},{\"header\":{\"Access-Token from oauth2\":[\"J5ywZZgqtK\"],\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\":[\"XgBEuCD1Lp\"],\"application/json\":[\"tZT8p7uIsI\"],\"参数签名\":[\"J834jkhwrwkkjhkYIUYU9886876387\"],\"数据格式\":[\"application/json\"],\"登录授权码\":[\"H3K56789lHIUkjfkslds\"]},\"body\":{\"appID\":\"7IMFX\",\"description\":\"iJgzquDD\",\"name\":\"opigEf_l\",\"scopes\":[15],\"signature paramters of poly api server\":{\"\\\"HmacSHA256\\\" only current\":\"uC8T6DOxjX\",\"1 only current\":10,\"access_key_id dispatched by poly api server\":\"Oky\",\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\":\"YMs\"},\"types\":\"VpujS\",\"签名参数\":{\"密钥序号\":\"KeiIY8098435rty\",\"时间戳\":\"2012-12-21T05:43:21CST\",\"版本\":14,\"签名方法\":\"HmacSHA256\"}}}],\"sampleOutput\":[{\"resp\":{\"code\":4,\"data\":{},\"msg\":\"AKvD6BAZF\"}},{\"resp\":{\"0:success, others: error\":11,\"body response\":{},\"error message when code is not 0\":\"5EKILQkkj\"}}]},\"x-swagger\":{\"x-consts\":null,\"host\":\"polyapi\",\"swagger\":\"2.0\",\"info\":{\"title\":\"polyapi\",\"version\":\"v1.0.0\",\"description\":\"auto generate at 2021-09-18T10:16:40CST\",\"contact\":{\"name\":\"\",\"url\":\"\",\"email\":\"\"}},\"schemes\":[\"http\"],\"basePath\":\"/\",\"paths\":{\"/api/v1/polyapi/poly/request//system/poly/permissionInit\":{\"post\":{\"x-consts\":null,\"operationId\":\"permissionInit\",\"parameters\":[{\"description\":\"body inputs\",\"in\":\"body\",\"name\":\"root\",\"schema\":{\"properties\":{\"_signature\":{\"description\":\"signature paramters of poly api server\",\"properties\":{\"access_key_id\":{\"description\":\"access_key_id dispatched by poly api server\",\"type\":\"string\"},\"method\":{\"description\":\"\\\"HmacSHA256\\\" only current\",\"type\":\"string\"},\"timestamp\":{\"description\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"type\":\"string\"},\"version\":{\"description\":\"1 only current\",\"type\":\"number\"}},\"type\":\"object\"},\"appID\":{\"tile\":\"应用ID\",\"type\":\"string\"},\"description\":{\"tile\":\"应用描述\",\"type\":\"string\"},\"name\":{\"tile\":\"应用名\",\"type\":\"string\"},\"scopes\":{\"items\":{\"type\":\"number\"},\"type\":\"array\"},\"types\":{\"tile\":\"应用描述\",\"type\":\"string\"}},\"required\":[\"appID\",\"name\",\"scopes\"],\"type\":\"object\"}},{\"description\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"in\":\"header\",\"name\":\"Signature\",\"type\":\"string\"},{\"description\":\"Access-Token from oauth2\",\"in\":\"header\",\"name\":\"Access-Token\",\"type\":\"string\"},{\"description\":\"application/json\",\"in\":\"header\",\"name\":\"Content-Type\",\"required\":true,\"type\":\"string\"}],\"responses\":{\"200\":{\"description\":\"\",\"schema\":{\"description\":\"response schema.\",\"properties\":{\"code\":{\"title\":\"0:success, others: error\",\"type\":\"number\"},\"data\":{\"description\":\"body response\",\"properties\":{},\"type\":\"object\"},\"msg\":{\"title\":\"error message when code is not 0\",\"type\":\"string\"}},\"type\":\"object\"},\"headers\":{}}},\"consumes\":[\"application/json\"],\"produces\":[\"application/json\"],\"summary\":\"permissionInit\",\"description\":\"structor permissionInit\"}}}}}','// qyTmpScript_/system/poly/permissionInit_permissionInit_2021-09-18T10:16:40CST\nvar _tmp = function(){\n  var d = { \"__input\": __input, } // qyAllLocalData\n\n  d.start = __input.body\n\n  d.start.header = d.start.header || {}\n  d.start.path = d.start.path || {}\n  if (true) { // req1, create\n    var _apiPath = format(\"http://structor/api/v1/structor/%v/base/permission/perGroup/create\" ,d.start.appID)\n    var _t = {\n      \"name\": d.start.name,\n      \"description\": d.start.description,\n      \"types\": d.start.types,\n      \"_\": [\n      pdCreateNS(\'/system/app\',d.start.appID),\n      pdCreateNS(\'/system/app/\'+d.start.appID,\'customer\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID,\'structor\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID,\'form\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/structor\',\'form\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/structor\',\'custom\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/form\',\'form\'),\n      pdCreateNS(\'/system/app/\'+d.start.appID+\'/form\',\'custom\'),\n    ],\n    }\n    var _th = pdNewHttpHeader()\n    pdAddHttpHeader(_th, \"requestID\", d.__input.x.requestID)\n    pdAddHttpHeader(_th, \"Content-Type\", \"application/json\")\n\n    d.req1 = pdToJsobj(\"json\", pdHttpRequest(_apiPath, \"POST\", pdToJson(_t), _th, pdQueryUser(true)))\n  }\n  d.cond1 = { yes: false, }\n  if (d.req1.code==0) {\n    d.cond1.yes = true\n    if (true) { // req2, update\n      var _apiPath = format(\"http://structor/api/v1/structor/%v/base/permission/perGroup/update\" ,d.start.appID)\n      var _t = {\n        \"id\": d.req1.data.id,\n        \"scopes\": d.start.scopes,\n      }\n      var _th = pdNewHttpHeader()\n      pdAddHttpHeader(_th, \"requestID\", d.__input.x.requestID)\n      pdAddHttpHeader(_th, \"Content-Type\", \"application/json\")\n\n      d.req2 = pdToJsobj(\"json\", pdHttpRequest(_apiPath, \"POST\", pdToJson(_t), _th, pdQueryUser(true)))\n    }\n  }\n\n  d.end = {\n    \"req1\": d.req1,\n    \"req2\": d.req2,\n  }\n  return pdToJsonP(d.end)\n}; _tmp();\n','2021-09-16 18:34:40','2021-09-18 10:16:40','2021-09-18 10:16:41',NULL);
+    `create_at`     DATETIME 		COMMENT 'create time',
+    `update_at`     DATETIME 		COMMENT 'update time',
+    `delete_at`     DATETIME 		COMMENT 'delete time',
+    UNIQUE KEY `idx_global_name` (`namespace`, `name`),
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 REPLACE  INTO `api_namespace`(`id`,`owner`,`owner_name`,`parent`,`namespace`,`title`,`desc`,`access`,`active`,`create_at`,`update_at`,`delete_at`) VALUES
 ('1','system','系统','-','system','内部系统','系统自动注册的API',0,1,NOW(),NOW(),NULL),
@@ -234,6 +58,168 @@ REPLACE  INTO `api_namespace`(`id`,`owner`,`owner_name`,`parent`,`namespace`,`ti
 ('1-2','system','系统','/system','app','app根目录','app根目录',0,1,NOW(),NOW(),NULL),
 ('1-3','system','系统','/system','form','表单模型','通过form注册的API',0,1,NOW(),NOW(),NULL);
 
+UPDATE `api_namespace` SET `sub_count`=0;
+UPDATE `api_namespace` u,
+(SELECT `parent`, COUNT(1) cnt FROM `api_namespace` GROUP BY `parent`) t
+SET u.`sub_count`=t.`cnt` WHERE CONCAT(u.`parent`,'/',u.`namespace`)=t.`parent`;
+UPDATE `api_namespace` u,
+(SELECT `parent`, COUNT(1) cnt FROM `api_namespace` GROUP BY `parent`) t
+SET u.`sub_count`=t.`cnt` WHERE CONCAT('/',u.`namespace`)=t.`parent`;
+
 REPLACE  INTO `api_service`(`id`,`owner`,`owner_name`,`namespace`,`name`,`title`,`desc`,`access`,`active`,`schema`,`host`,`auth_type`,`authorize`,`create_at`,`update_at`,`delete_at`) VALUES
 ('1','system','系统','/system/app','form','表单','表单接口',0,1,'http','form','system',NULL,NOW(),NOW(),NULL),
 ('2','system','系统','/system/app','structor','表单底层','表单底层接口',0,1,'http','structor','system',NULL,NOW(),NOW(),NULL);
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+DROP TABLE IF EXISTS `api_raw`;
+CREATE TABLE `api_raw` (
+    `id`        VARCHAR(64)  COMMENT 'unique id',
+    `owner`     VARCHAR(64)  COMMENT 'owner id',
+    `owner_name`VARCHAR(64)  COMMENT 'owner name',
+    `namespace` VARCHAR(384) NOT NULL COMMENT 'belong full namespace, eg: /a/b/c',
+    `name`      VARCHAR(64) NOT NULL COMMENT 'unique name',
+    `service`   VARCHAR(512) NOT NULL COMMENT 'belong service full path, eg: /a/b/c/servicesX',
+    `title` 	VARCHAR(64)  COMMENT 'alias of name, mutable',
+    `desc`      TEXT         ,
+    `version`   VARCHAR(32),
+    `path`      VARCHAR(512) NOT NULL COMMENT 'relative path, eg: /api/foo/bar',
+    `url`       VARCHAR(512) NOT NULL COMMENT 'full path, eg: https://api.xxx.com/api/foo/bar',
+    `action`    VARCHAR(64) DEFAULT '' COMMENT 'action on path',
+    `method`    VARCHAR(16) NOT NULL COMMENT 'method',
+    `content`   TEXT,
+    `doc`   	TEXT COMMENT 'api doc',
+
+    `access` 	INT(11) 	 NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
+    `active`    TINYINT      DEFAULT 1 COMMENT '1 ok, 0 disable',
+    `valid`         TINYINT         DEFAULT 1 COMMENT '1 valid, 0 invalid',
+
+    `schema` 	VARCHAR(16) 	NOT NULL COMMENT 'from service, http/https',
+    `host` 		VARCHAR(128) 	NOT NULL COMMENT 'eg: api.xxx.com:8080',
+    `auth_type` VARCHAR(32)     NOT NULL COMMENT 'none/system/signature/cookie/oauth2...',
+
+    `create_at` DATETIME 	COMMENT 'create time',
+    `update_at` DATETIME 	COMMENT 'update time',
+    `delete_at` DATETIME 	COMMENT 'delete time',
+    UNIQUE KEY `idx_global_name` (`namespace`,`name`),
+    KEY `idx_service` (`service`),
+    PRIMARY KEY (`id`)
+)ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+DROP TABLE IF EXISTS `api_poly`;
+CREATE TABLE `api_poly` (
+    `id`        VARCHAR(64)  COMMENT 'unique id',
+    `owner`     VARCHAR(64)  COMMENT 'owner id',
+    `owner_name`VARCHAR(64)  COMMENT 'owner name',
+    `namespace` VARCHAR(384) NOT NULL COMMENT 'belong full namespace, eg: /a/b/c',
+    `name`      VARCHAR(64) NOT NULL COMMENT 'name',
+    `title` 	VARCHAR(64)  COMMENT 'alias of name, mutable',
+    `desc`      VARCHAR(256) DEFAULT '',
+
+    `access` 	INT(11) 	NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
+    `active`    TINYINT     DEFAULT 1 COMMENT '1 ok, 0 disable',
+    `valid`         TINYINT         DEFAULT 1 COMMENT '1 valid, 0 invalid',
+
+    `method`    VARCHAR(16) NOT NULL COMMENT 'method',
+    `arrange`   TEXT 		COMMENT 'arrange',
+    `doc`       TEXT 		COMMENT 'api doc',
+    `script`    TEXT,
+
+    `create_at` DATETIME 	COMMENT 'create time',
+    `update_at` DATETIME 	COMMENT 'update time',
+    `build_at`  DATETIME 	COMMENT 'build time',
+    `delete_at` DATETIME 	COMMENT 'delete time',
+    UNIQUE KEY `idx_global_name` (`namespace`,`name`),
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+DROP TABLE IF EXISTS `api_permit_group`;
+CREATE TABLE `api_permit_group` (
+    `id` 		VARCHAR(64) 	COMMENT 'unique id',
+    `owner` 	VARCHAR(64) 	COMMENT 'owner id',
+    `owner_name`VARCHAR(64)     COMMENT 'owner name',
+    `namespace` VARCHAR(384) 	NOT NULL  COMMENT 'belong namespace',
+    `name`      VARCHAR(64)    NOT NULL COMMENT 'permit group name',
+    `title` 	VARCHAR(64) 	COMMENT 'alias, mutable',
+    `desc` 		VARCHAR(256) 	DEFAULT '',
+
+    `access` 	INT(11) 		NOT NULL COMMENT 'privilege for public access, 1,2,4,8,16,32 CRUDGX',
+    `active`    TINYINT     	DEFAULT 1 COMMENT '1 ok, 0 disable',
+
+    `create_at` DATETIME 	    COMMENT 'create time',
+    `update_at` DATETIME 	    COMMENT 'update time',
+    `delete_at` DATETIME 	    COMMENT 'delete time',
+    UNIQUE KEY `idx_global_name` (`namespace`,`name`),
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+DROP TABLE IF EXISTS `api_permit_elem`;
+CREATE TABLE `api_permit_elem` (
+    `id` 		VARCHAR(64) 	COMMENT 'unique id',
+    `owner` 	VARCHAR(64) 	COMMENT 'owner id',
+    `owner_name`VARCHAR(64)  COMMENT 'owner name',
+
+    `group_path` VARCHAR(448) 	COMMENT 'permitgroup path',
+    `elem_type` VARCHAR(10)     COMMENT 'raw/poly/ckey/ns/service',
+    `elem_id` 	VARCHAR(64) 	COMMENT 'element id',
+    `elem_path` VARCHAR(512) 	COMMENT 'element path',
+    `desc`      VARCHAR(256)    DEFAULT '',
+    `elem_pri`  INT(11) 		NOT NULL COMMENT 'privilege for this elem, 1,2,4,8,16,32 CRUDGX',
+    `content` 	TEXT            COMMENT 'permission detail JSON, for api field control',
+    `active`    TINYINT         DEFAULT 1 COMMENT '1 ok, 0 disable',
+
+    `create_at` DATETIME 	    COMMENT 'create time',
+    `update_at` DATETIME 	    COMMENT 'update time',
+    `delete_at` DATETIME 	    COMMENT 'delete time',
+    UNIQUE KEY `idx_group_elem` (`group_path`,`elem_type`, `elem_id`),
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+DROP TABLE IF EXISTS `api_permit_grant`;
+CREATE TABLE `api_permit_grant` (
+    `id`         VARCHAR(64)    COMMENT 'unique id',
+    `owner`      VARCHAR(64)    COMMENT 'owner id',
+    `owner_name` VARCHAR(64)  COMMENT 'owner name',
+
+    `group_path` VARCHAR(448) 	COMMENT 'permitgroup path',
+    `grant_type` VARCHAR(10)    COMMENT 'app/user/key/usergroup',
+    `grant_id`   VARCHAR(64) 	COMMENT 'element id',
+    `grant_name` VARCHAR(64) 	COMMENT 'element name',
+    `grant_pri`  INT(11) 		NOT NULL COMMENT 'privilege for this group, 1,2,4,8,16,32 CRUDGX',
+    `desc`       VARCHAR(256)   DEFAULT '',
+    `active`     TINYINT        DEFAULT 1 COMMENT '1 ok, 0 disable',
+
+    `create_at`     DATETIME 	COMMENT 'create time',
+    `update_at`     DATETIME 	COMMENT 'update time',
+    `delete_at`     DATETIME 	COMMENT 'delete time',
+    UNIQUE KEY `idx_group_grant` (`group_path`, `grant_type`, `grant_id`),
+    KEY `idx_grant`(`grant_type`, `grant_id`),
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+DROP TABLE IF EXISTS `api_raw_poly`;
+Create TABLE `api_raw_poly` (
+    `id`        VARCHAR(64)     NOT NULL COMMENT 'unique id',
+    `raw_api`   VARCHAR(512)    NOT NULL COMMENT 'raw api full-path, eg: /a/b/c/rawApiName',
+    `poly_api`  VARCHAR(512)    NOT NULL COMMENT 'poly api full-path, eg: /a/b/c/polyApiName',
+    INDEX `idx_rawapi` (`raw_api`),
+    INDEX `idx_polyapi` (`poly_api`),
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+/*Data for the table `api_poly` */
+
+insert  into `api_poly`(`id`,`owner`,`owner_name`,`namespace`,`name`,`title`,`desc`,`access`,`active`,`valid`,`method`,`arrange`,`doc`,`script`,`create_at`,`update_at`,`build_at`,`delete_at`) values
+('poly_ABIJPi2ckYlIKgMEKiTbFDw0CCpLxLLvf1_eSzIS4S_p','system','系统','/system/poly','permissionInit','初始化权限组','',3,1,1,'POST','','','// qyTmpScript_/system/poly/permissionInit_permissionInit_2021-11-10T14:06:00CST\nvar _tmp = function(){\n  var d = { \"__input\": __input, } // qyAllLocalData\n\n  d.start = __input.body\n\n  d.start.header = d.start.header || {}\n  d.start._ = [\n    pdCreateNS(\'/system/app\',d.start.appID),\n    pdCreateNS(\'/system/app/\'+d.start.appID,\'customer\'),\n    pdCreateNS(\'/system/app/\'+d.start.appID,\'poly\'),\n    pdCreateNS(\'/system/app/\'+d.start.appID,\'faas\'),\n    pdCreateNS(\'/system/app/\'+d.start.appID,\'form\'),\n    pdCreateNS(\'/system/app/\'+d.start.appID+\'/form\',\'form\'),\n    pdCreateNS(\'/system/app/\'+d.start.appID+\'/form\',\'custom\'),\n  ]\n  if (true) { // req1, create\n    var _apiPath = format(\"http://structor/api/v1/structor/%v/base/permission/perGroup/create\" ,d.start.appID)\n    var _t = {\n        \"name\": d.start.name,\n        \"description\": d.start.description,\n        \"types\": d.start.types,\n      }\n    var _th = pdNewHttpHeader()\n    pdAddHttpHeader(_th, \"Content-Type\", \"application/json\")\n\n    var _tk = \'\';\n    var _tb = pdAppendAuth(_tk, \'none\', _th, pdToJson(_t))\n    d.req1 = pdToJsobj(\"json\", pdHttpRequest(_apiPath, \"POST\", _tb, _th, pdQueryUser(true)))\n  }\n  d.cond1 = { y: false, }\n  if (d.req1.code==0) {\n    d.cond1.y = true\n    if (true) { // req2, update\n      var _apiPath = format(\"http://structor/api/v1/structor/%v/base/permission/perGroup/update\" ,d.start.appID)\n      var _t = {\n          \"id\": d.req1.data.id,\n          \"scopes\": d.start.scopes,\n        }\n      var _th = pdNewHttpHeader()\n      pdAddHttpHeader(_th, \"Content-Type\", \"application/json\")\n\n      var _tk = \'\';\n      var _tb = pdAppendAuth(_tk, \'none\', _th, pdToJson(_t))\n      d.req2 = pdToJsobj(\"json\", pdHttpRequest(_apiPath, \"POST\", _tb, _th, pdQueryUser(true)))\n    }\n  }\n\n  d.end = {\n    \"createNamespaces\": d.start._,\n    \"req1\": d.req1,\n    \"req2\": sel(d.cond1.y,d.req2,undefined),\n  }\n  return pdToJsonP(d.end)\n}; _tmp();\n','2021-11-10 14:05:50','2021-11-10 14:06:00','2021-11-10 14:06:01',NULL);
+
+/*Data for the table `api_raw` */
+
+insert  into `api_raw`(`id`,`owner`,`owner_name`,`namespace`,`name`,`service`,`title`,`desc`,`version`,`path`,`url`,`action`,`method`,`content`,`doc`,`access`,`active`,`valid`,`schema`,`host`,`auth_type`,`create_at`,`update_at`,`delete_at`) values
+('raw_AAAxYvGEh8iIgpjBqleBRjS2J_XKkYJ9IeXyGU9xAt0R','system','系统','/system/form','base_pergroup_create','','创建用户组','','last','/api/v1/structor/:appID/base/permission/perGroup/create','http://structor/api/v1/structor/:appID/base/permission/perGroup/create','','POST','{\"x-id\":\"raw_AAAxYvGEh8iIgpjBqleBRjS2J_XKkYJ9IeXyGU9xAt0R\",\"x-action\":\"\",\"x-consts\":[],\"x-input\":{},\"x-output\":{\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null}},\"basePath\":\"/\",\"path\":\"/api/v1/structor/:appID/base/permission/perGroup/create\",\"method\":\"POST\",\"encoding-in\":\"json\",\"encoding-out\":\"json\",\"summary\":\"创建用户组\",\"desc\":\"\"}','{\"x-id\":\"\",\"x-fmt-inout\":{\"method\":\"POST\",\"url\":\"/api/v1/polyapi/raw/request/system/form/base_pergroup_create\",\"input\":{\"inputs\":[{\"type\":\"string\",\"name\":\"Signature\",\"title\":\"参数签名\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\",\"mock\":\"J834jkhwrwkkjhkYIUYU9886876387\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"title\":\"登录授权码\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\",\"mock\":\"H3K56789lHIUkjfkslds\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"title\":\"数据格式\",\"desc\":\"application/json\",\"data\":\"application/json\",\"in\":\"header\",\"required\":true,\"mock\":\"application/json\"},{\"type\":\"string\",\"name\":\"appID\",\"data\":null,\"in\":\"path\",\"required\":true},{\"type\":\"object\",\"name\":\"root\",\"data\":[{\"type\":\"object\",\"name\":\"_signature\",\"title\":\"签名参数\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"timestamp\",\"name\":\"timestamp\",\"title\":\"时间戳\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"title\":\"版本\",\"desc\":\"1 only current\",\"data\":\"1\"},{\"type\":\"string\",\"name\":\"method\",\"title\":\"签名方法\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":\"HmacSHA256\"},{\"type\":\"string\",\"name\":\"access_key_id\",\"title\":\"密钥序号\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":\"KeiIY8098435rty\"}]},{\"type\":\"string\",\"name\":\"name\",\"data\":null},{\"type\":\"string\",\"name\":\"description\",\"data\":null}],\"in\":\"body\"}]},\"output\":{\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":[{\"type\":\"object\",\"desc\":\"successful operation\",\"data\":[{\"type\":\"number\",\"name\":\"code\",\"data\":null},{\"type\":\"object\",\"name\":\"data\",\"data\":[{\"type\":\"string\",\"name\":\"id\",\"desc\":\"新增后，权限用户组id\",\"data\":null}]},{\"type\":\"string\",\"name\":\"msg\",\"data\":null}],\"in\":\"body\"}]},\"sampleInput\":[{\"header\":{\"Access-Token\":[\"H3K56789lHIUkjfkslds\"],\"Content-Type\":[\"application/json\"],\"Signature\":[\"J834jkhwrwkkjhkYIUYU9886876387\"]},\"body\":{\"_hide\":{\"appID\":\"2zvCI5n\"},\"_signature\":{\"access_key_id\":\"KeiIY8098435rty\",\"method\":\"HmacSHA256\",\"timestamp\":\"2020-12-31T05:43:21CST\",\"version\":1},\"description\":\"KJ5xJY2xOa\",\"name\":\"yR3QX\"}},{\"header\":{\"参数签名\":[\"J834jkhwrwkkjhkYIUYU9886876387\"],\"数据格式\":[\"application/json\"],\"登录授权码\":[\"H3K56789lHIUkjfkslds\"]},\"body\":{\"_hide\":{\"appID\":\"cUL6M\"},\"description\":\"6CM\",\"name\":\"iOF03-rW\",\"签名参数\":{\"密钥序号\":\"KeiIY8098435rty\",\"时间戳\":\"2020-12-31T05:43:21CST\",\"版本\":1,\"签名方法\":\"HmacSHA256\"}}}],\"sampleOutput\":[{\"resp\":{\"code\":11,\"data\":{\"id\":\"yw\"},\"msg\":\"D3Y\"}},{\"resp\":{\"code\":17,\"data\":{\"新增后，权限用户组id\":\"b4isGakqSG\"},\"msg\":\"cndS8bZcqAx\"}}]},\"x-swagger\":{\"x-consts\":null,\"host\":\"structor\",\"swagger\":\"2.0\",\"info\":{\"title\":\"\",\"version\":\"last\",\"description\":\"auto generate at 2021-11-10T14:05:39CST\",\"contact\":{\"name\":\"\",\"url\":\"\",\"email\":\"\"}},\"schemes\":[\"http\"],\"basePath\":\"/\",\"paths\":{\"/api/v1/structor/:appID/base/permission/perGroup/create\":{\"post\":{\"x-consts\":[],\"operationId\":\"base_pergroup_create\",\"parameters\":[{\"name\":\"appID\",\"in\":\"path\",\"description\":\"\",\"required\":true,\"type\":\"string\"},{\"name\":\"root\",\"in\":\"body\",\"schema\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[]}}],\"responses\":{\"200\":{\"description\":\"successful operation\",\"schema\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"code\":{\"type\":\"number\"},\"data\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"新增后，权限用户组id\"}}},\"msg\":{\"type\":\"string\"}},\"required\":[\"code\"]}}},\"consumes\":[\"application/json\"],\"produces\":[\"application/json\"],\"summary\":\"创建用户组\",\"description\":\"\"}}}}}',0,1,1,'http','structor','none','2021-11-10 14:05:24','2021-11-10 14:05:41',NULL),
+('raw_AM51O-2rUXb1RVDXnOvAo8FRq5BJzaO4vdO8QVx-qZ1n','system','系统','/system/form','base_pergroup_update','','给用户组加入人员或者部门','','last','/api/v1/structor/:appID/base/permission/perGroup/update','http://structor/api/v1/structor/:appID/base/permission/perGroup/update','','POST','{\"x-id\":\"raw_AM51O-2rUXb1RVDXnOvAo8FRq5BJzaO4vdO8QVx-qZ1n\",\"x-action\":\"\",\"x-consts\":[],\"x-input\":{},\"x-output\":{\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null}},\"basePath\":\"/\",\"path\":\"/api/v1/structor/:appID/base/permission/perGroup/update\",\"method\":\"POST\",\"encoding-in\":\"json\",\"encoding-out\":\"json\",\"summary\":\"给用户组加入人员或者部门\",\"desc\":\"\"}','{\"x-id\":\"\",\"x-fmt-inout\":{\"method\":\"POST\",\"url\":\"/api/v1/polyapi/raw/request/system/form/base_pergroup_update\",\"input\":{\"inputs\":[{\"type\":\"string\",\"name\":\"Signature\",\"title\":\"参数签名\",\"desc\":\"HmacSHA256 signature of input body: sort query gonic asc|sha256 \\u003cSECRET_KEY\\u003e|base64 std encode\\neg: \\n_signature.key_id=ACCESS_KEY_ID\\u0026_signature.method=HmacSHA256\\u0026_signature.timestamp=2021-06-25T16%3A12%3A34%2B0800\\u0026_signature.version=1\\u0026action.1=foo\\u0026action.2=bar\\u0026age=18\\u0026name=bob\\nxRls5M1li+XrZKiJFn60cW5rd3+n4uzZCPxukRkWM7A=\\n\",\"data\":null,\"in\":\"header\",\"mock\":\"J834jkhwrwkkjhkYIUYU9886876387\"},{\"type\":\"string\",\"name\":\"Access-Token\",\"title\":\"登录授权码\",\"desc\":\"Access-Token from oauth2\",\"data\":null,\"in\":\"header\",\"mock\":\"H3K56789lHIUkjfkslds\"},{\"type\":\"string\",\"name\":\"Content-Type\",\"title\":\"数据格式\",\"desc\":\"application/json\",\"data\":\"application/json\",\"in\":\"header\",\"required\":true,\"mock\":\"application/json\"},{\"type\":\"string\",\"name\":\"appID\",\"data\":null,\"in\":\"path\",\"required\":true},{\"type\":\"object\",\"name\":\"root\",\"data\":[{\"type\":\"object\",\"name\":\"_signature\",\"title\":\"签名参数\",\"desc\":\"signature paramters of poly api server\",\"data\":[{\"type\":\"timestamp\",\"name\":\"timestamp\",\"title\":\"时间戳\",\"desc\":\"timestamp format ISO8601: 2006-01-02T15:04:05-0700\",\"data\":null},{\"type\":\"number\",\"name\":\"version\",\"title\":\"版本\",\"desc\":\"1 only current\",\"data\":\"1\"},{\"type\":\"string\",\"name\":\"method\",\"title\":\"签名方法\",\"desc\":\"\\\"HmacSHA256\\\" only current\",\"data\":\"HmacSHA256\"},{\"type\":\"string\",\"name\":\"access_key_id\",\"title\":\"密钥序号\",\"desc\":\"access_key_id dispatched by poly api server\",\"data\":\"KeiIY8098435rty\"}]},{\"type\":\"string\",\"name\":\"id\",\"desc\":\"用户组权限id\",\"data\":null},{\"type\":\"array\",\"name\":\"scopes\",\"data\":[{\"type\":\"object\",\"name\":\"\",\"data\":[{\"type\":\"number\",\"name\":\"type\",\"desc\":\"1 人员 2 部门\",\"data\":null},{\"type\":\"string\",\"name\":\"id\",\"desc\":\"人员或者部门id\",\"data\":null},{\"type\":\"string\",\"name\":\"name\",\"desc\":\"人员或者部门名字\",\"data\":null}]}]}],\"in\":\"body\"}]},\"output\":{\"body\":{\"type\":\"\",\"name\":\"\",\"data\":null},\"doc\":[{\"type\":\"object\",\"desc\":\"successful operation\",\"data\":[{\"type\":\"number\",\"name\":\"code\",\"data\":null},{\"type\":\"object\",\"name\":\"data\",\"data\":[]},{\"type\":\"string\",\"name\":\"msg\",\"data\":null}],\"in\":\"body\"}]},\"sampleInput\":[{\"header\":{\"Access-Token\":[\"H3K56789lHIUkjfkslds\"],\"Content-Type\":[\"application/json\"],\"Signature\":[\"J834jkhwrwkkjhkYIUYU9886876387\"]},\"body\":{\"_hide\":{\"appID\":\"qy\"},\"_signature\":{\"access_key_id\":\"KeiIY8098435rty\",\"method\":\"HmacSHA256\",\"timestamp\":\"2020-12-31T05:43:21CST\",\"version\":1},\"id\":\"Xi7\",\"scopes\":[{\"id\":\"wSV\",\"name\":\"voq9RePDc\",\"type\":1}]}},{\"header\":{\"参数签名\":[\"J834jkhwrwkkjhkYIUYU9886876387\"],\"数据格式\":[\"application/json\"],\"登录授权码\":[\"H3K56789lHIUkjfkslds\"]},\"body\":{\"_hide\":{\"appID\":\"LWJDq3n08h\"},\"scopes\":[{\"1 人员 2 部门\":9,\"人员或者部门id\":\"F8Nixa\",\"人员或者部门名字\":\"aoPbs3xIh\"}],\"用户组权限id\":\"rQfaczv6\",\"签名参数\":{\"密钥序号\":\"KeiIY8098435rty\",\"时间戳\":\"2020-12-31T05:43:21CST\",\"版本\":1,\"签名方法\":\"HmacSHA256\"}}}],\"sampleOutput\":[{\"resp\":{\"code\":0,\"data\":{},\"msg\":\"IOt0SF7a_P\"}},{\"resp\":{\"code\":14,\"data\":{},\"msg\":\"9TTVavSr\"}}]},\"x-swagger\":{\"x-consts\":null,\"host\":\"structor\",\"swagger\":\"2.0\",\"info\":{\"title\":\"\",\"version\":\"last\",\"description\":\"auto generate at 2021-11-10T14:05:39CST\",\"contact\":{\"name\":\"\",\"url\":\"\",\"email\":\"\"}},\"schemes\":[\"http\"],\"basePath\":\"/\",\"paths\":{\"/api/v1/structor/:appID/base/permission/perGroup/update\":{\"post\":{\"x-consts\":[],\"operationId\":\"base_pergroup_update\",\"parameters\":[{\"name\":\"appID\",\"in\":\"path\",\"description\":\"\",\"required\":true,\"type\":\"string\"},{\"name\":\"root\",\"in\":\"body\",\"schema\":{\"type\":\"object\",\"title\":\"empty object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"用户组权限id\"},\"scopes\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"integer\",\"description\":\"1 人员 2 部门\"},\"id\":{\"type\":\"string\",\"description\":\"人员或者部门id\"},\"name\":{\"type\":\"string\",\"description\":\"人员或者部门名字\"}},\"required\":[\"type\",\"id\",\"name\"]}}},\"required\":[\"id\",\"scopes\"]}}],\"responses\":{\"200\":{\"description\":\"successful operation\",\"schema\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"code\":{\"type\":\"number\"},\"data\":{\"type\":\"object\",\"properties\":{}},\"msg\":{\"type\":\"string\"}}}}},\"consumes\":[\"application/json\"],\"produces\":[\"application/json\"],\"summary\":\"给用户组加入人员或者部门\",\"description\":\"\"}}}}}',0,1,1,'http','structor','none','2021-11-10 14:05:22','2021-11-10 14:05:40',NULL);

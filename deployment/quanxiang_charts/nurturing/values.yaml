@@ -3,7 +3,7 @@ image:
   repo: quanxiang
   tag: latest
 namespace: ""
-imagePullSecrets: ""
+imagePullSecrets: lowcode
 service:
   type: ClusterIP
   port: 80

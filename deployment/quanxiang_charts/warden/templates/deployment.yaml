@@ -1,21 +1,22 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: application
+  name: warden
   namespace: {{ .Values.namespace }}
   labels:
-    app: application
+    app: warden
     app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
     app.kubernetes.io/version: v1
     version: v1
   annotations:
     deployment.kubernetes.io/revision: '2'
     servicemesh.kubesphere.io/enabled: 'false'
+    kubesphere.io/description: jwt认证服务
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: application
+      app: warden
       app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
       app.kubernetes.io/version: v1
       version: v1
@@ -23,30 +24,30 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: application
+        app: warden
         app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
         app.kubernetes.io/version: v1
         version: v1
       annotations:
         kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
-        logging.kubesphere.io/logsidecar-config: '{}'
         sidecar.istio.io/inject: 'false'
+        logging.kubesphere.io/logsidecar-config: '{}'
     spec:
       volumes:
-        - name: volume
+        - name: volume-tt869z
           configMap:
-            name: application
+            name: warden
             defaultMode: 420
       containers:
-        - name: container
+        - name: container-pu7r69
           image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
           ports:
-            - name: application
+            - name: web
               containerPort: 80
               protocol: TCP
           resources: {}
           volumeMounts:
-            - name: volume
+            - name: volume-tt869z
               readOnly: true
               mountPath: /configs
           terminationMessagePath: /dev/termination-log
