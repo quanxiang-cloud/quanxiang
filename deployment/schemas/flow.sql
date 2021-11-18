@@ -304,3 +304,6 @@ INSERT INTO flow_variables (id,flow_id,name,`type`,code,field_type,format,defaul
 	 ('1','0','流程发起人','SYSTEM','flowVar_instanceCreatorName','string','','','','0','2021-09-14T14:30:18+0000','0','2021-09-14T14:30:18+0000'),
 	 ('2','0','流程发起时间','SYSTEM','flowVar_instanceCreateTime','datetime','','','','0','2021-09-14T14:30:18+0000','0','2021-09-14T14:30:18+0000'),
 	 ('3','0','流程状态','SYSTEM','flowVar_instanceStatus','string','','','','0','2021-09-14T14:30:18+0000','0','2021-09-14T14:30:18+0000');
+
+ALTER TABLE flow  ADD  app_status varchar(20) NOT NULL DEFAULT 'ACTIVE' COMMENT 'app状态' after app_id;
+ALTER TABLE flow_instance  ADD  app_status varchar(20) NOT NULL DEFAULT 'ACTIVE' COMMENT 'app状态' after app_id;

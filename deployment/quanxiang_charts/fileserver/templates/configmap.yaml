@@ -51,6 +51,6 @@ data:
 
     # -------------------- blob ----------------------
     blob:
-      template: /blob/{{.AppID}}/{{.MD5}}/{{.FileName}}
+      template: /blob/`{{.AppID}}/{{.MD5}}/{{.FileName}}`
       # tempPath temporary decompression path, default program path
       tempPath:

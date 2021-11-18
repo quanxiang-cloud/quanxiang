@@ -21,17 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6c1aa8d5-8a6d-4a5d-95d8-0249e429564b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/InstallApp.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/InstallApp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/configMysql.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/configMysql.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/configs.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/configs.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/execcmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/execcmd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/middlerwareInstall.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/middlerwareInstall.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/modifyValues.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/modifyValues.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/startInstall.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/startInstall.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/statusCheck.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/statusCheck.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/testCondition.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/testCondition.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/uninstall.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/uninstall.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

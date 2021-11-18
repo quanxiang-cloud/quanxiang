@@ -3,7 +3,7 @@ image:
   repo: quanxiang
   tag: latest
 namespace: ""
-imagePullSecrets: ""
+imagePullSecrets: lowcode
 service:
   type: ClusterIP
   port: 80
@@ -80,6 +80,9 @@ ingress:
     - fullName: qxp-web-nginx
       path: /dist
       svcPort: 80
+    - fullName: minio
+      path: /default
+      svcPort: 9000
 app:
   kubernetes:
     io:

@@ -251,3 +251,4 @@ CREATE TABLE `proc_variables` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='流程变量';
 
 SET FOREIGN_KEY_CHECKS = 1;
+ALTER TABLE proc_instance  ADD  app_status varchar(20) NOT NULL DEFAULT 'ACTIVE' COMMENT 'app状态' after STATUS;

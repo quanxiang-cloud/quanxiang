@@ -42,7 +42,7 @@ data:
       adminReset: http://org/api/v1/org/adminResetPWD
       userReset: http://org/api/v1/org/userResetPWD
       forgetReset: http://org/api/v1/org/userForgetResetPWD
-      oauthDestroy: http://oauth2s/api/v1/oauth2s/destroyByUserID
+      oauthDestroy: http://jwt/api/v1/jwt/destroy
       delDEP: http://org/api/v1/org/delDEP
       updateUserStatus: http://org/api/v1/org/updateUserStatus
       updateOwnerRole: http://goalie/api/v1/goalie/updateOwnerRole

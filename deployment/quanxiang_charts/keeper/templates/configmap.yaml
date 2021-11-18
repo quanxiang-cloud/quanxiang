@@ -38,7 +38,7 @@ data:
 
     #  -------------------- oauth --------------------
     oauth:
-      addr: http://oauth2s/api/v1/oauth2s/check
+      addr: http://jwt/api/v1/jwt/check
       timeout: 20
       maxIdleConns: 10
 
