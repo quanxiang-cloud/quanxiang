@@ -18,7 +18,7 @@ data:
     processorNum: 5
 
     # 站内信发送地址
-    messageAPI: http://%s:9005/api/v1/message/send
+    messageAPI: http://%s:80/api/v1/message/send
     #token验证
     auth:
       checktoken: http://jwt/api/v1/jwt/check
