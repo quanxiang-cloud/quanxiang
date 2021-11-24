@@ -19,7 +19,7 @@ minio:
 #Service profile 服务的配置文件
 image:
   repo: quanxiang
-  tag: latest
+  tag: v0.7.0
 imagePullSecrets: "lowcode"
 config:
   mysql:
@@ -60,5 +60,5 @@ config:
     partExpire: 604800
     launch: false  # launch all configurations use the S3 protocol,default false
     storages:
-      - { name: minio,protocol: http,domain: minio:9000,accessKey: Minio, secretKey: Minio123456,location: us-east-1,bucketName: default } #如果minio.enabled为true 此处不需要改动，否则请根据您的minio的信息填写
+      - { name: minio,protocol: http,domain: home.qxp.com,accessKey: Minio, secretKey: Minio123456,location: us-east-1,bucketName: default } #如果minio.enabled为true 此处不需要改动，否则请根据您的minio的信息填写
 
