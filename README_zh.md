@@ -226,11 +226,11 @@ KubeSphere 部署环境的要求如下：
 
  </details>
 
+<details>
+<summary><b>在原生 KuberNetes 环境上安装</b></summary>
 
-### 原生 KuberNetes 环境上安装
-
- 敬请期待。
-
+敬请期待。
+</details>
 
 
 ## 快速开始
