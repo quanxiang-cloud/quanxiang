@@ -87,11 +87,11 @@ QuanXiang 围绕应用设计、开发、部署、运维全生命周期管理，�
 全象云低代码平台提供了一套快速安装程序，使用者只需一条指令即可安装全象云低代码平台，目前支持 [在 KubeSphere 环境中安装](#在Kubesphere环境中安装（推荐使用）)。
 
 <details>
+<summary><b>在 Kubesphere 环境中安装（推荐使用）</b></summary>
+
 ### 前提条件
 
 - 已安装好 Kubernetes  环境。
-
-### 在 Kubesphere 环境中安装（推荐使用）
 
 #### 第 1 步：安装 KubeSphere
 
