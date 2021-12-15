@@ -24,6 +24,7 @@ var (
 	configfile string
 	deploymentFile string
 	mysqlInit bool
+	ngGateWay bool
 )
 var uninstallMiddlerware bool
 
@@ -66,7 +67,7 @@ func Execute() {
 			    fmt.Println("             *                                                                              *")
 			    fmt.Println("             ********************************************************************************")
 				fmt.Println()
-				pkg.Start(kubeconfig,namespace,configfile,deploymentFile,mysqlInit)
+				pkg.Start(kubeconfig,namespace,configfile,deploymentFile,mysqlInit,ngGateWay)
 		},
 	}
 	//startCmd.Flags().BoolVarP(&daemon, "deamon", "d", false, "is daemon?")
@@ -74,6 +75,7 @@ func Execute() {
 	startCmd.Flags().StringVarP(&configfile, "configfile", "c", "./configs/configs.yml", "配置文件路径")
 	startCmd.Flags().StringVarP(&deploymentFile, "deploymentFile", "d", "./deployment", "部署服务（deployment文件夹相对或绝对路径）文件夹路径")
 	startCmd.Flags().BoolVarP(&mysqlInit, "middlerwareInit", "i", false, "是否需要初始化mysql，初次安装需要指定")
+	startCmd.Flags().BoolVarP(&ngGateWay, "ngGateWay", "g", false, "是否需要部署nginx-controller配置ingress访问")
 	startCmd.Flags().StringVarP(&namespace,"namespace", "n","default","容器部署在k8s的命名空间,默认为default")
 	rootCmd.AddCommand(startCmd)
 	uninstallCmd.Flags().StringVarP(&namespace,"namespace", "n","default","容器部署在k8s的命名空间,默认为default")

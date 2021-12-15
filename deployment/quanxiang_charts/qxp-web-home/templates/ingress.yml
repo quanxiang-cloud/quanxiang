@@ -4,7 +4,8 @@ metadata:
   name: qxp-home
   namespace: {{ .Values.namespace }}
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 30m
   labels:
     app.kubernetes.io/version: v1
 spec:
