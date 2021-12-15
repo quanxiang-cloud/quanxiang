@@ -21,6 +21,7 @@ import (
 
 // Mysql
 type Mysql struct {
+	Db       string `yaml:"db"`
 	Host     string `yaml:"host"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`

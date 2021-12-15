@@ -190,7 +190,7 @@ service:
   #type: ClusterIP
   type: NodePort
   port: 3306
-  nodePort: 32000
+#  nodePort: 32001
   # loadBalancerIP:
 
 ## Pods Service Account

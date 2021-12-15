@@ -23,27 +23,27 @@ image:
 imagePullSecrets: "lowcode"
 config:
   mysql:
-    host: mysql:3306     #如果上面中间件配置中mysql.enabled为true此处为mysql，否则请根据您的设置填写mysql host地址和端口
+    host: mysql.{{.}}.svc.cluster.local:3306     #如果上面中间件配置中mysql.enabled为true此处为mysql，否则请根据您的设置填写mysql host地址和端口
     user: root     #如果上面中间件配置中mysql.enabled为true此处为root，否则请根据您的设置填写mysql用户名
     password: qxp1234   #如果上面中间件配置中mysql.enabled为true此处为上述中间件配置中的rootPassword，否则请根据您的设置填写mysql密码
     log: true
   redis:
     addrs:
-      - example-distributedrediscluster-0:6379     #如果上面中间件配置中redis.enabled为true此处不需要更改，否则请根据您的设置填写redis ip地址和端口
-      - example-distributedrediscluster-1:6379
-      - example-distributedrediscluster-2:6379
+      - example-distributedrediscluster-0.{{.}}.svc.cluster.local:6379     #如果上面中间件配置中redis.enabled为true此处不需要更改，否则请根据您的设置填写redis ip地址和端口
+      - example-distributedrediscluster-1.{{.}}.svc.cluster.local:6379
+      - example-distributedrediscluster-2.{{.}}.svc.cluster.local:6379
     username:
     password: qxp1234    #如果上面中间件配置中redis.enabled为true此处为上述中间件配置中的redis.password，否则请根据您的设置填写您的redis密码
   elastic:
     host:
-      - http://elasticsearch-client:9200  #如果上面中间件配置中elastic.enabled为true此处配置不需要改动，否则请根据您的设置填写您的elasticsearch服务的ip和端口
+      - http://elasticsearch-client.{{.}}.svc.cluster.local:9200  #如果上面中间件配置中elastic.enabled为true此处配置不需要改动，否则请根据您的设置填写您的elasticsearch服务的ip和端口
     log: true
   kafka:
     broker:
-      - kafka:9092  #如果上面中间件配置中kafka.enabled为true此处不需要改动，否则请根据您的设置填写您kafka集群的ip和端口
+      - kafka.{{.}}.svc.cluster.local:9092  #如果上面中间件配置中kafka.enabled为true此处不需要改动，否则请根据您的设置填写您kafka集群的ip和端口
   mongo:
     hosts:
-      - mongodb:27017   #如果上面中间件配置中mongo.enabled为true此处不需要改动，否则请根据您的设置填写您mongo集群的ip和端口
+      - mongodb.{{.}}.svc.cluster.local:27017   #如果上面中间件配置中mongo.enabled为true此处不需要改动，否则请根据您的设置填写您mongo集群的ip和端口
     direct: false
     credential:
       authMechanism: SCRAM-SHA-1
