@@ -19,7 +19,7 @@
 
 ## QuanXiang 是什么
 
-QuanXiang（全象云低代码平台）是一个基于云原生的、解耦的、可插拔的开源低代码平台，用于辅助构建企业各类数字化应用。支持可视化编程，帮助您快速完成应用开发。QuanXiang 同时也是包含身份认证能力、容器 DevOps 能力的多应用集成和管理平台，能够帮助企业便捷维护管理应用、将企业存量系统与全象新增系统集成。
+**QuanXiang**（全象云低代码平台）是一个基于云原生的、完全容器化的开源低代码平台，用于辅助构建企业各类数字化应用。平台目前提供云上`无代码`和`低代码`两种应用开发模式，支持`可视化设计`，让开发人员和业务用户能够通过简单的拖拽、参数配置等方式快速完成应用开发。作为一个集低代码开发能力、 IDaaS 身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，**QuanXiang** 支持快速构建应用、便捷维护管理应用、企业存量业务及全象云构建业务的集成。
 
 
 
@@ -63,6 +63,13 @@ QuanXiang 围绕应用设计、开发、部署、运维全生命周期管理，�
   </details>
 
 
+## 设计界面
+界面图
+
+## 适用场景
+待补充
+
+
 
 ## 架构说明
 
@@ -76,11 +83,12 @@ QuanXiang 围绕应用设计、开发、部署、运维全生命周期管理，�
 
 全象云低代码平台提供了一套快速安装程序，使用者只需一条指令即可安装全象云低代码平台，目前支持 [在 KubeSphere 环境中安装](#在Kubesphere环境中安装（推荐使用）)。
 
+<details>
+<summary><b>✨在 Kubesphere 环境中安装（推荐使用）</b></summary>
+
 ### 前提条件
 
 - 已安装好 Kubernetes  环境。
-
-### 在 Kubesphere 环境中安装（推荐使用）
 
 #### 第 1 步：安装 KubeSphere
 
@@ -213,15 +221,23 @@ KubeSphere 部署环境的要求如下：
 >
 > 如果需要修改访问域名，可参见 kubesphere 的[官方文档](https://kubesphere.io/zh/docs/project-user-guide/application-workloads/routes/)。
 
+ </details>
 
+<details>
+<summary><b>💸在原生 KuberNetes 环境上安装</b></summary>
 
-### 原生 KuberNetes 环境上安装
-
- 敬请期待。
-
+敬请期待。
+</details>
 
 
 ## 快速开始
 
 请参考官方文档[快速入门](https://docs.clouden.io/quickstart/app_modeling/)。
 
+
+
+## 交流互动
+
+- 💬 公众号：全象云低代码
+- 🤖 Slack Channel
+- 🙌 中文论坛（施工中）
