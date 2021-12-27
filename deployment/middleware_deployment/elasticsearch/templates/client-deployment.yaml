@@ -98,6 +98,8 @@ spec:
         env:
         - name: NODE_DATA
           value: "false"
+        - name: FORMAT_MESSAGES_PATTERN_DISABLE_LOOKUPS
+          value: "true"
 {{- if hasPrefix "5." .Values.appVersion }}
         - name: NODE_INGEST
           value: "false"

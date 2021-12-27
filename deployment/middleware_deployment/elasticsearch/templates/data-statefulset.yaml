@@ -133,6 +133,8 @@ spec:
           value: {{ template "elasticsearch.fullname" . }}-discovery
         - name: NODE_MASTER
           value: "false"
+        - name: FORMAT_MESSAGES_PATTERN_DISABLE_LOOKUPS
+          value: "true"
         - name: PROCESSORS
           valueFrom:
             resourceFieldRef:
