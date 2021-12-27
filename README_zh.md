@@ -26,13 +26,6 @@
 [![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
 [![Twitter Follow](https://img.shields.io/twitter/follow/quanxiang-cloud/quanxiang)](https://twitter.com/QuanXiang)
 
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/tooljet/tooljet-ce)
-[![GitHub stars](https://img.shields.io/github/stars/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet/stargazers)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/tooljet/tooljet)
-![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/tooljet/tooljet)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooljet/tooljet)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/tooljet/tooljet)
-[![GitHub license](https://img.shields.io/github/license/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet)
 
 
 ## QuanXiang 是什么
