@@ -20,8 +20,8 @@
 [![](https://img.shields.io/badge/Author-全象云低代码-orange.svg)](http://www.jeecg.com)
 [![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
 [![](https://img.shields.io/badge/version-3.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
-[![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
-[![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
+[![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
+[![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/tooljet/tooljet-ce)
 ![GitHub contributors](https://img.shields.io/github/contributors/tooljet/tooljet)
