@@ -17,22 +17,23 @@
 
 > [English](./README.md) | 中文
 
-[![](https://img.shields.io/badge/Author-全象云低代码-orange.svg)](http://www.jeecg.com)
-[![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-3.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/Author-QuanXiang-orange.svg)]()
+[![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
+[![](https://img.shields.io/badge/release-1.0-brightgreen.svg)]()
+![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)
+[![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
 [![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
+[![Twitter Follow](https://img.shields.io/twitter/follow/quanxiang-cloud/quanxiang)](https://twitter.com/QuanXiang)
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/tooljet/tooljet-ce)
-![GitHub contributors](https://img.shields.io/github/contributors/tooljet/tooljet)
-[![GitHub issues](https://img.shields.io/github/issues/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet/issues)
 [![GitHub stars](https://img.shields.io/github/stars/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet/stargazers)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/tooljet/tooljet)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/tooljet/tooljet)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooljet/tooljet)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/tooljet/tooljet)
 [![GitHub license](https://img.shields.io/github/license/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet)
-[![Twitter Follow](https://img.shields.io/twitter/follow/ToolJet?style=social)](https://twitter.com/ToolJet)
+
 
 ## QuanXiang 是什么
 
