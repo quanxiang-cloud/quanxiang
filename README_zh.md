@@ -38,25 +38,15 @@
 
 <div align="center">
   <h3>
-    <a href= target="_blank">
-      官网
-    </a>
+    <a href= target="_blank">官网</a>
     <span> | </span>
-    <a href= target="_blank">
-      Demo
-    </a>
+    <a href= target="_blank">演示</a>
     <span> | </span>
-    <a href="https://docs.clouden.io/" target="_blank">
-      文档
-    </a>
+    <a href="https://docs.clouden.io/" target="_blank">文档</a>
     <span> | </span>
-    <a href="https://docs.clouden.io/manual/application/" target="_blank">
-      操作指南
-    </a>
+    <a href="https://docs.clouden.io/manual/application/" target="_blank">操作指南</a>
     <span> | </span>
-    <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">
-      论坛
-    </a>
+    <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
   </h3>
 </div>
 
