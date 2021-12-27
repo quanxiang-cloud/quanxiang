@@ -18,6 +18,21 @@
 > [English](./README.md) | 中文
 
 [![](https://img.shields.io/badge/Author-全象云低代码-orange.svg)](http://www.jeecg.com)
+[![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
+[![](https://img.shields.io/badge/version-3.0-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/quanxiang.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/quanxiang.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
+
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/tooljet/tooljet-ce)
+![GitHub contributors](https://img.shields.io/github/contributors/tooljet/tooljet)
+[![GitHub issues](https://img.shields.io/github/issues/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet/issues)
+[![GitHub stars](https://img.shields.io/github/stars/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet/stargazers)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/tooljet/tooljet)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/tooljet/tooljet)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooljet/tooljet)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/tooljet/tooljet)
+[![GitHub license](https://img.shields.io/github/license/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet)
+[![Twitter Follow](https://img.shields.io/twitter/follow/ToolJet?style=social)](https://twitter.com/ToolJet)
 
 ## QuanXiang 是什么
 
