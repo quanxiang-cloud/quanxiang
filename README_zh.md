@@ -19,20 +19,27 @@
 
 [![](https://img.shields.io/badge/Author-QuanXiang-orange.svg)]()
 [![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
-[![](https://img.shields.io/badge/release-1.0-brightgreen.svg)]()
+[![](https://img.shields.io/badge/release-0.7.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v0.7.0)
 ![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)
 [![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
 [![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
 [![Twitter Follow](https://img.shields.io/twitter/follow/quanxiang-cloud/quanxiang)](https://twitter.com/QuanXiang)
 
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/tooljet/tooljet-ce)
-[![GitHub stars](https://img.shields.io/github/stars/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet/stargazers)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/tooljet/tooljet)
-![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/tooljet/tooljet)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooljet/tooljet)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/tooljet/tooljet)
-[![GitHub license](https://img.shields.io/github/license/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet)
+
+<div align="center">
+  <h3>
+    官网
+    <span> | </span>
+    演示
+    <span> | </span>
+    <a href="https://docs.clouden.io/" target="_blank">文档</a>
+    <span> | </span>
+    <a href="https://docs.clouden.io/manual/application/" target="_blank">操作指南</a>
+    <span> | </span>
+    <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
+  </h3>
+</div>
 
 
 ## QuanXiang 是什么
