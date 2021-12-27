@@ -17,9 +17,27 @@
 
 > [English](./README.md) | 中文
 
+[![](https://img.shields.io/badge/Author-QuanXiang-orange.svg)]()
+[![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
+[![](https://img.shields.io/badge/release-1.0-brightgreen.svg)]()
+![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)
+[![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
+[![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
+[![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
+[![Twitter Follow](https://img.shields.io/twitter/follow/quanxiang-cloud/quanxiang)](https://twitter.com/QuanXiang)
+
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/tooljet/tooljet-ce)
+[![GitHub stars](https://img.shields.io/github/stars/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet/stargazers)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/tooljet/tooljet)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/tooljet/tooljet)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/tooljet/tooljet)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/tooljet/tooljet)
+[![GitHub license](https://img.shields.io/github/license/ToolJet/ToolJet)](https://github.com/ToolJet/ToolJet)
+
+
 ## QuanXiang 是什么
 
-**QuanXiang**（全象云低代码平台）是一个基于云原生的、完全容器化的开源低代码平台，用于辅助构建企业各类数字化应用。平台目前提供云上`无代码`和`低代码`两种应用开发模式，支持`可视化设计`，让开发人员和业务用户能够通过简单的拖拽、参数配置等方式快速完成应用开发。作为一个集低代码开发能力、 IDaaS 身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，**QuanXiang** 支持快速构建应用、便捷维护管理应用、企业存量业务及全象云构建业务的集成。
+**QuanXiang**（全象云低代码平台）是一个基于云原生的、完全容器化的开源低代码平台，用于辅助构建企业各类数字化应用。平台目前提供云上`无代码`和`低代码`两种应用开发模式，支持`可视化设计`，让开发人员和业务用户能够通过简单的拖拽、参数配置等方式快速完成应用开发。作为一个集低代码开发能力、身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，**QuanXiang** 支持快速构建应用、便捷维护管理应用、企业存量业务及全象云构建业务的集成。
 
 
 
@@ -64,10 +82,7 @@ QuanXiang 围绕应用设计、开发、部署、运维全生命周期管理，�
 
 
 ## 设计界面
-界面图
-
-## 适用场景
-待补充
+🔧施工中
 
 
 
@@ -239,5 +254,5 @@ KubeSphere 部署环境的要求如下：
 ## 交流互动
 
 - 💬 公众号：全象云低代码
-- 🤖 Slack Channel
-- 🙌 中文论坛（施工中）
+- 🤖 Slack Channel（🔧施工中）
+- 🙌 中文论坛（🔧施工中）
