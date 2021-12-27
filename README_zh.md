@@ -26,21 +26,12 @@
 [![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
 [![Twitter Follow](https://img.shields.io/twitter/follow/quanxiang-cloud/quanxiang)](https://twitter.com/QuanXiang)
 
-<h3 align="center">
-  <a href=>Get started</a>
-  <span> · </span>
-  <a href="">Docs</a>
-  <span> · </span>
-  <a href="https://github.com/quanxiang-cloud/quanxiang/issues">Report a bug</a>
-  <span> · </span>
-  <a href="">Discussions</a>
-</h3>
 
 <div align="center">
   <h3>
-    <a href= target="_blank">官网</a>
+    <a href=>官网</a>
     <span> | </span>
-    <a href= target="_blank">演示</a>
+    <a href=>演示</a>
     <span> | </span>
     <a href="https://docs.clouden.io/" target="_blank">文档</a>
     <span> | </span>
@@ -49,6 +40,7 @@
     <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
   </h3>
 </div>
+
 
 ## QuanXiang 是什么
 
