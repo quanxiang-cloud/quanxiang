@@ -29,9 +29,9 @@
 
 <div align="center">
   <h3>
-    <官网/a>
+    官网
     <span> | </span>
-    <演示/a>
+    演示
     <span> | </span>
     <a href="https://docs.clouden.io/" target="_blank">文档</a>
     <span> | </span>
