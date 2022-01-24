@@ -14,7 +14,7 @@
 
 > English| [中文](./README_zh.md)
 
-[![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/eh/roadmap)
+[![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/en/roadmap)
 [![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
 [![](https://img.shields.io/badge/release-0.7.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v0.7.0)
 [![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/graphs/contributors)
