@@ -100,7 +100,7 @@ QuanXiang uses a loosely-coupled architecture that separates the frontend from t
 QuanXiang privodes a deployment tool, which can help user to quckly deploy QuanXiangCloud low-code platform with a single line of command . QuangXiang deployment tool support most of popular K8S release, currently supported for installation in KubeSphere environments.
 
 <details>
-<summary><b>✨ Installation in a Kubesphere environment (recommended)</b></summary>
+<summary><b>✨ Installing on a Kubesphere environment (recommended)</b></summary>
 
 ### Prerequisites
 
