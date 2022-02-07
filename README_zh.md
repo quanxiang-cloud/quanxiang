@@ -8,7 +8,7 @@
   </a>
 </p>
 <p align="center">
-  <b> QuanXiang cloud is a powerful, pluggable open source low-code platform.</b>
+  <b> QuanXiang is a powerful, pluggable open source low-code platform.</b>
 </p>
 
 ----
@@ -17,14 +17,14 @@
 
 > [English](./README.md) | 中文
 
-[![](https://img.shields.io/badge/Author-QuanXiang-orange.svg)]()
-[![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
+[![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/roadmap)
+[![](https://img.shields.io/badge/Content-Blog-blue.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/blogs)
 [![](https://img.shields.io/badge/release-0.7.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v0.7.0)
-![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)
+[![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
 [![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
-[![Twitter Follow](https://img.shields.io/twitter/follow/quanxiang-cloud/quanxiang)](https://twitter.com/QuanXiang)
+[![Twitter Follow](https://img.shields.io/twitter/follow/QuanXiang5?style=social)](https://twitter.com/QuanXiang5)
 
 
 <div align="center">
@@ -33,9 +33,9 @@
     <span> | </span>
     演示
     <span> | </span>
-    <a href="https://docs.clouden.io/" target="_blank">文档</a>
+    文档
     <span> | </span>
-    <a href="https://docs.clouden.io/manual/application/" target="_blank">操作指南</a>
+    操作指南
     <span> | </span>
     <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
   </h3>
@@ -44,7 +44,7 @@
 
 ## QuanXiang 是什么
 
-**QuanXiang**（全象云低代码平台）是一个基于云原生的、完全容器化的开源低代码平台，用于辅助构建企业各类数字化应用。平台目前提供云上`无代码`和`低代码`两种应用开发模式，支持`可视化设计`，让开发人员和业务用户能够通过简单的拖拽、参数配置等方式快速完成应用开发。作为一个集低代码开发能力、身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，**QuanXiang** 支持快速构建应用、便捷维护管理应用、企业存量业务及全象云构建业务的集成。
+**QuanXiang** 是一个基于云原生、完全容器化的开源低代码平台，用于辅助构建企业各类数字化应用。平台目前提供云上`无代码`和`低代码`两种应用开发模式，支持`可视化设计`，让开发人员和业务用户能够通过简单的拖拽、参数配置等方式快速完成应用开发。作为一个集低代码开发能力、身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，**QuanXiang** 支持快速构建应用、便捷维护管理应用、企业存量业务及全象云构建业务的集成。
 
 
 
