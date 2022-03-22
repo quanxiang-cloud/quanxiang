@@ -250,6 +250,6 @@ See our [Getting Started](https://docs.clouden.io/quickstart/app_modeling/) guid
 ## Interaction
 
 - 💬 [Twitter](https://twitter.com/QuanXiang5)
-- 🤖 Slack Channel (🔧 Under Construction)
-- 🙌 Forum (🔧 Under Construction)
+- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ)
+- 🙌 [Forum](https://github.com/quanxiang-cloud/quanxiang/discussions)
 
