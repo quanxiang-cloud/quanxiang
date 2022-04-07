@@ -29,7 +29,7 @@
 
 <div align="center">
   <h3>
-    官网
+    <a href="https://www.quanxiang.dev/" target="_blank">官网</a>
     <span> | </span>
     演示
     <span> | </span>
