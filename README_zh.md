@@ -137,15 +137,15 @@ KubeSphere 部署环境的要求如下：
 安装全象云低代码平台前，您首先需要确保满足以下条件，然后再从我们的 release 中可以选择您需要的版本。
 
 - 运行安装程序的系统可以访问 KubeSphere 集群。
-- 已正确安装 kubectl，如果没有请先 [安装 kubectl](!https://kubernetes.io/docs/tasks/tools/)。
+- 已正确安装 kubectl，如果没有请先 [安装 kubectl](https://kubernetes.io/docs/tasks/tools/)。
 - 已正确配置 kubeconfig，若没配置请先完成配置。
   - QKE  kubeconfig 可通过 QingCloud 控制台获取；
-  - KubeSphere  kubeconfig 请参见 [官方文档](!https://kubesphere.com.cn/docs/) 或者 [求助社区](!https://github.com/kubesphere) 完成配置。
-- 已安装 helm3，安装过程请参见 [官方文档](!https://helm.sh/docs/intro/install/)。
+  - KubeSphere  kubeconfig 请参见 [官方文档](https://kubesphere.com.cn/docs/) 或者 [求助社区](https://github.com/kubesphere) 完成配置。
+- 已安装 helm3，安装过程请参见 [官方文档](https://helm.sh/docs/intro/install/)。
 
 ##### 使用发行版
 
-如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](!https://github.com/quanxiang-cloud/quanxiang/releases)。***注意区别不同版本的系统架构***。
+如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases)。***注意区别不同版本的系统架构***。
 
 ##### 使用源码编译 
 
