@@ -13,10 +13,9 @@ limitations under the License.
 
 package pkg
 
-
 import (
-	"io/ioutil"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
 // Mysql
@@ -77,15 +76,22 @@ type MiddlewareRedis struct {
 type Configs struct {
 	Image            Image          `yaml:"image"`
 	ImagePullSecrets interface{}    `yaml:"imagePullSecrets"`
+	Domain string `yaml:"domain"`
+	Args Args   `yaml:"args"`
 	Config           Config         `yaml:"config"`
 	Elastic          MiddlewareElastic `yaml:"elastic"`
 	Mongo            MiddlewareMongo   `yaml:"mongo"`
 	Kafka            MiddlewareKafka   `yaml:"kafka"`
 	Minio            Minio          `yaml:"minio"`
 	Mysql            MiddlewareMysql   `yaml:"mysql"`
+	Etcd             Etcd             `yaml:"etcd"`
 	Redis            MiddlewareRedis   `yaml:"redis"`
 }
-
+type Args struct {
+	Enabled bool `yaml:"enabled"`
+	Endpoint string `yaml:"endpoint"`
+	Ip string `yaml:"ip"`
+}
 // Config
 type Config struct {
 	Redis   Redis   `yaml:"redis"`
@@ -94,6 +100,7 @@ type Config struct {
 	Mongo   Mongo   `yaml:"mongo"`
 	Email   Email   `yaml:"email"`
 	Storage Storage `yaml:"storage"`
+	Etcd   Etcd   `yaml:"etcd"`
 	Mysql   Mysql   `yaml:"mysql"`
 }
 
@@ -110,7 +117,12 @@ type Minio struct {
 	AccessKey string `yaml:"accessKey"`
 	SecretKey string `yaml:"secretKey"`
 }
-
+type Etcd struct {
+	Enabled   bool   `yaml:"enabled"`
+	Addrs    []string    `yaml:"addrs"`
+	Username interface{} `yaml:"username"`
+	Password string      `yaml:"password"`
+}
 // Email
 type Email struct {
 	Emails []Emails `yaml:"emails"`

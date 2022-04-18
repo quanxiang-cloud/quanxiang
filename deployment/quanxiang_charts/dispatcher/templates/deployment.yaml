@@ -12,7 +12,7 @@ metadata:
     deployment.kubernetes.io/revision: '2'
     servicemesh.kubesphere.io/enabled: 'false'
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: dispatcher
@@ -51,7 +51,7 @@ spec:
               mountPath: /configs
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst

@@ -1,3 +1,2 @@
-.git
-# OWNERS file for Kubernetes
-OWNERS
+tests/
+.pytest_cache/

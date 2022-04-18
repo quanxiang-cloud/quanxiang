@@ -16,6 +16,8 @@ image:
   repository: minio/minio
   tag: RELEASE.2020-06-14T18-32-17Z
   pullPolicy: IfNotPresent
+env: "fs.qxp.alpha"
+
 
 ## Set default image, imageTag, and imagePullPolicy for the `mc` (the minio
 ## client used to create a default bucket).
@@ -108,10 +110,10 @@ persistence:
   ##
   ## Storage class of PV to bind. By default it looks for standard storage class.
   ## If the PV uses a different storage class, specify that here.
-  storageClass: "csi-standard"
+  storageClass: "csi-qingcloud"
   VolumeName: ""
   accessMode: ReadWriteOnce
-  size: 50Gi
+  size: 10Gi
 
   ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
   ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
@@ -124,10 +126,10 @@ persistence:
 ##
 
 service:
-  type: ClusterIP
+  type: NodePort
   clusterIP: ~
   port: 9000
-  nodePort: 32000
+  nodePort: 31198
 
   ## List of IP addresses at which the Prometheus server service is available
   ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
@@ -214,7 +216,7 @@ resources:
 ## Create a bucket after minio install
 ##
 defaultBucket:
-  enabled: true
+  enabled: false
   ## If enabled, must be a string with length > 0
   name: default
   ## Can be one of none|download|upload|public
@@ -225,13 +227,13 @@ defaultBucket:
 ## Create multiple buckets after minio install
 ## Enabling `defaultBucket` will take priority over this list
 ##
-buckets: []
-  # - name: bucket1
-  #   policy: none
-  #   purge: false
-  # - name: bucket2
-  #   policy: none
-  #   purge: false
+buckets:
+  - name: qxp-static
+    policy: download
+    purge: false
+  - name: default
+    policy: none
+    purge: false
 
 ## Additional Annotations for the Kubernetes Batch (make-bucket-job)
 makeBucketJob:

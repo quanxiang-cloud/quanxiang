@@ -53,3 +53,12 @@ data:
       {{- end }}
       username: {{ .Values.config.redis.username }}
       password: {{ .Values.config.redis.password }}
+
+    #----------------内部服务调用Host配置----------
+    innerHost:
+      structor: "http://structor"
+      flow: "http://flow"
+      polyAPI: "http://polyapi:9090"
+      org: "http://org"
+    #----------------导入导出最低版本支持-----------
+    compatibleVersion: "0.7.3"

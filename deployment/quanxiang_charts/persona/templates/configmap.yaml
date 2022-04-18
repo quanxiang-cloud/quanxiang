@@ -1,0 +1,48 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: persona
+  namespace: lowcode
+  annotations:
+    kubesphere.io/creator: zhenlinding
+data:
+  config.yml: |-
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    port: :80
+
+    hostName: persona
+
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    #-------------------etcd配置-----------------
+    etcd:
+      {{- with .Values.config.etcd.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.config.etcd.username }}
+      password: {{ .Values.config.etcd.password }}
+      timeout: 5
+
+
+
+
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 5
+      maxIdleConns: 10

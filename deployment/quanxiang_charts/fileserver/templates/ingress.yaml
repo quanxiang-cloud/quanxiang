@@ -1,0 +1,24 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: fileserver
+  namespace: {{ .Values.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 30m
+spec:
+#  tls:
+#    - hosts:
+#        - '*.fs.quanxiang.dev'
+#      secretName: fs-quanxiang-dev-ssl
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+        {{- range .paths }}
+        - path: {{ .path }}
+          backend:
+            serviceName: {{ .fullName }}
+            servicePort: {{ .svcPort }}
+        {{- end }}
+    {{- end }}

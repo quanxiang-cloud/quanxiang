@@ -2,8 +2,9 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: message
-  namespace: {{ .Values.namespace }}
-
+  namespace: lowcode
+  annotations:
+    kubesphere.io/creator: zhenlinding
 data:
   config.yml: |
     # port 端口
@@ -74,7 +75,3 @@ data:
 
 
     email:
-      {{- with .Values.config.email.emails }}
-      emails:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}

@@ -9,6 +9,8 @@ kafka:
   enabled: true
 elastic:
   enabled: true
+etcd:
+  enabled: true
 mongo:
   enabled: true
   rootPassword: qxp1234  #Set Mongo password. Required when enabled is true 设置mongo密码，enabled为true时必填
@@ -18,9 +20,14 @@ minio:
   secretKey: Minio123456 #Set Mongo secretKey. Required when enabled is true  设置minio secretKey，enabled为true时必填
 #Service profile 服务的配置文件
 image:
-  repo: quanxiang
-  tag: v0.7.0
-imagePullSecrets: "lowcode"
+  repo: qxcr.io/qxp
+  tag: v1.0.0
+imagePullSecrets: ""
+domain: example.com       #设置访问平台的域名
+args:
+  enabled: true   #如果使用的是未被公网解析的域名，需要设置enabled为true
+  endpoint: "example.com:31198"    #fileserver 域名    域名要与domain设置的域名一致
+  ip: "xx.xx.xx.xx"   #k8s master节点的ip
 config:
   mysql:
     host: mysql.{{.}}.svc.cluster.local:3306     #如果上面中间件配置中mysql.enabled为true此处为mysql，否则请根据您的设置填写mysql host地址和端口
@@ -36,7 +43,7 @@ config:
     password: qxp1234    #如果上面中间件配置中redis.enabled为true此处为上述中间件配置中的redis.password，否则请根据您的设置填写您的redis密码
   elastic:
     host:
-      - http://elasticsearch-client.{{.}}.svc.cluster.local:9200  #如果上面中间件配置中elastic.enabled为true此处配置不需要改动，否则请根据您的设置填写您的elasticsearch服务的ip和端口
+      - http://elasticsearch-master.{{.}}.svc.cluster.local:9200  #如果上面中间件配置中elastic.enabled为true此处配置不需要改动，否则请根据您的设置填写您的elasticsearch服务的ip和端口
     log: true
   kafka:
     broker:
@@ -52,8 +59,22 @@ config:
       password: qxp1234 #如果上面中间件配置中mongo.enabled为true此处为mongo.rootPassword,否则请根据您的设置设置您的密码
       passwordSet: false
   email:
-    emails:
-      - { emailfrom: "XXX@XXX.com",username: "XXX",aliasname: "别名",password: "XXX",host: "邮件服务器地址",port: 111 }  #设置email信息以接收验证码
+    enabled: true
+    host: xx.xx.xx
+    port: xx
+    username: xx
+    password: xx
+    alias: xx
+    sender: xx@.com
+#  email:
+#    emails:
+#      - { emailfrom: "XXX@XXX.com",username: "XXX",aliasname: "别名",password: "XXX",host: "邮件服务器地址",port: 111 }  #设置email信息以接收验证码
+
+  etcd:
+    addrs:
+      - etcd-cluster.{{.}}.svc.cluster.local:2379     #如果上面中间件配置中etcd.enabled为true此处不需要更改，否则请根据您的设置填写etcd ip地址和端口
+    username:
+    password:
   storage:
     option: minio
     urlExpire: 600
