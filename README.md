@@ -133,15 +133,15 @@ KubeSphere cluster requirments:
 Before deploying QuanXiang, below options are required in local environment:
 
 - Accessible KubeSphere cluster.
-- 'kubectl' is installed on local. refer [kubectl installation](!https://kubernetes.io/docs/tasks/tools/) to install kubectl.
+- 'kubectl' is installed on local. refer [kubectl installation](https://kubernetes.io/docs/tasks/tools/) to install kubectl.
 - Kubeconfig is configured. refer below steps to configure kubeconfig
   - Get QKE kubeconfig from QingCloud console.
-  - For KubeSphere kubeconfig, refer to [documentation](!https://kubernetes.io/docs/tasks/tools/) or ask [community](!https://github.com/kubesphere) for more help.
-- Helm3 is required. refer [helm3 installation](!https://helm.sh/docs/intro/install/) to install helm3.
+  - For KubeSphere kubeconfig, refer to [documentation](https://kubernetes.io/docs/tasks/tools/) or ask [community](https://github.com/kubesphere) for more help.
+- Helm3 is required. refer [helm3 installation](https://helm.sh/docs/intro/install/) to install helm3.
 
 ##### Download release
 
-You can download the release version directly. **QuanXiang privodes various architecture package.**
+You can download the [release version](https://github.com/quanxiang-cloud/quanxiang/releases) directly. **QuanXiang privodes various architecture package.**
 
 ##### Build from source code
 

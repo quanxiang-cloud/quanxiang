@@ -1,9 +1,9 @@
 <p align="center">
-  <a href="https://docs.clouden.io" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
+  <a href="https://www.quanxiang.dev/" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
 </p>
 <p align="center">
   <br/>
-  <a href="https://docs.clouden.io" target="blank">
+  <a href="https://www.quanxiang.dev/" target="blank">
     QuanXiang
   </a>
 </p>
@@ -29,13 +29,13 @@
 
 <div align="center">
   <h3>
-    官网
+    <a href="https://www.quanxiang.dev/" target="_blank">官网</a>
     <span> | </span>
     演示
     <span> | </span>
-    文档
+    <a href="https://docs.clouden.io/" target="_blank">文档</a>
     <span> | </span>
-    操作指南
+    <a href="https://docs.clouden.io/manual/application/new/" target="_blank">操作指南</a>
     <span> | </span>
     <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
   </h3>
@@ -137,15 +137,15 @@ KubeSphere 部署环境的要求如下：
 安装全象云低代码平台前，您首先需要确保满足以下条件，然后再从我们的 release 中可以选择您需要的版本。
 
 - 运行安装程序的系统可以访问 KubeSphere 集群。
-- 已正确安装 kubectl，如果没有请先 [安装 kubectl](!https://kubernetes.io/docs/tasks/tools/)。
+- 已正确安装 kubectl，如果没有请先 [安装 kubectl](https://kubernetes.io/docs/tasks/tools/)。
 - 已正确配置 kubeconfig，若没配置请先完成配置。
   - QKE  kubeconfig 可通过 QingCloud 控制台获取；
-  - KubeSphere  kubeconfig 请参见 [官方文档](!https://kubesphere.com.cn/docs/) 或者 [求助社区](!https://github.com/kubesphere) 完成配置。
-- 已安装 helm3，安装过程请参见 [官方文档](!https://helm.sh/docs/intro/install/)。
+  - KubeSphere  kubeconfig 请参见 [官方文档](https://kubesphere.com.cn/docs/) 或者 [求助社区](https://github.com/kubesphere) 完成配置。
+- 已安装 helm3，安装过程请参见 [官方文档](https://helm.sh/docs/intro/install/)。
 
 ##### 使用发行版
 
-如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](!https://github.com/quanxiang-cloud/quanxiang/releases)。***注意区别不同版本的系统架构***。
+如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases)。***注意区别不同版本的系统架构***。
 
 ##### 使用源码编译 
 
@@ -261,5 +261,5 @@ KubeSphere 部署环境的要求如下：
 ## 交流互动
 
 - 💬 公众号：全象云低代码
-- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ)
-- 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions)
+- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ)：如果希望认识更多开发者与使用者，可以加入 QuanXiang [Slack](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ) 群。
+- 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions):如果在使用过程中遇到了问题，或发现了 bug，可以在 QuanXiang 的[讨论版块](https://github.com/quanxiang-cloud/quanxiang/discussions)中反馈。或者提 issue 也可。
