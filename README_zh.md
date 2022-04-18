@@ -1,9 +1,9 @@
 <p align="center">
-  <a href="https://docs.clouden.io" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
+  <a href="https://www.quanxiang.dev/" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
 </p>
 <p align="center">
   <br/>
-  <a href="https://docs.clouden.io" target="blank">
+  <a href="https://www.quanxiang.dev/" target="blank">
     QuanXiang
   </a>
 </p>
@@ -33,9 +33,9 @@
     <span> | </span>
     演示
     <span> | </span>
-    文档
+    <a href="https://docs.clouden.io/" target="_blank">文档</a>
     <span> | </span>
-    操作指南
+    <a href="https://docs.clouden.io/manual/application/new/" target="_blank">操作指南</a>
     <span> | </span>
     <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
   </h3>
@@ -261,5 +261,5 @@ KubeSphere 部署环境的要求如下：
 ## 交流互动
 
 - 💬 公众号：全象云低代码
-- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ)
-- 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions)
+- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ)：如果希望认识更多开发者与使用者，可以加入 QuanXiang [Slack](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ) 群。
+- 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions):如果在使用过程中遇到了问题，或发现了 bug，可以在 QuanXiang 的[讨论版块](https://github.com/quanxiang-cloud/quanxiang/discussions)中反馈。或者提 issue 也可。
