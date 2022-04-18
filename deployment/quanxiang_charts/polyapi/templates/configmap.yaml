@@ -39,9 +39,6 @@ data:
         black:
           - "192.168.100.*"
 
-    options:
-      # enable regist api
-      enableRegister: true
 
     authorize:
       #  -------------------- oauth --------------------

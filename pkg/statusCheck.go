@@ -26,7 +26,7 @@ import (
 )
 
 func statusCheck(kubeconfig, namespace string) error {
-	if kubeconfig == ""{
+	if kubeconfig == "" || kubeconfig == "~/.kube/config"{
 		if home := homedir.HomeDir(); home != "" {
 			kubeconfig = filepath.Join(home, ".kube", "config")
 		}else {

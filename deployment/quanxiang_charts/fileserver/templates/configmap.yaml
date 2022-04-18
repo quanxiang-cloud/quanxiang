@@ -39,18 +39,21 @@ data:
     maxSize: 31457280
 
     # -------------------- storage --------------------
-    storage:
-      option: {{ .Values.config.storage.option }}
-      urlExpire: {{ .Values.config.storage.urlExpire }}
-      partExpire: {{ .Values.config.storage.partExpire }}
-      launch: {{ .Values.config.storage.launch }}  # launch all configurations use the S3 protocol,default false
-      storages:
-        {{- with .Values.config.storage.storages }}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
+    redis:
+      {{- with .Values.config.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.config.redis.username }}
+      password: {{ .Values.config.redis.password }}
+
+    # -------------------- buckets --------------------
+    buckets:
+      readable: qxp-static
+      private: default
 
     # -------------------- blob ----------------------
     blob:
-      template: /blob/`{{.AppID}}/{{.MD5}}/{{.FileName}}`
+      template: /blob/{{`{{.AppID}}`}}/{{`{{.MD5}}`}}/{{`{{.FileName}}`}}
       # tempPath temporary decompression path, default program path
-      tempPath:
+      tempPath: /tmp/

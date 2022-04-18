@@ -27,7 +27,7 @@ import (
 )
 
 func deployMysql(kubeconfig, namespace,sqlName,depPath string,configs *Configs) error {
-	if kubeconfig == ""{
+	if kubeconfig == ""|| kubeconfig == "~/.kube/config"{
 		if home := homedir.HomeDir(); home != "" {
 			kubeconfig = filepath.Join(home, ".kube", "config")
 		}else {

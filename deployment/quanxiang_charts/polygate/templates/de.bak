@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: low-code
+  labels:
+    version: v1
+    app: polyapi
+  name: polyapi-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      version: v1
+      app: polyapi
+  template:
+    metadata:
+      labels:
+        version: v1
+        app: polyapi
+      annotations:
+        kubesphere.io/containerSecrets: '{"container-kudq8k":"docker"}'
+        logging.kubesphere.io/logsidecar-config: '{}'
+    spec:
+      containers:
+        - name: container-kudq8k
+          imagePullPolicy: IfNotPresent
+          image: 'dockerhub.qingcloud.com/lowcode/polyapi:{{ .Values.image.tag }}'
+          ports:
+            - name: tcp-80
+              protocol: TCP
+              containerPort: 80
+              servicePort: 80
+          volumeMounts:
+            - name: volume-yl0ncd
+              readOnly: true
+              mountPath: configs
+      serviceAccount: default
+      affinity: {}
+      initContainers: []
+      volumes:
+        - name: volume-yl0ncd
+          configMap:
+            name: polyapi
+      imagePullSecrets:
+        - name: docker
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+

@@ -16,7 +16,7 @@ metadata:
     redis.kun/scope: cluster-scoped
   name: example-distributedrediscluster
 spec:
-  image: redis:5.0.4-alpine
+  image: {{ .Values.operator.image_redis }}:{{ .Values.operator.tag_redis }}
   masterSize: 3
   clusterReplicas: 1
   passwordSecret:

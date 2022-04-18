@@ -35,7 +35,7 @@ data:
       #token失效小时计
       accessTokenExp: 2
       refreshTokenExp: 24
-      jwtKey: "4d8c5e9f-c7ab-41bf-86d3-e984889283be@20201231"
+      jwtKey: {{ .Values.config.jwtKey }}
 
 
     #  -------------------- internalNet --------------------

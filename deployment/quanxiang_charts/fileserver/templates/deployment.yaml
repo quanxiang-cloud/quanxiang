@@ -40,6 +40,11 @@ spec:
       containers:
         - name: container
           image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
+          args:
+            - '--accesskey=Minio'
+            - '--secretkey=Minio123456'
+            - '--endpoint=http://fs.{{ .Values.args.endpoint }}'
+            - '--region=us-east-1'
           ports:
             - name: fileserver
               containerPort: 80
@@ -57,6 +62,13 @@ spec:
       dnsPolicy: ClusterFirst
       serviceAccountName: default
       serviceAccount: default
+      {{- if .Values.args.enabled }}
+      hostAliases:
+        - hostnames:
+            - fs.{{ .Values.domain }}
+            - default.fs.{{ .Values.domain }}
+          ip: {{ .Values.args.ip }}
+      {{- end }}
       securityContext: {}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}

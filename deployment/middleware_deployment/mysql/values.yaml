@@ -110,7 +110,7 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "csi-standard"
+  storageClass: "csi-qingcloud"
   accessMode: ReadWriteOnce
   size: 8Gi
   annotations: {}

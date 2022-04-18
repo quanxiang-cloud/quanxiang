@@ -1,0 +1,97 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dapr-operator
+subjects:
+- kind: ServiceAccount
+  name: dapr-operator
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: dapr-operator-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dapr-role-tokenreview-binding
+subjects:
+- kind: ServiceAccount
+  name: dapr-operator
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dapr-operator-admin
+rules:
+- apiGroups: ["*"]
+  resources: ["customresourcedefinitions", "serviceaccounts", "deployments", "services", "configmaps", "secrets", "components", "configurations", "subscriptions", "leases"]
+  verbs: ["get"]
+- apiGroups: ["*"]
+  resources: ["deployments", "services", "components", "configurations", "subscriptions", "leases", "secrets"]
+  verbs: ["list"]
+- apiGroups: ["*"]
+  resources: ["deployments", "services", "components", "configurations", "subscriptions", "leases", "secrets"]
+  verbs: ["watch"]
+- apiGroups: ["*"]
+  resources: ["services", "secrets", "subscriptions", "configmaps", "leases", "services/finalizers", "deployments/finalizers"]
+  verbs: ["update"]
+- apiGroups: ["*"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["patch"]
+- apiGroups: ["*"]
+  resources: ["services", "leases"]
+  verbs: ["delete"]
+- apiGroups: ["*"]
+  resources: ["deployments", "services", "configmaps", "events", "leases"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-reader
+  namespace: default
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dapr-secret-reader
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: default
+roleRef:
+  kind: Role
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dashboard-reader
+rules:
+- apiGroups: ["", "dapr.io", "apps", "extensions"]
+  resources: ["deployments", "pods", "pods/log", "components", "configurations", "namespaces"]
+  verbs: ["get", "list"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dashboard-reader-global
+subjects:
+- kind: ServiceAccount
+  name: dashboard-reader
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: dashboard-reader
+  apiGroup: rbac.authorization.k8s.io

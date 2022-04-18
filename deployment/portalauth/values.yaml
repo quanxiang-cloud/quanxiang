@@ -1,0 +1,6 @@
+image:
+  name: setauth
+  repo: qxcr.io/qxp
+  tag: v1.0.0
+namespace: ""
+imagePullSecrets: qxcr

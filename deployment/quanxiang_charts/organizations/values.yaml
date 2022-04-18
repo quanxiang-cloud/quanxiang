@@ -1,9 +1,16 @@
 image:
   name: organizations
-  repo: quanxiang
-  tag: v0.7.0
+  repo: qxcr.io/qxp
+  tag: v1.0.0
 namespace: ""
-imagePullSecrets: lowcode
+domain: example.com
+args:
+  enabled: true
+  endpoint: example.com:31198
+  ip: 172.31.162.201
+kafka:
+  value: kafka.lowcode.svc.cluster.local:9092
+imagePullSecrets: ""
 service:
   type: ClusterIP
   port: 80
@@ -18,29 +25,30 @@ serviceAccount:
 podSecurityContext: {}
 securityContext: {}
 config:
+  jwtKey: ""
   mysql:
     db: organizations
-    host: mysql.nginx-ingress.svc.cluster.local:3306
+    host: mysql.lowcode.svc.cluster.local:3306
     user: root
     password: qxp1234
     log: true
   redis:
     addrs:
-    - example-distributedrediscluster-0.nginx-ingress.svc.cluster.local:6379
-    - example-distributedrediscluster-1.nginx-ingress.svc.cluster.local:6379
-    - example-distributedrediscluster-2.nginx-ingress.svc.cluster.local:6379
+    - example-distributedrediscluster-0.lowcode.svc.cluster.local:6379
+    - example-distributedrediscluster-1.lowcode.svc.cluster.local:6379
+    - example-distributedrediscluster-2.lowcode.svc.cluster.local:6379
     username: null
     password: qxp1234
   elastic:
     log: true
     host:
-    - http://elasticsearch-client.nginx-ingress.svc.cluster.local:9200
+    - http://elasticsearch-master.lowcode.svc.cluster.local:9200
   kafka:
     broker:
-    - kafka.nginx-ingress.svc.cluster.local:9092
+    - kafka.lowcode.svc.cluster.local:9092
   mongo:
     hosts:
-    - mongodb.nginx-ingress.svc.cluster.local:27017
+    - mongodb.lowcode.svc.cluster.local:27017
     direct: false
     credential:
       authMechanism: SCRAM-SHA-1
@@ -48,6 +56,12 @@ config:
       username: root
       password: qxp1234
       passwordSet: false
+  etcd:
+    enabled: false
+    addrs:
+    - etcd-cluster.lowcode.svc.cluster.local:2379
+    username: null
+    password: ""
   storage:
     option: minio
     urlExpire: 600
@@ -62,13 +76,7 @@ config:
       location: us-east-1
       bucketName: default
   email:
-    emails:
-    - password: XXX
-      host: 邮件服务器地址
-      port: 111
-      emailfrom: XXX@XXX.com
-      username: XXX
-      aliasname: 别名
+    emails: []
 ingress:
   enabled: false
   hosts: []

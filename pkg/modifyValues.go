@@ -16,8 +16,10 @@ package pkg
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"strings"
 	"text/template"
 )
 //project
@@ -28,6 +30,15 @@ type values struct {
 		Tag string `yaml:"tag"`
 	}
 	Namespace string `yaml:"namespace"`
+	Domain string `yaml:"domain"`
+	Args struct{
+		Enabled bool `yaml:"enabled"`
+		Endpoint string `yaml:"endpoint"`
+		Ip string `yaml:"ip"`
+	}
+	Kafka struct{
+		Value string `yaml:"value"`
+	}
 	ImagePullSecrets string `yaml:"imagePullSecrets"`
 	Service struct{
 		Type string `yaml:"type"`
@@ -45,11 +56,13 @@ type values struct {
 	PodSecurityContext map[string]interface{} `yaml:"podSecurityContext"`
 	SecurityContext map[string]interface{} `yaml:"securityContext"`
 	Config struct{
+		JwtKey string `yaml:"jwtKey"`
 		Mysql Mysql
 		Redis Redis
 		Elastic Elastic
 		Kafka Kafka
 		Mongo Mongo
+		Etcd Etcd
 		Storage Storage
 		Email Email
 	}
@@ -148,6 +161,45 @@ func ModifyValuesFile(filepath,namespace string,configs *Configs,ngGateWay bool)
 	}else {
 		value.Config.Mongo = configs.Config.Mongo
 	}
+	if configs.Etcd.Enabled{
+		value.Config.Etcd.Addrs[0],err = AddrParase(configs.Config.Etcd.Addrs[0],namespace)
+		for i,_ := range value.Config.Etcd.Addrs{
+			if i == 0{
+				continue
+			}else{
+				value.Config.Etcd.Addrs[i] = ""
+			}
+		}
+		value.Config.Etcd.Username = configs.Config.Etcd.Username
+		value.Config.Etcd.Password = configs.Config.Etcd.Password
+	}else {
+		value.Config.Etcd.Addrs = configs.Config.Etcd.Addrs
+		value.Config.Etcd.Username = configs.Config.Etcd.Username
+		value.Config.Etcd.Password = configs.Config.Etcd.Password
+	}
+	if strings.Contains(filepath,"portal"){
+		value.Ingress.Hosts[0].Host = "portal." +  configs.Domain
+		value.Websocket_hostname = "ws." + configs.Domain
+		value.Home_hostname = "home." + configs.Domain
+		value.Portal_hostname = "portal." + configs.Domain
+	}
+	if strings.Contains(filepath,"home"){
+		value.Ingress.Hosts[0].Host = "home." +  configs.Domain
+		value.Websocket_hostname = "ws." + configs.Domain
+		value.Home_hostname = "home." + configs.Domain
+		value.Portal_hostname = "portal." + configs.Domain
+	}
+	if strings.Contains(filepath,"fileserver"){
+		value.Ingress.Hosts[0].Host = "*.fs." +  configs.Domain
+		value.Domain = configs.Domain
+	}
+	if strings.Contains(filepath,"polygate"){
+		value.Ingress.Hosts[0].Host = "ws." +  configs.Domain
+		value.Ingress.Hosts[1].Host = "api." +  configs.Domain
+	}
+	if strings.Contains(filepath,"polyapi"){
+		value.Ingress.Hosts[0].Host = "polyapi." +  configs.Domain
+	}
 	if configs.Kafka.Enabled{
 		value.Config.Kafka.Broker[0],err = AddrParase(configs.Config.Kafka.Broker[0],namespace)
 		for i,_ := range value.Config.Kafka.Broker{
@@ -157,8 +209,16 @@ func ModifyValuesFile(filepath,namespace string,configs *Configs,ngGateWay bool)
 				value.Config.Kafka.Broker[i] = ""
 			}
 		}
+		value.Kafka.Value = value.Config.Kafka.Broker[0]
 	}else {
 		value.Config.Kafka = configs.Config.Kafka
+		value.Kafka.Value = ""
+		for _,k := range configs.Config.Kafka.Broker{
+			k_n,_ := AddrParase(k,namespace)
+			value.Kafka.Value += k_n
+			value.Kafka.Value += ","
+		}
+		value.Kafka.Value = strings.TrimSuffix(value.Kafka.Value,",")
 	}
 
 	value.Image.Repo = configs.Image.Repo
@@ -166,6 +226,14 @@ func ModifyValuesFile(filepath,namespace string,configs *Configs,ngGateWay bool)
 	value.Config.Storage = configs.Config.Storage
 	value.Config.Email = configs.Config.Email
 	value.ImagePullSecrets = configs.ImagePullSecrets.(string)
+	value.Args.Endpoint = configs.Args.Endpoint
+	value.Args.Enabled = configs.Args.Enabled
+	value.Args.Ip = configs.Args.Ip
+	value.Domain = configs.Domain
+	if strings.Contains(filepath,"warden"){
+		value.Config.JwtKey = uuid.NewV4().String()
+	}
+
 	if ngGateWay{
 		value.Websocket_hostname = value.Websocket_hostname + ":32032"
 		value.Portal_hostname = value.Portal_hostname + ":32032"
