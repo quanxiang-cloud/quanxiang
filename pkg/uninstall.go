@@ -14,11 +14,12 @@ limitations under the License.
 package pkg
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"k8s.io/client-go/util/homedir"
 	"path/filepath"
-	"errors"
+	"strings"
 )
 
 func UninstallServece(namespace,depPath,kubeconfig string,uninstallMiddlerware bool) error {
@@ -58,7 +59,13 @@ func UninstallServece(namespace,depPath,kubeconfig string,uninstallMiddlerware b
 		for _,release := range releases{
 			if release.IsDir(){
 				fmt.Println("--------->卸载" + release.Name() + "服务 \n")
-				command := "helm uninstall " + release.Name()  + " --kubeconfig " + kubeconfig + " -n "+ namespace
+				var command string
+				if strings.Contains(release.Name(),"dapr"){
+					command = "helm uninstall " + release.Name()  + " --kubeconfig " + kubeconfig + " -n dapr-system"
+				}else{
+					command = "helm uninstall " + release.Name()  + " --kubeconfig " + kubeconfig + " -n "+ namespace
+				}
+
 				err := execBash(command)
 				if err != nil {
 					return err

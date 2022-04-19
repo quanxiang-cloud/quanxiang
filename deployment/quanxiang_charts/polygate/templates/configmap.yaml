@@ -1,0 +1,102 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: polygate
+  namespace: lowcode
+  annotations:
+    kubesphere.io/creator: zhenlinding
+data:
+  config.yml: |
+    #  -------------------- base --------------------
+
+    # port 端口
+    # e.g :80
+    port: :80
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    # schema 后端服务schema
+    schema: http://
+
+    #  -------------------- proxy --------------------
+    proxy:
+      timeout: 30
+      keepAlive: 30
+      maxIdleConns: 100000
+      idleConnTimeout: 90
+      tlsHandshakeTimeout: 10
+      expectContinueTimeout: 1
+
+
+    gate:
+      limitRate:
+        enable: true
+        # 1 ~ 10,0000
+        ratePerSecond: 50
+      ipBlock:
+        enable: true
+        white:
+          - "*.*.*.*"
+        black:
+          - "192.168.100.*"
+
+    remotes:
+      #  -------------------- oauth --------------------
+      oauthToken:
+        addr: http://jwt/api/v1/jwt/check
+        timeout: 20
+        maxIdleConns: 10
+
+      #  -------------------- oauth by api-key --------------------
+      oauthKey:
+        addr: http://kms/api/v1/kms/key/signature
+        timeout: 20
+        maxIdleConns: 10
+
+      #  -------------------- goalie --------------------
+      goalie:
+        addr: http://goalie/api/v1/goalie/role
+        timeout: 20
+        maxIdleConns: 10
+
+    apiFilter:
+      white:
+        - /api/v1/oauth2c/login
+        - /api/v1/oauth2c/in/refresh
+        - /api/v1/org/login/code
+        - /api/v1/org/forget/code
+        - /api/v1/nurturing/userForgetResetPWD
+        - /api/v1/message/ws
+        - /api/v1/message/ws/
+        - /api/v1/oauth2s/jwt/login
+        - /api/v1/oauth2s/jwt/refresh
+        - /api/v1/oauth2s/jwt/auth
+        - /api/v1/jwt/login
+        - /api/v1/jwt/auth
+        - /api/v1/jwt/refresh
+        - /api/v1/fileserver/domain
+      black:
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    # -------------------- redis --------------------
+    redis:
+      {{- with .Values.config.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.config.redis.username }}
+      password: {{ .Values.config.redis.password }}

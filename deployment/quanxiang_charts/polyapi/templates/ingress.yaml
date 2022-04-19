@@ -1,0 +1,18 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: polyapi-qxp
+  namespace: {{ .Values.namespace }}
+spec:
+  rules:
+  {{- range .Values.ingress.hosts }}
+  - host: {{ .host | quote }}
+    http:
+      paths:
+      {{- range .paths }}
+      - path: {{ .path }}
+        backend:
+          serviceName: {{ .fullName }}
+          servicePort: {{ .svcPort }}
+      {{- end }}
+  {{- end }}

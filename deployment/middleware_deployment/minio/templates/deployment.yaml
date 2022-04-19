@@ -133,6 +133,8 @@ spec:
             {{- end }}
               containerPort: 9000
           env:
+            - name: MINIO_DOMAIN
+              value: {{ .Values.env }}
             - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:

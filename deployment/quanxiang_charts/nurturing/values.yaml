@@ -1,9 +1,16 @@
 image:
   name: nurturing
-  repo: quanxiang
-  tag: latest
+  repo: qxcr.io/qxp
+  tag: v1.0.0
 namespace: ""
-imagePullSecrets: lowcode
+domain: example.com
+args:
+  enabled: true
+  endpoint: example.com:31198
+  ip: 172.31.162.201
+kafka:
+  value: kafka.lowcode.svc.cluster.local:9092
+imagePullSecrets: ""
 service:
   type: ClusterIP
   port: 80
@@ -18,57 +25,58 @@ serviceAccount:
 podSecurityContext: {}
 securityContext: {}
 config:
+  jwtKey: ""
   mysql:
-    host: mysql:3306
     db: ""
+    host: mysql.lowcode.svc.cluster.local:3306
     user: root
     password: qxp1234
     log: true
   redis:
     addrs:
-    - example-distributedrediscluster-0:6379
-    - example-distributedrediscluster-1:6379
-    - example-distributedrediscluster-2:6379
-    username: ""
+    - example-distributedrediscluster-0.lowcode.svc.cluster.local:6379
+    - example-distributedrediscluster-1.lowcode.svc.cluster.local:6379
+    - example-distributedrediscluster-2.lowcode.svc.cluster.local:6379
+    username: null
     password: qxp1234
   elastic:
-    host:
-    - http://elasticsearch-client:9200
     log: true
+    host:
+    - http://elasticsearch-master.lowcode.svc.cluster.local:9200
   kafka:
     broker:
-    - kafka:9092
+    - kafka.lowcode.svc.cluster.local:9092
   mongo:
     hosts:
-    - mongodb:27017
-    driect: false
+    - mongodb.lowcode.svc.cluster.local:27017
+    direct: false
     credential:
       authMechanism: SCRAM-SHA-1
       authSource: admin
       username: root
       password: qxp1234
       passwordSet: false
+  etcd:
+    enabled: false
+    addrs:
+    - etcd-cluster.lowcode.svc.cluster.local:2379
+    username: null
+    password: ""
   storage:
     option: minio
     urlExpire: 600
     partExpire: 604800
     launch: false
     storages:
-    - location: us-east-1
-      bucketName: default
-      name: minio
+    - name: minio
       protocol: http
-      domain: minio:9000
+      domain: home.qxp.com
       accessKey: Minio
       secretKey: Minio123456
+      location: us-east-1
+      bucketName: default
   email:
-    emails:
-    - emailfrom: XXX@XXX.com
-      username: XXX
-      aliasname: 别名
-      password: XXX
-      host: 邮件服务器地址
-      port: 111
+    emails: []
 ingress:
   enabled: false
   hosts: []

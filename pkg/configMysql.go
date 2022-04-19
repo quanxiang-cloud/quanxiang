@@ -27,7 +27,7 @@ import (
 )
 
 func deployMysql(kubeconfig, namespace,sqlName,depPath string,configs *Configs) error {
-	if kubeconfig == ""{
+	if kubeconfig == ""|| kubeconfig == "~/.kube/config"{
 		if home := homedir.HomeDir(); home != "" {
 			kubeconfig = filepath.Join(home, ".kube", "config")
 		}else {
@@ -61,7 +61,11 @@ func deployMysql(kubeconfig, namespace,sqlName,depPath string,configs *Configs) 
 		fmt.Println("请稍等.........")
 		time.Sleep(30*time.Second)
 	}
-	mysqlAddress := strings.Split(configs.Config.Mysql.Host,":")[0]
+	mysqlHost,err := AddrParase(configs.Config.Mysql.Host,namespace)
+	if err != nil {
+		return err
+	}
+	mysqlAddress := strings.Split(mysqlHost,":")[0]
 	mysqlPort := strings.Split(configs.Config.Mysql.Host,":")[1]
 	mysqlUserName := configs.Config.Mysql.User
 	mysqlUserPass := configs.Config.Mysql.Password
