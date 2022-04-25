@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -20,9 +23,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c1aa8d5-8a6d-4a5d-95d8-0249e429564b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/api/restful/install.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/restful/restful.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/restful/uninstall.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/importImages.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/InstallApp.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/InstallApp.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/configs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/configs.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/configMysql.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/configMysql.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/configs.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/configs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/middlerwareInstall.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/middlerwareInstall.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/modifyValues.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/modifyValues.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/startInstall.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/startInstall.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/statusCheck.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/statusCheck.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/uninstall.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/uninstall.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,11 +70,24 @@
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.formatter.settings.were.checked" value="true" />
     <property name="go.import.settings.migrated" value="true" />
+    <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/deployment/quanxiang_charts" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/deployment/quanxiang_charts" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/nginx-ingress/templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/deployment/middleware_deployment" />
+      <recent name="$PROJECT_DIR$/deployment" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
@@ -65,20 +95,20 @@
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$" />
       <package value="quanxiangInstall" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="quanxiang" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <framework value="gotest" />
       <kind value="DIRECTORY" />
       <package value="quanxiangInstall" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
       <method v="2" />
     </configuration>
   </component>
@@ -99,10 +129,14 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="373" y="164" key="SettingsEditor" timestamp="1636431785275">
+    <state x="898" y="363" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1638872702486">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>
-    <state x="373" y="164" key="SettingsEditor/0.25.1680.1025@0.25.1680.1025" timestamp="1636431785275" />
+    <state x="898" y="363" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1680.1025@0.25.1680.1025" timestamp="1638872702486" />
+    <state x="373" y="164" key="SettingsEditor" timestamp="1640760075479">
+      <screen x="0" y="25" width="1680" height="1025" />
+    </state>
+    <state x="373" y="164" key="SettingsEditor/0.25.1680.1025@0.25.1680.1025" timestamp="1640760075479" />
     <state x="541" y="282" width="597" height="548" key="find.popup" timestamp="1636611743679">
       <screen x="0" y="25" width="1680" height="1025" />
     </state>

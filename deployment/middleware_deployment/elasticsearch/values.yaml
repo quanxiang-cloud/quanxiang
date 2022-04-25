@@ -1,317 +1,344 @@
-# Default values for elasticsearch.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-appVersion: "6.8.6"
+---
+clusterName: "elasticsearch"
+nodeGroup: "master"
 
-## Define serviceAccount names for components. Defaults to component's fully qualified name.
-##
-serviceAccounts:
-  client:
-    create: true
-    name:
-  master:
-    create: true
-    name:
-  data:
-    create: true
-    name:
+# The service that non master groups will try to connect to when joining the cluster
+# This should be set to clusterName + "-" + nodeGroup for your master group
+masterService: ""
 
-## Specify if a Pod Security Policy for node-exporter must be created
-## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
-##
+# Elasticsearch roles that will be applied to this nodeGroup
+# These will be set as environment variables. E.g. node.master=true
+roles:
+  master: "true"
+  ingest: "true"
+  data: "true"
+  remote_cluster_client: "true"
+  ml: "true"
+
+replicas: 3
+minimumMasterNodes: 2
+
+esMajorVersion: ""
+
+# Allows you to add any config files in /usr/share/elasticsearch/config/
+# such as elasticsearch.yml and log4j2.properties
+esConfig: {}
+#  elasticsearch.yml: |
+#    key:
+#      nestedkey: value
+#  log4j2.properties: |
+#    key = value
+
+# Extra environment variables to append to this nodeGroup
+# This will be appended to the current 'env:' key. You can use any of the kubernetes env
+# syntax here
+extraEnvs: []
+#  - name: MY_ENVIRONMENT_VAR
+#    value: the_value_goes_here
+
+# Allows you to load environment variables from kubernetes secret or config map
+envFrom: []
+# - secretRef:
+#     name: env-secret
+# - configMapRef:
+#     name: config-map
+
+# A list of secrets and their paths to mount inside the pod
+# This is useful for mounting certificates for security and for mounting
+# the X-Pack license
+secretMounts: []
+#  - name: elastic-certificates
+#    secretName: elastic-certificates
+#    path: /usr/share/elasticsearch/config/certs
+#    defaultMode: 0755
+
+hostAliases: []
+#- ip: "127.0.0.1"
+#  hostnames:
+#  - "foo.local"
+#  - "bar.local"
+
+image: "docker.elastic.co/elasticsearch/elasticsearch"
+imageTag: "7.15.0"
+imagePullPolicy: "IfNotPresent"
+
+podAnnotations:
+  {}
+  # iam.amazonaws.com/role: es-cluster
+
+# additionals labels
+labels: {}
+
+esJavaOpts: "" # example: "-Xmx1g -Xms1g"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "1Gi"
+  limits:
+    cpu: "100m"
+    memory: "1Gi"
+
+initResources:
+  {}
+  # limits:
+  #   cpu: "25m"
+  #   # memory: "128Mi"
+  # requests:
+  #   cpu: "25m"
+  #   memory: "128Mi"
+
+networkHost: "0.0.0.0"
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 10Gi
+
+rbac:
+  create: false
+  serviceAccountAnnotations: {}
+  serviceAccountName: ""
+
 podSecurityPolicy:
-  enabled: false
-  annotations: {}
-    ## Specify pod annotations
-    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#apparmor
-    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#seccomp
-    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#sysctl
-    ##
-    # seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
-    # seccomp.security.alpha.kubernetes.io/defaultProfileName: 'docker/default'
-    # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
+  create: false
+  name: ""
+  spec:
+    privileged: true
+    fsGroup:
+      rule: RunAsAny
+    runAsUser:
+      rule: RunAsAny
+    seLinux:
+      rule: RunAsAny
+    supplementalGroups:
+      rule: RunAsAny
+    volumes:
+      - secret
+      - configMap
+      - persistentVolumeClaim
+      - emptyDir
 
-securityContext:
+persistence:
   enabled: false
+  labels:
+    # Add default labels for the volumeClaimTemplate of the StatefulSet
+    enabled: false
+  annotations: {}
+
+extraVolumes:
+  []
+  # - name: extras
+  #   emptyDir: {}
+
+extraVolumeMounts:
+  []
+  # - name: extras
+  #   mountPath: /usr/share/extras
+  #   readOnly: true
+
+extraContainers:
+  []
+  # - name: do-something
+  #   image: busybox
+  #   command: ['do', 'something']
+
+extraInitContainers:
+  []
+  # - name: do-something
+  #   image: busybox
+  #   command: ['do', 'something']
+
+# This is the PriorityClass settings as defined in
+# https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
+priorityClassName: ""
+
+# By default this will make sure two pods don't end up on the same node
+# Changing this to a region would allow you to spread pods across regions
+antiAffinityTopologyKey: "kubernetes.io/hostname"
+
+# Hard means that by default pods will only be scheduled if there are enough nodes for them
+# and that they will never end up on the same node. Setting this to soft will do this "best effort"
+antiAffinity: "hard"
+
+# This is the node affinity settings as defined in
+# https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
+nodeAffinity: {}
+
+# The default is to deploy all pods serially. By setting this to parallel all pods are started at
+# the same time when bootstrapping the cluster
+podManagementPolicy: "Parallel"
+
+# The environment variables injected by service links are not used, but can lead to slow Elasticsearch boot times when
+# there are many services in the current namespace.
+# If you experience slow pod startups you probably want to set this to `false`.
+enableServiceLinks: true
+
+protocol: http
+httpPort: 9200
+transportPort: 9300
+
+service:
+  enabled: true
+  labels: {}
+  labelsHeadless: {}
+  type: ClusterIP
+  nodePort: ""
+  annotations: {}
+  httpPortName: http
+  transportPortName: transport
+  loadBalancerIP: ""
+  loadBalancerSourceRanges: []
+  externalTrafficPolicy: ""
+
+updateStrategy: RollingUpdate
+
+# This is the max unavailable setting for the pod disruption budget
+# The default value of 1 will make sure that kubernetes won't allow more than 1
+# of your pods to be unavailable during maintenance
+maxUnavailable: 1
+
+podSecurityContext:
+  fsGroup: 1000
   runAsUser: 1000
 
-## Use an alternate scheduler, e.g. "stork".
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  # readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# How long to wait for elasticsearch to stop gracefully
+terminationGracePeriod: 120
+
+sysctlVmMaxMapCount: 262144
+
+readinessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 3
+  timeoutSeconds: 5
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/7.15/cluster-health.html#request-params wait_for_status
+clusterHealthCheckParams: "wait_for_status=green&timeout=1s"
+
+## Use an alternate scheduler.
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
 ##
-# schedulerName: "default-scheduler"
+schedulerName: ""
 
-image:
-  repository: "docker.elastic.co/elasticsearch/elasticsearch-oss"
-  tag: "6.8.6"
-  pullPolicy: "IfNotPresent"
-  # If specified, use these secrets to access the image
-  pullSecrets:
-   - qingcloudhub
+imagePullSecrets: []
+nodeSelector: {}
+tolerations: []
 
-testFramework:
-  image: "dduportal/bats"
-  tag: "0.4.0"
+# Enabling this will publically expose your Elasticsearch instance.
+# Only enable this if you have security enabled on your cluster
+ingress:
+  enabled: false
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 
-initImage:
-  repository: "busybox"
-  tag: "latest"
-  pullPolicy: "Always"
+nameOverride: ""
+fullnameOverride: ""
+healthNameOverride: ""
 
-cluster:
-  name: "elasticsearch"
-  # If you want X-Pack installed, switch to an image that includes it, enable this option and toggle the features you want
-  # enabled in the environment variables outlined in the README
-  xpackEnable: false
-  # Some settings must be placed in a keystore, so they need to be mounted in from a secret.
-  # Use this setting to specify the name of the secret
-  # keystoreSecret: eskeystore
-  config: {}
-  # Custom parameters, as string, to be added to ES_JAVA_OPTS environment variable
-  additionalJavaOpts: ""
-  # Command to run at the end of deployment
-  bootstrapShellCommand: ""
-  env:
-    # IMPORTANT: https://www.elastic.co/guide/en/elasticsearch/reference/current/important-settings.html#minimum_master_nodes
-    # To prevent data loss, it is vital to configure the discovery.zen.minimum_master_nodes setting so that each master-eligible
-    # node knows the minimum number of master-eligible nodes that must be visible in order to form a cluster.
-    MINIMUM_MASTER_NODES: "2"
-  # List of plugins to install via dedicated init container
-  plugins: []
-    # - ingest-attachment
-    # - mapper-size
+lifecycle:
+  {}
+  # preStop:
+  #   exec:
+  #     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+  # postStart:
+  #   exec:
+  #     command:
+  #       - bash
+  #       - -c
+  #       - |
+  #         #!/bin/bash
+  #         # Add a template to adjust number of shards/replicas
+  #         TEMPLATE_NAME=my_template
+  #         INDEX_PATTERN="logstash-*"
+  #         SHARD_COUNT=8
+  #         REPLICA_COUNT=1
+  #         ES_URL=http://localhost:9200
+  #         while [[ "$(curl -s -o /dev/null -w '%{http_code}\n' $ES_URL)" != "200" ]]; do sleep 1; done
+  #         curl -XPUT "$ES_URL/_template/$TEMPLATE_NAME" -H 'Content-Type: application/json' -d'{"index_patterns":['\""$INDEX_PATTERN"\"'],"settings":{"number_of_shards":'$SHARD_COUNT',"number_of_replicas":'$REPLICA_COUNT'}}'
 
-  loggingYml:
-    # you can override this using by setting a system property, for example -Des.logger.level=DEBUG
-    es.logger.level: INFO
-    rootLogger: ${es.logger.level}, console
-    logger:
-      # log action execution errors for easier debugging
-      action: DEBUG
-      # reduce the logging for aws, too much is logged under the default INFO
-      com.amazonaws: WARN
-    appender:
-      console:
-        type: console
-        layout:
-          type: consolePattern
-          conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
-
-  log4j2Properties: |
-    status = error
-    appender.console.type = Console
-    appender.console.name = console
-    appender.console.layout.type = PatternLayout
-    appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c{1.}] %marker%m%n
-    rootLogger.level = info
-    rootLogger.appenderRef.console.ref = console
-    logger.searchguard.name = com.floragunn
-    logger.searchguard.level = info
-
-client:
-  name: client
-  replicas: 1
-  serviceType: ClusterIP
-  ## If coupled with serviceType = "NodePort", this will set a specific nodePort to the client HTTP port
-  # httpNodePort: 30920
-  loadBalancerIP: {}
-  loadBalancerSourceRanges: {}
-## (dict) If specified, apply these annotations to the client service
-#  serviceAnnotations:
-#    example: client-svc-foo
-  heapSize: "512m"
-  # additionalJavaOpts: "-XX:MaxRAM=512m"
-  antiAffinity: "soft"
-  nodeAffinity: {}
-  nodeSelector: {}
-  tolerations: []
-  # terminationGracePeriodSeconds: 60
-  initResources: {}
-    # limits:
-    #   cpu: "25m"
-    #   # memory: "128Mi"
-    # requests:
-    #   cpu: "25m"
-    #   memory: "128Mi"
-  resources:
-    limits:
-      cpu: "1"
-      # memory: "1024Mi"
-    requests:
-      cpu: "25m"
-      memory: "512Mi"
-  priorityClassName: ""
-  ## (dict) If specified, apply these annotations to each client Pod
-  # podAnnotations:
-  #   example: client-foo
-  podDisruptionBudget:
-    enabled: false
-    minAvailable: 1
-    # maxUnavailable: 1
-  hooks: {}
-    ## (string) Script to execute prior the client pod stops.
-    # preStop: |-
-
-    ## (string) Script to execute after the client pod starts.
-    # postStart: |-
-  ingress:
-    enabled: false
-    # user: NAME
-    # password: PASSWORD
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    path: /
-    hosts:
-      - chart-example.local
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-master:
-  name: master
-  exposeHttp: false
-  replicas: 2
-  heapSize: "512m"
-  # additionalJavaOpts: "-XX:MaxRAM=512m"
-  persistence:
-    enabled: false
-    accessMode: ReadWriteOnce
-    name: data
-    size: "4Gi"
-    storageClass: "csi-standard"
-  readinessProbe:
-    httpGet:
-      path: /_cluster/health?local=true
-      port: 9200
-    initialDelaySeconds: 5
-  antiAffinity: "soft"
-  nodeAffinity: {}
-  nodeSelector: {}
-  tolerations: []
-  # terminationGracePeriodSeconds: 60
-  initResources: {}
-    # limits:
-    #   cpu: "25m"
-    #   # memory: "128Mi"
-    # requests:
-    #   cpu: "25m"
-    #   memory: "128Mi"
-  resources:
-    limits:
-      cpu: "1"
-      # memory: "1024Mi"
-    requests:
-      cpu: "25m"
-      memory: "512Mi"
-  priorityClassName: ""
-  ## (dict) If specified, apply these annotations to each master Pod
-  # podAnnotations:
-  #   example: master-foo
-  podManagementPolicy: OrderedReady
-  podDisruptionBudget:
-    enabled: false
-    minAvailable: 2  # Same as `cluster.env.MINIMUM_MASTER_NODES`
-    # maxUnavailable: 1
-  updateStrategy:
-    type: OnDelete
-  hooks: {}
-    ## (string) Script to execute prior the master pod stops.
-    # preStop: |-
-
-    ## (string) Script to execute after the master pod starts.
-    # postStart: |-
-
-data:
-  name: data
-  exposeHttp: false
-  replicas: 2
-  heapSize: "1536m"
-  # additionalJavaOpts: "-XX:MaxRAM=1536m"
-  persistence:
-    enabled: false
-    accessMode: ReadWriteOnce
-    name: data
-    size: "30Gi"
-    storageClass: "csi-standard"
-  readinessProbe:
-    httpGet:
-      path: /_cluster/health?local=true
-      port: 9200
-    initialDelaySeconds: 5
-  terminationGracePeriodSeconds: 3600
-  antiAffinity: "soft"
-  nodeAffinity: {}
-  nodeSelector: {}
-  tolerations: []
-  initResources: {}
-    # limits:
-    #   cpu: "25m"
-    #   # memory: "128Mi"
-    # requests:
-    #   cpu: "25m"
-    #   memory: "128Mi"
-  resources:
-    limits:
-      cpu: "1"
-      # memory: "2048Mi"
-    requests:
-      cpu: "25m"
-      memory: "1536Mi"
-  priorityClassName: ""
-  ## (dict) If specified, apply these annotations to each data Pod
-  # podAnnotations:
-  #   example: data-foo
-  podDisruptionBudget:
-    enabled: false
-    # minAvailable: 1
-    maxUnavailable: 1
-  podManagementPolicy: OrderedReady
-  updateStrategy:
-    type: OnDelete
-  hooks:
-    ## Drain the node before stopping it and re-integrate it into the cluster after start.
-    ## When enabled, it supersedes `data.hooks.preStop` and `data.hooks.postStart` defined below.
-    drain:
-      enabled: true
-
-    ## (string) Script to execute prior the data pod stops. Ignored if `data.hooks.drain.enabled` is true (default)
-    # preStop: |-
-    #   #!/bin/bash
-    #   exec &> >(tee -a "/var/log/elasticsearch-hooks.log")
-    #   NODE_NAME=${HOSTNAME}
-    #   curl -s -XPUT -H 'Content-Type: application/json' '{{ template "elasticsearch.client.fullname" . }}:9200/_cluster/settings' -d "{
-    #     \"transient\" :{
-    #         \"cluster.routing.allocation.exclude._name\" : \"${NODE_NAME}\"
-    #     }
-    #   }"
-    #   echo "Node ${NODE_NAME} is exluded from the allocation"
-
-    ## (string) Script to execute after the data pod starts. Ignored if `data.hooks.drain.enabled` is true (default)
-    # postStart: |-
-    #   #!/bin/bash
-    #   exec &> >(tee -a "/var/log/elasticsearch-hooks.log")
-    #   NODE_NAME=${HOSTNAME}
-    #   CLUSTER_SETTINGS=$(curl -s -XGET "http://{{ template "elasticsearch.client.fullname" . }}:9200/_cluster/settings")
-    #   if echo "${CLUSTER_SETTINGS}" | grep -E "${NODE_NAME}"; then
-    #     echo "Activate node ${NODE_NAME}"
-    #     curl -s -XPUT -H 'Content-Type: application/json' "http://{{ template "elasticsearch.client.fullname" . }}:9200/_cluster/settings" -d "{
-    #       \"transient\" :{
-    #           \"cluster.routing.allocation.exclude._name\" : null
-    #       }
-    #     }"
-    #   fi
-    #   echo "Node ${NODE_NAME} is ready to be used"
-
-## Sysctl init container to setup vm.max_map_count
-# see https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
-# and https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration-memory.html#mlockall
 sysctlInitContainer:
   enabled: true
-## Chown init container to change ownership of data and logs directories to elasticsearch user
-chownInitContainer:
-  enabled: true
-## Additional init containers
-extraInitContainers: |
 
-forceIpv6: false
+keystore: []
+
+networkPolicy:
+  ## Enable creation of NetworkPolicy resources. Only Ingress traffic is filtered for now.
+  ## In order for a Pod to access Elasticsearch, it needs to have the following label:
+  ## {{ template "uname" . }}-client: "true"
+  ## Example for default configuration to access HTTP port:
+  ## elasticsearch-master-http-client: "true"
+  ## Example for default configuration to access transport port:
+  ## elasticsearch-master-transport-client: "true"
+
+  http:
+    enabled: false
+    ## if explicitNamespacesSelector is not set or set to {}, only client Pods being in the networkPolicy's namespace
+    ## and matching all criteria can reach the DB.
+    ## But sometimes, we want the Pods to be accessible to clients from other namespaces, in this case, we can use this
+    ## parameter to select these namespaces
+    ##
+    # explicitNamespacesSelector:
+    #   # Accept from namespaces with all those different rules (only from whitelisted Pods)
+    #   matchLabels:
+    #     role: frontend
+    #   matchExpressions:
+    #     - {key: role, operator: In, values: [frontend]}
+    ## Additional NetworkPolicy Ingress "from" rules to set. Note that all rules are OR-ed.
+    ##
+    # additionalRules:
+    #   - podSelector:
+    #       matchLabels:
+    #         role: frontend
+    #   - podSelector:
+    #       matchExpressions:
+    #         - key: role
+    #           operator: In
+    #           values:
+    #             - frontend
+
+  transport:
+    ## Note that all Elasticsearch Pods can talks to themselves using transport port even if enabled.
+    enabled: false
+    # explicitNamespacesSelector:
+    #   matchLabels:
+    #     role: frontend
+    #   matchExpressions:
+    #     - {key: role, operator: In, values: [frontend]}
+    # additionalRules:
+    #   - podSelector:
+    #       matchLabels:
+    #         role: frontend
+    #   - podSelector:
+    #       matchExpressions:
+    #         - key: role
+    #           operator: In
+    #           values:
+    #             - frontend
+
+tests:
+  enabled: true
+
+# Deprecated
+# please use the above podSecurityContext.fsGroup instead
+fsGroup: ""

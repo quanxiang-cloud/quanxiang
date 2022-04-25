@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: container-kudq8k
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
           ports:
             - name: tcp-80

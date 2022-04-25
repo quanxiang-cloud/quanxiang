@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dapr-dashboard
+  annotations:
+    {{- range $key, $val := .Values.serviceAnnotations }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end }}
+spec:
+  selector:
+    app: dapr-dashboard
+  ports:
+  - protocol: TCP
+    port: {{ .Values.ports.port }}
+    targetPort: {{ .Values.ports.targetPort }}
+  type: {{ .Values.serviceType }}

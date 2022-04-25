@@ -67,3 +67,4 @@ ALTER table t_app_center ADD delete_time BIGINT;
 UPDATE t_app_center set delete_time = 0;
 
 DROP INDEX t_app_center_app_name_uindex ON t_app_center;
+ALTER TABLE `app_center`.`t_app_center` ADD COLUMN `app_sign` VARCHAR(30);

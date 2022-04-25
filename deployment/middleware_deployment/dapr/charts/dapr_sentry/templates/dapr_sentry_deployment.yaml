@@ -1,0 +1,203 @@
+{{- $existingSecret := lookup "v1" "Secret" .Release.Namespace "dapr-trust-bundle"}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dapr-trust-bundle
+  labels:
+    app: dapr-sentry
+data:
+  {{ if .Values.tls.issuer.certPEM }}issuer.crt: {{ b64enc .Values.tls.issuer.certPEM | trim }}
+  {{ else if $existingSecret }}issuer.crt: {{ index $existingSecret.data "issuer.crt" }}
+  {{ end }}
+  {{ if .Values.tls.issuer.keyPEM }}issuer.key: {{ b64enc .Values.tls.issuer.keyPEM | trim }}
+  {{ else if $existingSecret }}issuer.key: {{ index $existingSecret.data "issuer.key" }}
+  {{end}}
+  {{ if .Values.tls.root.certPEM }}ca.crt: {{ b64enc .Values.tls.root.certPEM | trim }}
+  {{ else if $existingSecret }}ca.crt: {{ index $existingSecret.data "ca.crt" }}
+  {{end}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dapr-sentry
+  labels:
+    app: dapr-sentry
+spec:
+{{- if eq .Values.global.ha.enabled true }}
+  replicas: {{ .Values.global.ha.replicaCount }}
+{{- else }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app: dapr-sentry
+  template:
+    metadata:
+      labels:
+        app: dapr-sentry
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Values.global.tag }}
+        app.kubernetes.io/component: sentry
+        app.kubernetes.io/part-of: "dapr"
+        app.kubernetes.io/managed-by: "helm"
+        {{- with .Values.global.labels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+{{- if eq .Values.global.prometheus.enabled true }}
+      annotations:
+        prometheus.io/scrape: "{{ .Values.global.prometheus.enabled }}"
+        prometheus.io/port: "{{ .Values.global.prometheus.port }}"
+        prometheus.io/path: "/"
+{{- end }}
+    spec:
+{{- if eq .Values.global.ha.enabled true }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - dapr-sentry
+            topologyKey: "kubernetes.io/hostname"
+{{- end }}
+      containers:
+      - name: dapr-sentry
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          {{- if eq .Values.debug.enabled false }}
+          initialDelaySeconds: 3
+          {{- else }}
+          initialDelaySeconds: {{ .Values.debug.initialDelaySeconds }}
+          {{- end }}
+          periodSeconds: 3
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          {{- if eq .Values.debug.enabled false }}
+          initialDelaySeconds: 3
+          {{- else }}
+          initialDelaySeconds: {{ .Values.debug.initialDelaySeconds }}
+          {{- end }}
+          periodSeconds: 3
+          failureThreshold: 5
+{{- if contains "/" .Values.image.name }}
+        image: "{{ .Values.image.name }}"
+{{- else }}
+        image: "{{ .Values.global.registry }}/dapr:{{ .Values.global.tag }}"
+{{- end }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+{{- if eq .Values.global.daprControlPlaneOs "linux" }}
+        securityContext:
+          runAsNonRoot: {{ .Values.runAsNonRoot }}
+  {{- if eq .Values.debug.enabled true }}
+          capabilities:
+            add:
+              - SYS_PTRACE
+  {{- end }}
+{{- end }}
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        ports:
+        - containerPort: 50001
+{{- if eq .Values.global.prometheus.enabled true }}
+        - name: metrics
+          containerPort: {{ .Values.global.prometheus.port }}
+          protocol: TCP
+{{- end }}
+{{- if eq .Values.debug.enabled true }}
+        - name: debug
+          containerPort: {{ .Values.debug.port }}
+          protocol: TCP
+{{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        volumeMounts:
+          - name: credentials
+            mountPath: /var/run/dapr/credentials
+            readOnly: true
+        command:
+{{- if eq .Values.debug.enabled false }}
+        - "/sentry"
+{{- else }}
+        - "/dlv"
+{{- end }}
+        args:
+{{- if eq .Values.debug.enabled true }}
+        - "--listen=:{{ .Values.debug.port }}"
+        - "--accept-multiclient"
+        - "--headless=true"
+        - "--log"
+        - "--api-version=2"
+        - "exec"
+        - "/sentry"
+        - "--"
+{{- end }}
+        - "--log-level"
+        - {{ .Values.logLevel }}
+{{- if eq .Values.global.logAsJson true }}
+        - "--log-as-json"
+{{- end }}
+{{- if eq .Values.global.prometheus.enabled true }}
+        - "--enable-metrics"
+        - "--metrics-port"
+        - "{{ .Values.global.prometheus.port }}"
+{{- else }}
+        - "--enable-metrics=false"
+{{- end }}
+        - "--trust-domain"
+        - {{ .Values.tls.trustDomain }}
+      serviceAccountName: dapr-operator
+      volumes:
+        - name: credentials
+          secret:
+            secretName: dapr-trust-bundle
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+             nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                    - {{ .Values.global.daprControlPlaneOs }}
+{{- if .Values.global.daprControlPlaneArch }}
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - {{ .Values.global.daprControlPlaneArch }}
+{{- end }}
+{{- if .Values.global.ha.enabled }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - dapr-sentry
+              topologyKey: topology.kubernetes.io/zone
+{{- end }}
+{{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ .Values.global.imagePullSecrets }}
+{{- end }}
+{{- if .Values.global.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.global.nodeSelector | indent 8 }}
+{{- end }}
+{{- if .Values.global.tolerations }}
+      tolerations:
+{{ toYaml .Values.global.tolerations | indent 8 }}
+{{- end }}

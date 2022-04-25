@@ -348,3 +348,5 @@ INSERT INTO `role_func` (`id`, `role_id`,`func_id`,`created_at`,`updated_at`)
 COMMIT;
 
 insert into role_owner (`id`, `role_id`, `type`, `owner_id`, `created_at`)values ('1', '1', '1', 'admin',0);
+
+update func set created_at=1629257919 where p_id!='' or p_id is not null

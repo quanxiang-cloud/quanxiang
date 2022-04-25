@@ -12,7 +12,7 @@ data:
 
     api_endpoint:
       protocol: http
-      hostname: keeper
+      hostname: polygate
       port: 80
 
     http_client:
@@ -23,7 +23,7 @@ data:
 
     redis:
       {{- with .Values.config.redis.addrs }}
-      hosts:
+      addrs:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       username: {{ .Values.config.redis.username }}

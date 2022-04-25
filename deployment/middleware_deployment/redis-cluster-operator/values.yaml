@@ -6,6 +6,8 @@ operator:
   namespace: ""  # keep this value "" if you want to deploy cluster-wide operator
   image_source: "fishu/redis-cluster-operator"
   image_tag: "latest"
+  image_redis: "redis"
+  tag_redis: "5.0.4-alpine"
   imagePullPolicy: "Always"
   password:
   resources:
