@@ -19,7 +19,7 @@
 
 [![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/roadmap)
 [![](https://img.shields.io/badge/Content-Blog-blue.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/blogs)
-[![](https://img.shields.io/badge/release-0.7.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v0.7.0)
+[![](https://img.shields.io/badge/release-1.0.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)
 [![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
@@ -145,7 +145,7 @@ KubeSphere 部署环境的要求如下：
 
 ##### 使用发行版
 
-如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases)。***注意区别不同版本的系统架构***。
+如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)。***注意区别不同版本的系统架构***。
 
 ##### 使用源码编译 
 
@@ -262,4 +262,4 @@ KubeSphere 部署环境的要求如下：
 
 - 💬 公众号：全象云低代码
 - 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ)：如果希望认识更多开发者与使用者，可以加入 QuanXiang [Slack](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ) 群。
-- 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions):如果在使用过程中遇到了问题，或发现了 bug，可以在 QuanXiang 的[讨论版块](https://github.com/quanxiang-cloud/quanxiang/discussions)中反馈。或者提 issue 也可。
+- 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions)：如果在使用过程中遇到了问题，或发现了 bug，可以在 QuanXiang 的[讨论版块](https://github.com/quanxiang-cloud/quanxiang/discussions)中反馈。或者提 issue 也可。
