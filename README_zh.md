@@ -261,5 +261,5 @@ KubeSphere 部署环境的要求如下：
 ## 交流互动
 
 - 💬 公众号：全象云低代码
-- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ)：如果希望认识更多开发者与使用者，可以加入 QuanXiang [Slack](https://quanxiangcloud.slack.com/join/shared_invite/zt-14wpp473n-2jpBT7hIjbnIhuOqOPwSeQ) 群。
+- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-17p7ne6h3-WtDNV72vnQ0vl8pdeLxABg)：如果希望认识更多开发者与使用者，可以加入 QuanXiang [Slack](https://quanxiangcloud.slack.com/join/shared_invite/zt-17p7ne6h3-WtDNV72vnQ0vl8pdeLxABg) 群。
 - 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions)：如果在使用过程中遇到了问题，或发现了 bug，可以在 QuanXiang 的[讨论版块](https://github.com/quanxiang-cloud/quanxiang/discussions)中反馈。或者提 issue 也可。
