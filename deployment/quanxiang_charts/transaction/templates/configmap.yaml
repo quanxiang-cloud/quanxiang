@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: transaction
-  namespace: lowcode
+  namespace: {{ .Values.namespace }}
   annotations:
     kubesphere.io/creator: zhenlinding
 data:

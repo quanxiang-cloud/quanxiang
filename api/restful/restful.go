@@ -2,7 +2,6 @@ package restful
 
 import (
 	"github.com/gin-gonic/gin"
-	"git.internal.yunify.com/qxp/misc/logger"
 )
 type Router struct {
 	engine *gin.Engine
@@ -13,8 +12,7 @@ func newRouter() (*gin.Engine, error) {
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
 
-	engine.Use(logger.GinLogger(),
-		logger.GinRecovery())
+	engine.Use()
 
 	return engine, nil
 }

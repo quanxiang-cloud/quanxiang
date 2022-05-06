@@ -3,7 +3,6 @@ module quanxiang
 go 1.16
 
 require (
-	git.internal.yunify.com/qxp/misc v0.0.0-20211222120821-aade7ddbc0bb
 	github.com/containerd/containerd v1.6.2 // indirect
 	github.com/docker/distribution v2.8.1+incompatible // indirect
 	github.com/docker/docker v20.10.14+incompatible
