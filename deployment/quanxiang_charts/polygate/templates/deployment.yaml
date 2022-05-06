@@ -10,7 +10,7 @@ metadata:
     version: v1
   annotations:
     deployment.kubernetes.io/revision: '2'
-    servicemesh.kubesphere.io/enabled: 'true'
+    servicemesh.kubesphere.io/enabled: 'false'
 spec:
   replicas: 1
   selector:
@@ -30,7 +30,7 @@ spec:
       annotations:
         kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
         logging.kubesphere.io/logsidecar-config: '{}'
-        sidecar.istio.io/inject: 'true'
+        sidecar.istio.io/inject: 'false'
     spec:
       volumes:
         - name: volume
