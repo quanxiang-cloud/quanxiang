@@ -25,7 +25,7 @@ serviceAccount:
 podSecurityContext: {}
 securityContext: {}
 config:
-  jwtKey: 17e68073-c063-40d8-8689-7938f264983e
+  jwtKey: 7110c88a-291a-4c82-9e14-cb2967d02372
   mysql:
     db: ""
     host: mysql.lowcode.svc.cluster.local:3306
