@@ -247,6 +247,15 @@ Coming soon.
 
 See our [Getting Started](https://docs.clouden.io/quickstart/app_modeling/) guide over in our docs.
 
+## Component Open Source Project
+
+|  Service   | Function  | Planned open source date |
+|  ----  | ---- | ---- |
+| [structor](https://github.com/quanxiang-cloud/structor) | It's a abstract layer between bussiness layer and database, that will make users easy to use database without database knowledge.  | 2022/5/17 |
+| process | Process engine kernel: process model definition, process scheduling and instance data logging. | 2022/6/6 |
+| persona | Application Configuration Center: Application personalized configuration data storage. | 2022/7/1 |
+| kms | Key management: platform key management and signature verification, external key proxy and authentication. | To be determined |
+
 ## Interaction
 
 - 💬 [Twitter](https://twitter.com/QuanXiang5)
