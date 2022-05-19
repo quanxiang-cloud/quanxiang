@@ -1,15 +1,19 @@
 image:
   name: app-center
-  repo: qxcr.io/qxp
-  tag: v1.0.0
+  repo: qxcr.io/lowcode
+  tag: v1.1.1
 namespace: ""
-domain: example.com
+domain: test.com
+mongo_host: ""
 args:
   enabled: true
-  endpoint: example.com:31198
+  endpoint: test.com:31198
   ip: 172.31.162.201
 kafka:
   value: kafka.lowcode.svc.cluster.local:9092
+redis:
+  host: ""
+  password: ""
 imagePullSecrets: ""
 service:
   type: ClusterIP
@@ -37,7 +41,7 @@ config:
     - example-distributedrediscluster-0.lowcode.svc.cluster.local:6379
     - example-distributedrediscluster-1.lowcode.svc.cluster.local:6379
     - example-distributedrediscluster-2.lowcode.svc.cluster.local:6379
-    username: null
+    username: ""
     password: qxp1234
   elastic:
     log: true

@@ -54,7 +54,7 @@ func deployMysql(kubeconfig, namespace,sqlName,depPath string,configs *Configs) 
 	}
 
 	if needMysql{
-		err := mysqlInstall(namespace,depPath,"qxp1234",kubeconfig)
+		err := mysqlInstall(namespace,depPath,"qxp1234",kubeconfig,configs.Persis)
 		if err != nil {
 			return err
 		}

@@ -49,13 +49,3 @@ data:
       {{- end }}
       username: {{ .Values.config.redis.username }}
       password: {{ .Values.config.redis.password }}
-
-    # -------------------- kafka --------------------
-    kafka:
-      {{- with .Values.config.kafka.broker }}
-      broker:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-
-    # kafka topic
-    topic: {{ .Values.config.topic }}

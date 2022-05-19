@@ -1,15 +1,19 @@
 image:
   name: warden
-  repo: qxcr.io/qxp
-  tag: v1.0.0
+  repo: qxcr.io/lowcode
+  tag: v1.1.1
 namespace: ""
-domain: example.com
+domain: test.com
+mongo_host: ""
 args:
   enabled: true
-  endpoint: example.com:31198
+  endpoint: test.com:31198
   ip: 172.31.162.201
 kafka:
   value: kafka.lowcode.svc.cluster.local:9092
+redis:
+  host: ""
+  password: ""
 imagePullSecrets: ""
 service:
   type: ClusterIP
@@ -25,7 +29,7 @@ serviceAccount:
 podSecurityContext: {}
 securityContext: {}
 config:
-  jwtKey: 7110c88a-291a-4c82-9e14-cb2967d02372
+  jwtKey: 7f83737d-3563-4341-8588-0d7dfcba3fe5
   mysql:
     db: ""
     host: mysql.lowcode.svc.cluster.local:3306
@@ -37,7 +41,7 @@ config:
     - example-distributedrediscluster-0.lowcode.svc.cluster.local:6379
     - example-distributedrediscluster-1.lowcode.svc.cluster.local:6379
     - example-distributedrediscluster-2.lowcode.svc.cluster.local:6379
-    username: null
+    username: ""
     password: qxp1234
   elastic:
     log: true

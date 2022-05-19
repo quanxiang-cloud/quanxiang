@@ -12,7 +12,7 @@ metadata:
     deployment.kubernetes.io/revision: '2'
     servicemesh.kubesphere.io/enabled: 'false'
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: process

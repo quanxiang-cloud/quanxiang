@@ -306,10 +306,10 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "csi-standard"
+  storageClass: "csi-high-perf"
   accessModes:
     - ReadWriteOnce
-  size: 8Gi
+  size: 10Gi
   annotations: {}
 
 ## Configure the ingress resource that allows you to access the

@@ -16,7 +16,11 @@ spec:
     - name: form
       protocol: TCP
       port: {{ .Values.service.port }}
-      targetPort: 80
+      targetPort: 40001
+    - name: form-inner
+      protocol: TCP
+      port: {{ .Values.service.rpcPort }}
+      targetPort: 8080
   selector:
     app: form
     app.kubernetes.io/version: v1

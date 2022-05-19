@@ -1,0 +1,6 @@
+image:
+  name: search_index
+  repo: qxcr.io/lowcode
+  tag: v1.1.1
+namespace: ""
+imagePullSecrets: ""

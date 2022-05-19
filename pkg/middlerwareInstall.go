@@ -39,7 +39,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Mysql.Enabled{
 			needMiddleware = true
-			err := mysqlInstall(namespace,depPath,configs.Mysql.RootPassword,kubeconfig)
+			err := mysqlInstall(namespace,depPath,configs.Mysql.RootPassword,kubeconfig,configs.Persis)
 			if err != nil {
 				fmt.Println("安装mysql时出现错误，请检查")
 				return needMiddleware,err
@@ -47,7 +47,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Elastic.Enabled{
 			needMiddleware = true
-			err := elasticsearchInstall(namespace,depPath,kubeconfig)
+			err := elasticsearchInstall(namespace,depPath,kubeconfig, configs.Persis)
 			if err != nil {
 				fmt.Println("安装elasticsearch时出现错误，请检查")
 				return needMiddleware,err
@@ -55,7 +55,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Etcd.Enabled{
 			needMiddleware = true
-			err := etcdInstall(namespace,depPath,kubeconfig)
+			err := etcdInstall(namespace,depPath,kubeconfig,configs.Persis)
 			if err != nil {
 				fmt.Println("安装minio时出现错误，请检查")
 				return needMiddleware,err
@@ -63,7 +63,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Kafka.Enabled{
 			needMiddleware = true
-			err := kafKaInstall(namespace,depPath,kubeconfig)
+			err := kafKaInstall(namespace,depPath,kubeconfig,configs.Persis)
 			if err != nil {
 				fmt.Println("安装kafka时出现错误，请检查")
 				return needMiddleware,err
@@ -79,7 +79,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Mongo.Enabled{
 			needMiddleware = true
-			err := mongodbInstall(namespace,depPath,configs.Mongo.Password,kubeconfig)
+			err := mongodbInstall(namespace,depPath,configs.Mongo.Password,kubeconfig,configs.Persis)
 			if err != nil {
 				fmt.Println("安装mongodb时出现错误，请检查")
 				return needMiddleware,err
@@ -88,7 +88,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Minio.Enabled{
 			needMiddleware = true
-			err := minio(namespace,depPath,configs.Minio.AccessKey,configs.Minio.SecretKey,configs.Args.Endpoint,kubeconfig)
+			err := minio(namespace,depPath,configs.Minio.AccessKey,configs.Minio.SecretKey,configs.Args.Endpoint,kubeconfig,configs.Persis)
 			if err != nil {
 				fmt.Println("安装minio时出现错误，请检查")
 				return needMiddleware,err
@@ -102,7 +102,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Mysql.Enabled{
 			needMiddleware = true
-			err := mysqlInstallOffLine(namespace,depPath,configs.Mysql.RootPassword,kubeconfig,registry)
+			err := mysqlInstallOffLine(namespace,depPath,configs.Mysql.RootPassword,kubeconfig,registry,configs.Persis)
 			if err != nil {
 				fmt.Println("安装mysql时出现错误，请检查")
 				return needMiddleware,err
@@ -110,7 +110,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Elastic.Enabled{
 			needMiddleware = true
-			err := elasticsearchInstallOffLine(namespace,depPath,kubeconfig,registry)
+			err := elasticsearchInstallOffLine(namespace,depPath,kubeconfig,registry,configs.Persis)
 			if err != nil {
 				fmt.Println("安装elasticsearch时出现错误，请检查")
 				return needMiddleware,err
@@ -118,7 +118,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Etcd.Enabled{
 			needMiddleware = true
-			err := etcdInstallOffLine(namespace,depPath,kubeconfig,registry)
+			err := etcdInstallOffLine(namespace,depPath,kubeconfig,registry,configs.Persis)
 			if err != nil {
 				fmt.Println("安装minio时出现错误，请检查")
 				return needMiddleware,err
@@ -126,7 +126,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Kafka.Enabled{
 			needMiddleware = true
-			err := kafKaInstallOffLine(namespace,depPath,kubeconfig,registry)
+			err := kafKaInstallOffLine(namespace,depPath,kubeconfig,registry,configs.Persis)
 			if err != nil {
 				fmt.Println("安装kafka时出现错误，请检查")
 				return needMiddleware,err
@@ -142,7 +142,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Mongo.Enabled{
 			needMiddleware = true
-			err := mongodbInstallOffLine(namespace,depPath,configs.Mongo.Password,kubeconfig,registry)
+			err := mongodbInstallOffLine(namespace,depPath,configs.Mongo.Password,kubeconfig,registry,configs.Persis)
 			if err != nil {
 				fmt.Println("安装mongodb时出现错误，请检查")
 				return needMiddleware,err
@@ -151,7 +151,7 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 		}
 		if configs.Minio.Enabled{
 			needMiddleware = true
-			err := minioOffLine(namespace,depPath,configs.Minio.AccessKey,configs.Minio.SecretKey,configs.Args.Endpoint,kubeconfig,registry)
+			err := minioOffLine(namespace,depPath,configs.Minio.AccessKey,configs.Minio.SecretKey,configs.Args.Endpoint,kubeconfig,registry,configs.Persis)
 			if err != nil {
 				fmt.Println("安装minio时出现错误，请检查")
 				return needMiddleware,err
@@ -162,9 +162,15 @@ func middlewareInstall(namespace,depPath,kubeconfig,registry string,configs *Con
 
 	return needMiddleware,nil
 }
-func mysqlInstall(namespace,depPath,password,kubeconfig string) error {
+func mysqlInstall(namespace,depPath,password,kubeconfig string,persis Persis) error {
 	fmt.Println("--------->开始部署MySQL")
-	command := "helm install mysql -n " + namespace + " " + depPath+ "/middleware_deployment/mysql --set mysqlRootPassword="+password + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	var command string
+	if persis.Enabled{
+		command = "helm install mysql -n " + namespace + " " + depPath+ "/middleware_deployment/mysql --set mysqlRootPassword="+password + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else{
+		command = "helm install mysql -n " + namespace + " " + depPath+ "/middleware_deployment/mysql --set mysqlRootPassword="+password + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	}
+
 	err := execBash(command)
 	if err != nil {
 		return err
@@ -172,11 +178,19 @@ func mysqlInstall(namespace,depPath,password,kubeconfig string) error {
 	return nil
 
 }
-func mysqlInstallOffLine(namespace,depPath,password,kubeconfig,registry string) error {
+func mysqlInstallOffLine(namespace,depPath,password,kubeconfig,registry string,persis Persis) error {
 	fmt.Println("--------->开始部署MySQL")
-	command := "helm install mysql -n " + namespace + " " + depPath+ "/middleware_deployment/mysql --set mysqlRootPassword="+
-		password + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image=" + registry + "/mysql --set busybox.image=" + registry +
-		"/busybox"
+	var command string
+	if persis.Enabled{
+		command = "helm install mysql -n " + namespace + " " + depPath+ "/middleware_deployment/mysql --set mysqlRootPassword="+
+			password + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image=" + registry + "/mysql --set busybox.image=" + registry +
+			"/busybox --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else {
+		command = "helm install mysql -n " + namespace + " " + depPath+ "/middleware_deployment/mysql --set mysqlRootPassword="+
+			password + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image=" + registry + "/mysql --set busybox.image=" + registry +
+			"/busybox"
+	}
+
 	err := execBash(command)
 	if err != nil {
 		return err
@@ -184,9 +198,16 @@ func mysqlInstallOffLine(namespace,depPath,password,kubeconfig,registry string) 
 	return nil
 
 }
-func zookeeperInstall(namespace,depPath,kubeconfig string) error {
+func zookeeperInstall(namespace,depPath,kubeconfig string,persis Persis) error {
 	fmt.Println("--------->开始部署Zookeeper")
-	command := "helm install zookeeper -n " + namespace +  " " + depPath+ "/middleware_deployment/zookeeper"  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	var command string
+	if persis.Enabled{
+		command = "helm install zookeeper -n " + namespace +  " " + depPath+ "/middleware_deployment/zookeeper"  + " --kubeconfig " + kubeconfig +
+			" --timeout 1800s --create-namespace --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else{
+		command = "helm install zookeeper -n " + namespace +  " " + depPath+ "/middleware_deployment/zookeeper"  + " --kubeconfig " + kubeconfig +
+			" --timeout 1800s --create-namespace"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
@@ -195,10 +216,16 @@ func zookeeperInstall(namespace,depPath,kubeconfig string) error {
 	return nil
 
 }
-func zookeeperInstallOffLine(namespace,depPath,kubeconfig,registry string) error {
+func zookeeperInstallOffLine(namespace,depPath,kubeconfig,registry string,persis Persis) error {
 	fmt.Println("--------->开始部署Zookeeper")
-	command := "helm install zookeeper -n " + namespace +  " " + depPath+ "/middleware_deployment/zookeeper"  +
-		" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/zookeeper"
+	var command string
+	if persis.Enabled{
+		command = "helm install zookeeper -n " + namespace +  " " + depPath+ "/middleware_deployment/zookeeper"  +
+			" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/zookeeper --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else {
+		command = "helm install zookeeper -n " + namespace +  " " + depPath+ "/middleware_deployment/zookeeper"  +
+			" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/zookeeper"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
@@ -208,27 +235,40 @@ func zookeeperInstallOffLine(namespace,depPath,kubeconfig,registry string) error
 
 }
 
-func kafKaInstall(namespace,depPath,kubeconfig string)  error {
+func kafKaInstall(namespace,depPath,kubeconfig string,persis Persis)  error {
 	fmt.Println("--------->开始部署Kafka")
-	err := zookeeperInstall(namespace,depPath,kubeconfig )
+	err := zookeeperInstall(namespace,depPath,kubeconfig,persis )
 	if err != nil {
 		return err
 	}
-	command := "helm install kafka -n " + namespace +  " " + depPath+ "/middleware_deployment/kafka"  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	var command string
+	if persis.Enabled{
+		command = "helm install kafka -n " + namespace +  " " + depPath+ "/middleware_deployment/kafka"  + " --kubeconfig " + kubeconfig +
+			" --timeout 1800s --create-namespace --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else{
+		command = "helm install kafka -n " + namespace +  " " + depPath+ "/middleware_deployment/kafka"  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	}
+
 	err = execBash(command)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func kafKaInstallOffLine(namespace,depPath,kubeconfig,registry string)  error {
+func kafKaInstallOffLine(namespace,depPath,kubeconfig,registry string,persis Persis)  error {
 	fmt.Println("--------->开始部署Kafka")
-	err := zookeeperInstallOffLine(namespace,depPath,kubeconfig,registry)
+	err := zookeeperInstallOffLine(namespace,depPath,kubeconfig,registry,persis)
 	if err != nil {
 		return err
 	}
-	command := "helm install kafka -n " + namespace +  " " + depPath+ "/middleware_deployment/kafka"  + " --kubeconfig " +
-		kubeconfig + " --timeout 1800s --create-namespace --set image=" + registry + "/cp-kafka"
+	var command string
+	if persis.Enabled{
+		command = "helm install kafka -n " + namespace +  " " + depPath+ "/middleware_deployment/kafka"  + " --kubeconfig " +
+			kubeconfig + " --timeout 1800s --create-namespace --set image=" + registry + "/cp-kafka --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else{
+		command = "helm install kafka -n " + namespace +  " " + depPath+ "/middleware_deployment/kafka"  + " --kubeconfig " +
+			kubeconfig + " --timeout 1800s --create-namespace --set image=" + registry + "/cp-kafka"
+	}
 	err = execBash(command)
 	if err != nil {
 		return err
@@ -260,9 +300,16 @@ func redisInstallOffLine(namespace,depPath,password,kubeconfig,registry string) 
 
 }
 
-func mongodbInstall(namespace,depPath,password,kubeconfig string) error {
+func mongodbInstall(namespace,depPath,password,kubeconfig string,persis Persis) error {
 	fmt.Println("--------->开始部署mongodb")
-	command := "helm install mongodb -n " + namespace +  " " + depPath+ "/middleware_deployment/mongodb --set mongodbRootPassword="+password  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	var command string
+	if persis.Enabled{
+		command = "helm install mongodb -n " + namespace +  " " + depPath+ "/middleware_deployment/mongodb --set mongodbRootPassword="+password  +
+			" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else {
+		command = "helm install mongodb -n " + namespace +  " " + depPath+ "/middleware_deployment/mongodb --set mongodbRootPassword="+password  +
+			" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
@@ -270,11 +317,18 @@ func mongodbInstall(namespace,depPath,password,kubeconfig string) error {
 	return nil
 
 }
-func mongodbInstallOffLine(namespace,depPath,password,kubeconfig,registry string) error {
+func mongodbInstallOffLine(namespace,depPath,password,kubeconfig,registry string,persis Persis) error {
 	fmt.Println("--------->开始部署mongodb")
-	command := "helm install mongodb -n " + namespace +  " " + depPath+ "/middleware_deployment/mongodb --set mongodbRootPassword="+
-		password  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image.registry=" + registry + " --set image.repository=" +
-		"mongodb"
+	var command string
+	if persis.Enabled{
+		command = "helm install mongodb -n " + namespace +  " " + depPath+ "/middleware_deployment/mongodb --set mongodbRootPassword="+
+			password  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image.registry=" + registry + " --set image.repository=" +
+			"mongodb --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else{
+		command = "helm install mongodb -n " + namespace +  " " + depPath+ "/middleware_deployment/mongodb --set mongodbRootPassword="+
+			password  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set image.registry=" + registry + " --set image.repository=" +
+			"mongodb"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
@@ -283,20 +337,33 @@ func mongodbInstallOffLine(namespace,depPath,password,kubeconfig,registry string
 
 }
 
-func elasticsearchInstall(namespace,depPath,kubeconfig string) error {
+func elasticsearchInstall(namespace,depPath,kubeconfig string, persis Persis) error {
 	fmt.Println("--------->开始部署elasticsearch")
-	command := "helm install elasticsearch -n " + namespace +  " " + depPath+ "/middleware_deployment/elasticsearch"  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	var command string
+	if persis.Enabled{
+		command = "helm install elasticsearch -n " + namespace +  " " + depPath+ "/middleware_deployment/elasticsearch"  +
+			" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set persistence.enabled=true --set volumeClaimTemplate.storageClassName=" + persis.StorageClassName
+	}else{
+		command = "helm install elasticsearch -n " + namespace +  " " + depPath+ "/middleware_deployment/elasticsearch"  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func elasticsearchInstallOffLine(namespace,depPath,kubeconfig,registry string) error {
+func elasticsearchInstallOffLine(namespace,depPath,kubeconfig,registry string,persis Persis) error {
 	fmt.Println("--------->开始部署elasticsearch")
-	command := "helm install elasticsearch -n " + namespace +  " " + depPath+ "/middleware_deployment/elasticsearch"  +
-		" --kubeconfig "+ kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/elasticsearch-oss --set initImage.repository=" +
-		registry + "/busybox"
+	var command string
+	if persis.Enabled{
+		command = "helm install elasticsearch -n " + namespace +  " " + depPath+ "/middleware_deployment/elasticsearch"  +
+			" --kubeconfig "+ kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/elasticsearch-oss --set initImage.repository=" +
+			registry + "/busybox --set persistence.enabled=true --set volumeClaimTemplate.storageClassName=" + persis.StorageClassName
+	}else{
+		command = "helm install elasticsearch -n " + namespace +  " " + depPath+ "/middleware_deployment/elasticsearch"  +
+			" --kubeconfig "+ kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/elasticsearch-oss --set initImage.repository=" +
+			registry + "/busybox"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
@@ -304,44 +371,80 @@ func elasticsearchInstallOffLine(namespace,depPath,kubeconfig,registry string) e
 	return nil
 }
 
-func etcdInstall(namespace,depPath,kubeconfig string) error {
+func etcdInstall(namespace,depPath,kubeconfig string,persis Persis) error {
 	fmt.Println("--------->开始部署etcd")
-	command := "helm install etcd-operator -n " + namespace +  " " + depPath + "/middleware_deployment/etcd-operator --kubeconfig " + kubeconfig + " --timeout 1800s"
+	var command string
+	path := depPath + "/middleware_deployment/etcd-operator/values-persis.yaml"
+	if persis.Enabled{
+		command = "helm install etcd-operator -n " + namespace +  " " + depPath + "/middleware_deployment/etcd-operator --kubeconfig " + kubeconfig +
+			" --timeout 1800s  --set etcdCluster.pod.persistentVolumeClaimSpec.storageClassName="+ persis.StorageClassName + " -f " + path
+	}else{
+		command = "helm install etcd-operator -n " + namespace +  " " + depPath + "/middleware_deployment/etcd-operator --kubeconfig " + kubeconfig + " --timeout 1800s"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func etcdInstallOffLine(namespace,depPath,kubeconfig,registry string) error {
+func etcdInstallOffLine(namespace,depPath,kubeconfig,registry string,persis Persis) error {
 	fmt.Println("--------->开始部署etcd")
-	command := "helm install etcd-operator -n " + namespace +  " " +
-		depPath + "/middleware_deployment/etcd-operator --kubeconfig " +
-		kubeconfig + " --timeout 1800s --set etcdOperator.image.repository=" + registry + "/etcd-operator --set backupOperator.image.repository=" + registry +
-		"/etcd-operator --set restoreOperator.image.repository=" + registry + "/etcd-operator --set etcdCluster.image.repository=" + registry + "/etcd --set etcdCluster.pod.busyboxImage=" + registry + "/busybox:1.28.0-glibc"
+	var command string
+	path := depPath + "/middleware_deployment/etcd-operator/values-persis.yaml"
+	if persis.Enabled{
+		command = "helm install etcd-operator -n " + namespace +  " " +
+			depPath + "/middleware_deployment/etcd-operator --kubeconfig " +
+			kubeconfig + " --timeout 1800s --set etcdOperator.image.repository=" + registry + "/etcd-operator --set backupOperator.image.repository=" + registry +
+			"/etcd-operator --set restoreOperator.image.repository=" + registry + "/etcd-operator --set etcdCluster.image.repository=" + registry + "/etcd --set etcdCluster.pod.busyboxImage=" +
+			registry + "/busybox:1.28.0-glibc --set etcdCluster.pod.persistentVolumeClaimSpec.storageClassName="+ persis.StorageClassName + " -f " + path
+	}else{
+		command = "helm install etcd-operator -n " + namespace +  " " +
+			depPath + "/middleware_deployment/etcd-operator --kubeconfig " +
+			kubeconfig + " --timeout 1800s --set etcdOperator.image.repository=" + registry + "/etcd-operator --set backupOperator.image.repository=" + registry +
+			"/etcd-operator --set restoreOperator.image.repository=" + registry + "/etcd-operator --set etcdCluster.image.repository=" + registry + "/etcd --set etcdCluster.pod.busyboxImage=" + registry + "/busybox:1.28.0-glibc"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func minio(namespace,depPath,accessKey,secretKey,envdomain,kubeconfig string) error {
+func minio(namespace,depPath,accessKey,secretKey,envdomain,kubeconfig string,persis Persis) error {
 	fmt.Println("--------->开始部署minio")
 	envdomain = strings.Split(envdomain,":")[0]
-	command := "helm install minio -n " + namespace +  " " + depPath + "/middleware_deployment/minio --set accessKey="+ accessKey + " --set secretKey=" + secretKey + " --set env=fs." + envdomain  + " --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	var command string
+	if persis.Enabled{
+		command = "helm install minio -n " + namespace +  " " + depPath +
+			"/middleware_deployment/minio --set accessKey="+
+			accessKey + " --set secretKey=" + secretKey + " --set env=fs." + envdomain  +
+			" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else {
+		command = "helm install minio -n " + namespace +  " " + depPath +
+			"/middleware_deployment/minio --set accessKey="+
+			accessKey + " --set secretKey=" + secretKey + " --set env=fs." + envdomain  +
+			" --kubeconfig " + kubeconfig + " --timeout 1800s --create-namespace"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func minioOffLine(namespace,depPath,accessKey,secretKey,envdomain,kubeconfig,registry string) error {
+func minioOffLine(namespace,depPath,accessKey,secretKey,envdomain,kubeconfig,registry string,persis Persis) error {
 	fmt.Println("--------->开始部署minio")
 	envdomain = strings.Split(envdomain,":")[0]
-	command := "helm install minio -n " + namespace +
-		" " + depPath + "/middleware_deployment/minio --set accessKey="+ accessKey +
-		" --set secretKey=" + secretKey + " --set env=fs." + envdomain  + " --kubeconfig " +
-		kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/minio"
+	var command string
+	if persis.Enabled{
+		command = "helm install minio -n " + namespace +
+			" " + depPath + "/middleware_deployment/minio --set accessKey="+ accessKey +
+			" --set secretKey=" + secretKey + " --set env=fs." + envdomain  + " --kubeconfig " +
+			kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/minio --set persistence.enabled=true --set persistence.storageClass=" + persis.StorageClassName
+	}else{
+		command = "helm install minio -n " + namespace +
+			" " + depPath + "/middleware_deployment/minio --set accessKey="+ accessKey +
+			" --set secretKey=" + secretKey + " --set env=fs." + envdomain  + " --kubeconfig " +
+			kubeconfig + " --timeout 1800s --create-namespace --set image.repository=" + registry + "/minio"
+	}
 	err := execBash(command)
 	if err != nil {
 		return err

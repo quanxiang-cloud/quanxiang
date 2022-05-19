@@ -92,6 +92,7 @@ networkHost: "0.0.0.0"
 
 volumeClaimTemplate:
   accessModes: ["ReadWriteOnce"]
+  storageClassName: "csi-high-perf"
   resources:
     requests:
       storage: 10Gi

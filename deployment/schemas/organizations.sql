@@ -19,113 +19,192 @@ USE organizations;
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ----------------------------
--- Table structure for auth_source
--- ----------------------------
-DROP TABLE IF EXISTS `auth_source`;
-CREATE TABLE `auth_source` (
-  `id` varchar(64) NOT NULL,
-  `auth_conf` text,
-  `company_id` varchar(64) DEFAULT NULL,
-  `types` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table org_department
+(
+    id         varchar(64) not null
+        primary key,
+    name       varchar(64) null,
+    use_status bigint null,
+    attr       bigint null,
+    pid        varchar(64) null,
+    super_pid  varchar(64) null,
+    grade      bigint null,
+    created_at bigint null,
+    updated_at bigint null,
+    deleted_at bigint null,
+    created_by varchar(64) null,
+    updated_by varchar(64) null,
+    deleted_by varchar(64) null,
+    tenant_id  varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for t_department
--- ----------------------------
-DROP TABLE IF EXISTS `t_department`;
-CREATE TABLE `t_department` (
-  `id` varchar(64) NOT NULL,
-  `department_name` varchar(64) DEFAULT NULL,
-  `department_leader_id` varchar(64) DEFAULT NULL,
-  `use_status` bigint(20) DEFAULT NULL,
-  `pid` varchar(64) DEFAULT NULL,
-  `super_pid` varchar(64) DEFAULT NULL,
-  `company_id` varchar(64) DEFAULT NULL,
-  `grade` bigint(20) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `update_time` bigint(20) DEFAULT NULL,
-  `creat_by` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table org_use_columns
+(
+    id            varchar(64) not null
+        primary key,
+    column_id     varchar(64) null,
+    viewer_status int(4) null,
+    tenant_id     varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for t_user
--- ----------------------------
-DROP TABLE IF EXISTS `t_user`;
-CREATE TABLE `t_user` (
-  `id` varchar(64) NOT NULL,
-  `user_name` varchar(64) DEFAULT NULL,
-  `phone` varchar(64) DEFAULT NULL,
-  `email` varchar(64) DEFAULT NULL,
-  `id_card` varchar(64) DEFAULT NULL,
-  `address` varchar(200) DEFAULT NULL,
-  `bank_card_number` varchar(64) DEFAULT NULL,
-  `bank_address` varchar(64) DEFAULT NULL,
-  `leader_id` varchar(64) DEFAULT NULL,
-  `use_status` bigint(20) DEFAULT NULL,
-  `company_id` varchar(64) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `update_time` bigint(20) DEFAULT NULL,
-  `creat_by` varchar(64) DEFAULT NULL,
-  `avatar` text,
-  `password_status` int(11) DEFAULT '0',
-  `position` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `t_user_email_uindex` (`email`),
-  UNIQUE KEY `t_user_phone_uindex` (`phone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table org_user
+(
+    id              varchar(64) not null
+        primary key,
+    name            varchar(64) null,
+    phone           varchar(64) null,
+    email           varchar(64) null,
+    self_email      varchar(64) null,
+    id_card         varchar(64) null,
+    address         varchar(200) null,
+    use_status      int(4) null,
+    tenant_id       varchar(64) null,
+    position        varchar(64) null,
+    avatar          text null,
+    job_number      text null,
+    gender          int(4) null,
+    source          varchar(64) null,
+    password_status int(4) null,
+    created_at      bigint null,
+    updated_at      bigint null,
+    deleted_at      bigint null,
+    created_by      varchar(64) null,
+    updated_by      varchar(64) null,
+    deleted_by       varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Table structure for t_user_department_relation
--- ----------------------------
-DROP TABLE IF EXISTS `t_user_department_relation`;
-CREATE TABLE `t_user_department_relation` (
-  `user_id` varchar(64) DEFAULT NULL,
-  `dep_id` varchar(64) DEFAULT NULL,
-  KEY `t_user_department_relation_dep_id_index` (`dep_id`),
-  KEY `t_user_department_relation_user_id_index` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create unique index org_user_email_uindex
+    on org_user (email);
 
--- ----------------------------
--- Table structure for user_account
--- ----------------------------
-DROP TABLE IF EXISTS `user_account`;
-CREATE TABLE `user_account` (
-  `id` varchar(36) NOT NULL,
-  `user_name` varchar(100) NOT NULL,
-  `user_id` varchar(64) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL,
-  `use_status` bigint(20) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `update_time` bigint(20) DEFAULT NULL,
-  `create_by` varchar(64) DEFAULT NULL,
-  `auth_source_id` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_account_user_name_uindex` (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-SET FOREIGN_KEY_CHECKS = 1;
-insert into t_department (id, department_name, department_leader_id, use_status, pid, super_pid, company_id, grade,
-                          create_time, update_time, creat_by)
-values ('1', 'Demo', '', 1, null, '1', '123', 1, 1615897859, 1617693390, null);
+create table org_user_account
+(
+    id         varchar(100) not null
+        primary key,
+    account    varchar(100) null,
+    user_id    varchar(64) null,
+    password   varchar(100) null,
+    created_at bigint null,
+    updated_at bigint null,
+    deleted_at bigint null,
+    created_by varchar(64) null,
+    updated_by varchar(64) null,
+    deleted_by varchar(64) null,
+    tenant_id  varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into t_user (id, user_name, phone, email, id_card, address, bank_card_number, bank_address, leader_id,
-                    use_status, company_id, create_time, update_time, creat_by, avatar, password_status)
-values ('admin', 'superAdmin', '13866668888', 'Admin@Admin.com', '', '', '', '', '', 1, '', 1618207988, 1618207988,
-        'Avatar', '', 0);
+create unique index org_user_account_account_uindex
+    on org_user_account (account);
 
-insert into t_user_department_relation (user_id, dep_id)
-values ('admin', '1');
+create table org_user_department_relation
+(
+    id      varchar(64) not null
+        primary key,
+    user_id varchar(64) null,
+    dep_id  varchar(64) null,
+    attr    varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- password 654321a..
+create table org_user_table_columns
+(
+    id           varchar(64) not null
+        primary key,
+    name         varchar(64) null,
+    columns_name varchar(64) null,
+    types        varchar(64) null,
+    len          bigint null,
+    point_len    bigint null,
+    attr         bigint null,
+    status       bigint null,
+    format       varchar(64) null,
+    tenant_id    varchar(64) null,
+    created_at   bigint null,
+    updated_at   bigint null,
+    deleted_at   bigint null,
+    created_by   varchar(64) null,
+    updated_by   varchar(64) null,
+    deleted_by   varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `organizations`.`user_account` (`id`, `user_name`, `user_id`, `password`, `use_status`, `create_time`, `update_time`, `create_by`, `auth_source_id`) values ('1', 'Admin@Admin.com', 'admin', '24d04ec3c9f0e285791035a47ba3e61a', 1, 1618207988, 1618207988, '1', '');
+create index columns_name
+    on org_user_table_columns (columns_name);
 
--- password 654321a..
-insert into user_account (id, user_name, user_id, password, use_status, create_time, update_time, create_by,
-                          auth_source_id)
-values ('2', '13866668888', 'admin', '24d04ec3c9f0e285791035a47ba3e61a', 1, 1618207988,
-        1618207988, '1', '');
+create table org_user_tenant_relation
+(
+    id        varchar(64) not null
+        primary key,
+    user_id   varchar(64) null,
+    tenant_id varchar(64) null,
+    status    bigint      null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+create table org_oct_use_columns
+(
+    id            varchar(64) not null
+        primary key,
+    column_id     varchar(64) null,
+    created_at    bigint      null,
+    updated_at    bigint      null,
+    viewer_status int(4)      null,
+    created_by    varchar(64) null,
+    updated_bt    varchar(64) null,
+    tenant_id     varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+create table org_oct_user_table_columns
+(
+    id           varchar(64) not null
+        primary key,
+    name         varchar(64) null,
+    columns_name varchar(64) null,
+    types        varchar(64) null,
+    len          bigint      null,
+    point_len    bigint      null,
+    attr         bigint      null,
+    status       bigint      null,
+    created_at   bigint      null,
+    updated_at   bigint      null,
+    deleted_at   bigint      null,
+    created_by   varchar(64) null,
+    updated_by   varchar(64) null,
+    deleted_by   varchar(64) null,
+    tenant_id    varchar(64) null,
+    format       varchar(64) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+create index columns_name
+    on org_oct_user_table_columns (columns_name);
+
+create table org_user_leader_relation
+(
+    id        varchar(64)  not null
+        primary key,
+    user_id   varchar(64)  null,
+    leader_id varchar(64)  null,
+    attr      varchar(256) null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--  超管数据
+INSERT INTO org_user
+(id, name, phone, email, self_email, id_card, address, use_status, tenant_id, position, avatar, job_number, gender, source, password_status, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by)
+VALUES
+    ('1', 'SuperAdmin', '13888886666', 'admin@yunify.com', 'admin@yunify.com', '', '', 1, '', '', '', '', 1, '', 1, 1649429260908, 1649433071, 0, '', '', '');
+
+
+INSERT INTO org_department
+(id, name, use_status, attr, pid, super_pid, grade, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id)
+VALUES
+    ('1', 'QCC', 1, 1, '', '1', 1, 1641966964, 1649433066, 0, '', '', '', '');
+
+
+-- 密码 654321a..
+INSERT INTO org_user_account
+(id, account, user_id, password, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id)
+VALUES
+    ('1', 'admin@yunify.com', '1', '24d04ec3c9f0e285791035a47ba3e61a', 1635761030, 1649433067, 0, '', '', '', '');
+
+
+
+
+INSERT INTO org_user_department_relation (id, user_id, dep_id, attr)
+VALUES ('1', '1', '1', '直属领导');

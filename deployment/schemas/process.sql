@@ -252,3 +252,8 @@ CREATE TABLE `proc_variables` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 ALTER TABLE proc_instance  ADD  app_status varchar(20) NOT NULL DEFAULT 'ACTIVE' COMMENT 'app状态' after STATUS;
+
+
+ALTER TABLE process.proc_history_task ADD comments TEXT NULL;
+ALTER TABLE process.proc_task ADD comments TEXT NULL;
+ALTER TABLE proc_node_instance ADD comments TEXT NULL;

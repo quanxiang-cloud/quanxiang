@@ -1,10 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: jwt
+  name: warden
   namespace: {{ .Values.namespace }}
   labels:
-    app: jwt
+    app: warden
     app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
     app.kubernetes.io/version: v1
     version: v1

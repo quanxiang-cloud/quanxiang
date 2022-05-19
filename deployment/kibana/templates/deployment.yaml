@@ -1,54 +1,43 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: nurturing
+  name: kibana
   namespace: {{ .Values.namespace }}
   labels:
-    app: nurturing
-    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
-    app.kubernetes.io/version: v1
-    version: v1
+    app: kibana
   annotations:
-    deployment.kubernetes.io/revision: '2'
-    servicemesh.kubesphere.io/enabled: 'false'
+    deployment.kubernetes.io/revision: '1'
+    kubesphere.io/creator: admin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nurturing
-      app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
-      app.kubernetes.io/version: v1
-      version: v1
+      app: kibana
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: nurturing
-        app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
-        app.kubernetes.io/version: v1
-        version: v1
+        app: kibana
       annotations:
-        kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
         logging.kubesphere.io/logsidecar-config: '{}'
-        sidecar.istio.io/inject: 'false'
     spec:
       volumes:
-        - name: volume
+        - name: volume-zuhjax
           configMap:
-            name: nurturing
+            name: kibana
             defaultMode: 420
       containers:
-        - name: container
-          image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
+        - name: container-q54rb6
+          image: 'kibana:7.16.1'
           ports:
-            - name: nurturing
-              containerPort: 80
+            - name: http-5601
+              containerPort: 5601
               protocol: TCP
           resources: {}
           volumeMounts:
-            - name: volume
+            - name: volume-zuhjax
               readOnly: true
-              mountPath: /configs
+              mountPath: /usr/share/kibana/config
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           imagePullPolicy: IfNotPresent
@@ -58,9 +47,6 @@ spec:
       serviceAccountName: default
       serviceAccount: default
       securityContext: {}
-      imagePullSecrets:
-        - name: {{ .Values.imagePullSecrets }}
-      affinity: {}
       schedulerName: default-scheduler
   strategy:
     type: RollingUpdate
