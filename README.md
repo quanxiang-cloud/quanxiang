@@ -14,10 +14,35 @@
 
 > English| [中文](./README_zh.md)
 
+[![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/en/roadmap)
+[![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
+[![](https://img.shields.io/badge/release-1.0.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)
+[![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
+[![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
+[![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
+[![Twitter Follow](https://img.shields.io/twitter/follow/QuanXiang5?style=social)](https://twitter.com/QuanXiang5)
+
+
+<div align="center">
+  <h3>
+    Website
+    <span> | </span>
+    Demo
+    <span> | </span>
+    Documentation
+    <span> | </span>
+    Guide
+    <span> | </span>
+    <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">Community</a>
+  </h3>
+</div>
+
+
+
 ## Introduction
 
-QuanXiang(QuanXiang cloud low-code platform) is a cloud-native, decoupled , pluggable open source low-code platform, which can help to  construct of various digital applications of enterprises. It provides a  low-code development that enable you to visualize programming and quickly build applications. QuanXiang is also an application integration management platform with identity authentication capability and streamlined DevOps workflows. It can help enterprises to convenient maintenance and management of applications, Integrate enterprise inventory system.
-
+QuanXiang is a cloud-native, fully containerized, open source, low-code platform used to assist in building various types of digital applications for enterprises. The platform currently provides two application development modes: no-code and low-code on the cloud, and supports visual design, allowing developers and business users to quickly complete application development through simple drag-and-drop and parameter configuration. As a multi-application integration and management platform integrating low-code development capability, identity authentication capability and container DevOps capability, QuanXiang supports rapid application building, easy maintenance and management of applications, integration of enterprise stock business and full-image cloud building business.
 
 
 ## Features
@@ -45,7 +70,7 @@ QuanXiang builds a low-code ecosystem around application design, development, de
 
 <details>
   <summary><b>🧑‍💻 Organization management</b></summary>
-  <li>Corporate directory：Provide a variety of ways to manage the corporate directory to help companies quickly build an organization.
+  <li>Corporate directory: Provide a variety of ways to manage the corporate directory to help companies quickly build an organization.
   <li>Role management: Enterprise role permissions are subdivided to ensure platform account access security and data security.
 </details>
 <details>
@@ -72,9 +97,10 @@ QuanXiang uses a loosely-coupled architecture that separates the frontend from t
 
 ## Installation
 
-QuanXiang privodes a deployment tool, which can help user to quckly deploy QuanXiangCloud low-code platform with a single line of command . QuangXiang deployment tool support most of popular K8S release:
+QuanXiang privodes a deployment tool, which can help user to quckly deploy QuanXiangCloud low-code platform with a single line of command . QuangXiang deployment tool support most of popular K8S release, currently supported for installation in KubeSphere environments.
 
-- [Deploy QuanxiangCloud on KubeShpere](#Deploy QuanxiangCloud on KubeShpere(recommend))
+<details>
+<summary><b>✨ Installing on a Kubesphere environment (recommended)</b></summary>
 
 ### Prerequisites
 
@@ -107,15 +133,15 @@ KubeSphere cluster requirments:
 Before deploying QuanXiang, below options are required in local environment:
 
 - Accessible KubeSphere cluster.
-- 'kubectl' is installed on local. refer [kubectl installation](!https://kubernetes.io/docs/tasks/tools/) to install kubectl.
+- 'kubectl' is installed on local. refer [kubectl installation](https://kubernetes.io/docs/tasks/tools/) to install kubectl.
 - Kubeconfig is configured. refer below steps to configure kubeconfig
   - Get QKE kubeconfig from QingCloud console.
-  - For KubeSphere kubeconfig, refer to [documentation](!https://kubernetes.io/docs/tasks/tools/) or ask [community](!https://github.com/kubesphere) for more help.
-- Helm3 is required. refer [helm3 installation](!https://helm.sh/docs/intro/install/) to install helm3.
+  - For KubeSphere kubeconfig, refer to [documentation](https://kubernetes.io/docs/tasks/tools/) or ask [community](https://github.com/kubesphere) for more help.
+- Helm3 is required. refer [helm3 installation](https://helm.sh/docs/intro/install/) to install helm3.
 
 ##### Download release
 
-You can download the release version directly. **QuanXiang privodes various architecture package.**
+You can download the [release version](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1) directly. **QuanXiang privodes various architecture package.**
 
 ##### Build from source code
 
@@ -125,7 +151,7 @@ To build QianXiang deployment tool, that golang 1.16 is needed and special corre
  git clone https://github.com/quanxiang-cloud/quanxiang.git
  cd quanxiang
  git checkout master
- CGO_ENABLED=0 GOOS=linux GOARCH=adm64 go build -o installApp main.go
+ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o installApp main.go
 ```
 
 > **Notice**
@@ -207,15 +233,32 @@ To access QuanxiangCloud console, you should configure your hosts file or add dn
 >
 > Refer [KubeSphere office documentation](https://kubesphere.io/zh/docs/project-user-guide/application-workloads/routes/) to customize the domain.
 
-### Deploy QuanXiang on Kubernetes
+</details>
+
+
+<details>
+<summary><b>💸 Installing on a native KuberNetes environment</b></summary>
 
 Coming soon.
 
-
+</details>
 
 ## Get Started using QuanXiang
 
 See our [Getting Started](https://docs.clouden.io/quickstart/app_modeling/) guide over in our docs.
 
+## Component Open Source Project
 
+|  Service   | Function  | Planned open source date |
+|  ----  | ---- | ---- |
+| [structor](https://github.com/quanxiang-cloud/structor) | It's a abstract layer between bussiness layer and database, that will make users easy to use database without database knowledge.  | 2022/5/17 |
+| process | Process engine kernel: process model definition, process scheduling and instance data logging. | 2022/6/6 |
+| persona | Application Configuration Center: Application personalized configuration data storage. | 2022/7/1 |
+| kms | Key management: platform key management and signature verification, external key proxy and authentication. | To be determined |
+
+## Interaction
+
+- 💬 [Twitter](https://twitter.com/QuanXiang5)
+- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-17p7ne6h3-WtDNV72vnQ0vl8pdeLxABg)
+- 🙌 [Forum](https://github.com/quanxiang-cloud/quanxiang/discussions)
 

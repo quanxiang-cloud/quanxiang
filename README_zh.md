@@ -1,14 +1,14 @@
 <p align="center">
-  <a href="https://docs.clouden.io" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
+  <a href="https://www.quanxiang.dev/" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
 </p>
 <p align="center">
   <br/>
-  <a href="https://docs.clouden.io" target="blank">
+  <a href="https://www.quanxiang.dev/" target="blank">
     QuanXiang
   </a>
 </p>
 <p align="center">
-  <b> QuanXiang cloud is a powerful, pluggable open source low-code platform.</b>
+  <b> QuanXiang is a powerful, pluggable open source low-code platform.</b>
 </p>
 
 ----
@@ -17,25 +17,25 @@
 
 > [English](./README.md) | 中文
 
-[![](https://img.shields.io/badge/Author-QuanXiang-orange.svg)]()
-[![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
-[![](https://img.shields.io/badge/release-0.7.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v0.7.0)
-![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)
+[![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/roadmap)
+[![](https://img.shields.io/badge/Content-Blog-blue.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/blogs)
+[![](https://img.shields.io/badge/release-1.0.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)
+[![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
 [![GitHub forks](https://img.shields.io/github/forks/quanxiang-cloud/quanxiang.svg?style=social&label=Fork)](https://github.com/quanxiang-cloud/quanxiang)
-[![Twitter Follow](https://img.shields.io/twitter/follow/quanxiang-cloud/quanxiang)](https://twitter.com/QuanXiang)
+[![Twitter Follow](https://img.shields.io/twitter/follow/QuanXiang5?style=social)](https://twitter.com/QuanXiang5)
 
 
 <div align="center">
   <h3>
-    官网
+    <a href="https://www.quanxiang.dev/" target="_blank">官网</a>
     <span> | </span>
     演示
     <span> | </span>
     <a href="https://docs.clouden.io/" target="_blank">文档</a>
     <span> | </span>
-    <a href="https://docs.clouden.io/manual/application/" target="_blank">操作指南</a>
+    <a href="https://docs.clouden.io/manual/application/new/" target="_blank">操作指南</a>
     <span> | </span>
     <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
   </h3>
@@ -44,7 +44,7 @@
 
 ## QuanXiang 是什么
 
-**QuanXiang**（全象云低代码平台）是一个基于云原生的、完全容器化的开源低代码平台，用于辅助构建企业各类数字化应用。平台目前提供云上`无代码`和`低代码`两种应用开发模式，支持`可视化设计`，让开发人员和业务用户能够通过简单的拖拽、参数配置等方式快速完成应用开发。作为一个集低代码开发能力、身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，**QuanXiang** 支持快速构建应用、便捷维护管理应用、企业存量业务及全象云构建业务的集成。
+**QuanXiang** 是一个基于云原生、完全容器化的开源低代码平台，用于辅助构建企业各类数字化应用。平台目前提供云上`无代码`和`低代码`两种应用开发模式，支持`可视化设计`，让开发人员和业务用户能够通过简单的拖拽、参数配置等方式快速完成应用开发。作为一个集低代码开发能力、身份认证能力、容器 DevOps 能力于一体的多应用集成和管理平台，**QuanXiang** 支持快速构建应用、便捷维护管理应用、企业存量业务及全象云构建业务的集成。
 
 
 
@@ -137,15 +137,15 @@ KubeSphere 部署环境的要求如下：
 安装全象云低代码平台前，您首先需要确保满足以下条件，然后再从我们的 release 中可以选择您需要的版本。
 
 - 运行安装程序的系统可以访问 KubeSphere 集群。
-- 已正确安装 kubectl，如果没有请先 [安装 kubectl](!https://kubernetes.io/docs/tasks/tools/)。
+- 已正确安装 kubectl，如果没有请先 [安装 kubectl](https://kubernetes.io/docs/tasks/tools/)。
 - 已正确配置 kubeconfig，若没配置请先完成配置。
   - QKE  kubeconfig 可通过 QingCloud 控制台获取；
-  - KubeSphere  kubeconfig 请参见 [官方文档](!https://kubesphere.com.cn/docs/) 或者 [求助社区](!https://github.com/kubesphere) 完成配置。
-- 已安装 helm3，安装过程请参见 [官方文档](!https://helm.sh/docs/intro/install/)。
+  - KubeSphere  kubeconfig 请参见 [官方文档](https://kubesphere.com.cn/docs/) 或者 [求助社区](https://github.com/kubesphere) 完成配置。
+- 已安装 helm3，安装过程请参见 [官方文档](https://helm.sh/docs/intro/install/)。
 
 ##### 使用发行版
 
-如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](!https://github.com/quanxiang-cloud/quanxiang/releases)。***注意区别不同版本的系统架构***。
+如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)。***注意区别不同版本的系统架构***。
 
 ##### 使用源码编译 
 
@@ -256,10 +256,17 @@ KubeSphere 部署环境的要求如下：
 
 请参考官方文档[快速入门](https://docs.clouden.io/quickstart/app_modeling/)。
 
+## 组件开源计划
 
+|  服务名称   | 功能及作用  | 计划开源日期 |
+|  ----  | ---- | ---- |
+| [structor](https://github.com/quanxiang-cloud/structor) | 业务层与数据库之间的抽象层，可以让用户在没有数据库知识的情况下使用数据库。 | 2022/5/17 |
+| process | 流程引擎内核：流程模型定义、流程调度和实例数据记录。 | 2022/6/6 |
+| persona | 应用配置中心：应用个性化配置数据存储。 | 2022/7/1 |
+| kms | 密钥管理：平台密钥管理及签名验证，外部密钥代理及鉴权。 | 待定 |
 
 ## 交流互动
 
 - 💬 公众号：全象云低代码
-- 🤖 Slack Channel（🔧施工中）
-- 🙌 中文论坛（🔧施工中）
+- 🤖 [Slack Channel](https://quanxiangcloud.slack.com/join/shared_invite/zt-17p7ne6h3-WtDNV72vnQ0vl8pdeLxABg)：如果希望认识更多开发者与使用者，可以加入 QuanXiang [Slack](https://quanxiangcloud.slack.com/join/shared_invite/zt-17p7ne6h3-WtDNV72vnQ0vl8pdeLxABg) 群。
+- 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions)：如果在使用过程中遇到了问题，或发现了 bug，可以在 QuanXiang 的[讨论版块](https://github.com/quanxiang-cloud/quanxiang/discussions)中反馈。或者提 issue 也可。
