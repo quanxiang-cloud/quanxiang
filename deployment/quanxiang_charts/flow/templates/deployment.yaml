@@ -12,7 +12,7 @@ metadata:
     deployment.kubernetes.io/revision: '2'
     servicemesh.kubesphere.io/enabled: 'false'
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: flow
@@ -28,6 +28,9 @@ spec:
         app.kubernetes.io/version: v1
         version: v1
       annotations:
+        dapr.io/app-id: flow
+        dapr.io/app-port: '80'
+        dapr.io/enabled: 'true'
         kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
         logging.kubesphere.io/logsidecar-config: '{}'
         sidecar.istio.io/inject: 'false'

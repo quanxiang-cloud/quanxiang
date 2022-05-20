@@ -110,7 +110,9 @@ func Start(kubeconfig,namespace,configFile,depFile,registry,regisUser,regisPass 
 		fmt.Println(err)
 		return
 	}
-	command := "helm install auth " + depFile + "/portalauth" + " --kubeconfig " + kubeconfig + " -n "+ namespace + " --timeout 1800s"
+	command := "helm install searchindex " + depFile + "/search_index" + " --kubeconfig " + kubeconfig + " -n "+ namespace + " --timeout 1800s"
+	execBash(command)
+	command = "helm install auth " + depFile + "/portalauth" + " --kubeconfig " + kubeconfig + " -n "+ namespace + " --timeout 1800s"
 	execBash(command)
 	fmt.Println("----------------------------------------->部署完成")
 }

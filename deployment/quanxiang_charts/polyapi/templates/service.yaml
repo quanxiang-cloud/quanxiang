@@ -21,6 +21,10 @@ spec:
       protocol: TCP
       port: {{ .Values.service.rpcPort }}
       targetPort: 9090
+    - name: faas-proxy
+      protocol: TCP
+      port: 9999
+      targetPort: 9999
   selector:
     app: polyapi
     app.kubernetes.io/version: v1

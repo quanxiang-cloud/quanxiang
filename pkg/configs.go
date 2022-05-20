@@ -78,6 +78,7 @@ type Configs struct {
 	ImagePullSecrets interface{}    `yaml:"imagePullSecrets"`
 	Domain string `yaml:"domain"`
 	Args Args   `yaml:"args"`
+	Persis Persis `yaml:"persis"`
 	Config           Config         `yaml:"config"`
 	Elastic          MiddlewareElastic `yaml:"elastic"`
 	Mongo            MiddlewareMongo   `yaml:"mongo"`
@@ -86,6 +87,10 @@ type Configs struct {
 	Mysql            MiddlewareMysql   `yaml:"mysql"`
 	Etcd             Etcd             `yaml:"etcd"`
 	Redis            MiddlewareRedis   `yaml:"redis"`
+}
+type Persis struct {
+	Enabled bool `yaml:"enabled"`
+	StorageClassName string `yaml:"storageClassName"`
 }
 type Args struct {
 	Enabled bool `yaml:"enabled"`
@@ -107,7 +112,7 @@ type Config struct {
 // Redis
 type Redis struct {
 	Addrs    []string    `yaml:"addrs"`
-	Username interface{} `yaml:"username"`
+	Username string `yaml:"username"`
 	Password string      `yaml:"password"`
 }
 

@@ -5,46 +5,44 @@ metadata:
   namespace: {{ .Values.namespace }}
 
 data:
-  config.yml: |
-    # model 模式 debug|release
-    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
-    model: debug
-    http:
-      port: 80
-      #超时秒计算
-      readHeaderTimeOut: 15
-      writeTimeOut: 600
-      maxHeaderBytes: 1048576
+  config.yml: >
+    # -------------------------------- AppCenter
+    -----------------------------------
 
-    #-------------------mysql配置---------------------
+    app-center:
+      # model: debug|release
+      model: debug
+      http:
+        port: 80
+        readHeaderTimeOut: 15
+        writeTimeOut: 600
+        maxHeaderBytes: 1048576
+
+    # initialized server
+
+    initServerBits: 3
+
+
+    innerHost:
+      structor: "http://structor"
+      flow: "http://flow"
+      polyAPI: "http://polyapi:9090"
+      org: "http://org"
+
+    # import app minimum version
+
+    compatibleVersion: "0.7.3"
+
+
+    # ------------------------------------ Common
+    -----------------------------------
+
     mysql:
       db: {{ .Values.config.mysql.db }}
       host: {{ .Values.config.mysql.host }}
       user: {{ .Values.config.mysql.user }}
       password: {{ .Values.config.mysql.password }}
       log: {{ .Values.config.mysql.log }}
-
-
-
-    #  -------------------- log --------------------
-    # comply with zap log specification
-    log:
-      level: -1
-      development: false
-      sampling:
-        initial: 100
-        thereafter: 100
-      outputPath:
-        - stderr
-      errorOutputPath:
-        - stderr
-
-    #  -------------------- internalNet --------------------
-    internalNet:
-      timeout: 20
-      maxIdleConns: 10
-
-    #-------------------redis配置-----------------
 
     redis:
       {{- with .Values.config.redis.addrs }}
@@ -54,11 +52,46 @@ data:
       username: {{ .Values.config.redis.username }}
       password: {{ .Values.config.redis.password }}
 
-    #----------------内部服务调用Host配置----------
-    innerHost:
-      structor: "http://structor"
-      flow: "http://flow"
-      polyAPI: "http://polyapi:9090"
-      org: "http://org"
-    #----------------导入导出最低版本支持-----------
-    compatibleVersion: "0.7.3"
+    # comply with zap log specification
+
+    log:
+      level: -1
+
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    # ----------------------------------- Chaos
+    -----------------------------------------
+
+    chaos:
+      model: debug
+      http:
+        port: 6666
+
+    # Amount of goroutine to handle tasks
+
+    workLoad: 3
+
+
+    # Maximum number of retries
+
+    maximumRetry: 3
+
+
+    # Duration of retrying
+
+    waitTime: 2
+
+
+    cachePath: /cache/data.tmp
+
+
+    # Custom defination
+
+    kv:
+      form-role: http://form:8080/api/v1/form/%s/internal/apiRole/create
+      form-assign: http://form:8080/api/v1/form/%s/internal/apiRole/grant/assign/%s
+      init-back: http://localhost/api/v1/app-center/initCallBack
+      poly-init: http://polyapi:9090/api/v1/polyapi/inner/initAppPath
+      init-reload: http://localhost/api/v1/app-center/listAppByStatus

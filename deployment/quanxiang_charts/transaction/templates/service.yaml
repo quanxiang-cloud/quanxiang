@@ -10,7 +10,7 @@ metadata:
     version: v1
   annotations:
     kubesphere.io/serviceType: statelessservice
-    servicemesh.kubesphere.io/enabled: 'true'
+    servicemesh.kubesphere.io/enabled: 'false'
 spec:
   ports:
     - name: http-web

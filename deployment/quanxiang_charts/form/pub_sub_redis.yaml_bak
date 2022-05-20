@@ -1,0 +1,16 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: form-pubsub
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+    - name: redisType
+      value: "cluster"
+    - name: redisHost
+      value: {{ .Values.redis.host}}
+    - name: redisPassword
+      value: {{ .Values.redis.password}}
+    - name: maxMessageBytes
+      value: 1024

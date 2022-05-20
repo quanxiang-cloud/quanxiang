@@ -1,20 +1,21 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: structor
+  name: search
   namespace: {{ .Values.namespace }}
   labels:
-    app: structor
+    app: search
     app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
     app.kubernetes.io/version: v1
     version: v1
   annotations:
+    deployment.kubernetes.io/revision: '2'
     servicemesh.kubesphere.io/enabled: 'false'
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: structor
+      app: search
       app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
       app.kubernetes.io/version: v1
       version: v1
@@ -22,7 +23,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: structor
+        app: search
         app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
         app.kubernetes.io/version: v1
         version: v1
@@ -34,17 +35,14 @@ spec:
       volumes:
         - name: volume
           configMap:
-            name: structor
+            name: search
             defaultMode: 420
       containers:
         - name: container
           image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
           ports:
-            - name: structor
+            - name: http-web
               containerPort: 80
-              protocol: TCP
-            - name: structor-inside
-              containerPort: 8080
               protocol: TCP
           resources: {}
           volumeMounts:

@@ -5,17 +5,11 @@ metadata:
   namespace: {{ .Values.namespace }}
 
 data:
-  config.yml: |+
+  config.yml: |-
     # port 端口
     # e.g :80
     port: :80
-
-    # structor in host
-    hostInner: http://structor:8080
-    # structor out host
-    host: http://structor
-    # app-center host
-    appCenterHost: http://app-center
+    portInner: :8080
 
     # model 模式 debug|release
     # debug模式，可以输出更加详细的日志，但是运行速度会减慢
@@ -34,11 +28,19 @@ data:
       errorOutputPath:
         - stderr
 
+    # -------------------- mysql --------------------
+    mysql:
+      db: form
+      host: {{ .Values.config.mysql.host }}
+      user: {{ .Values.config.mysql.user }}
+      password: {{ .Values.config.mysql.password }}
+      log: {{ .Values.config.mysql.log }}
     #  -------------------- internalNet --------------------
     internalNet:
       timeout: 20
       maxIdleConns: 10
 
+    pubSubName : form-pubsub
     # -------------------- service --------------------
     redis:
       {{- with .Values.config.redis.addrs }}
@@ -47,10 +49,71 @@ data:
       {{- end }}
       username: {{ .Values.config.redis.username }}
       password: {{ .Values.config.redis.password }}
+    # -------------------- mongo --------------------**********洗数据要写真正的ip
+    mongo:
+      hosts:
+        - mon:27017
+      direct:
+      credential:
+        authMechanism: SCRAM-SHA-1
+        authSource: admin
+        username: qxp
+        password: ithdVMuaU7r
+        passwordSet: false
+    dapr:
+      pubSubName : form-pubsub
+      topicFlow: form.Flow
+    # -------------------- other service --------------------
+    endpoint:
+      appCenter: "http://app-center"
+      org: "http://org"
+      polyInner: "http://polyapi:9090"
+      structor: "localhost:8081"
+  db_database: structor
+  db_host: '{{ .Values.mongo_host }}'
+  db_password: {{ .Values.config.mongo.credential.password }}
+  db_user_name: {{ .Values.config.mongo.credential.username }}
+  permit.yml: |+
+    # port 端口
+    port: :40001
 
-    # -------------------- kafka --------------------
-    kafka:
-      {{- with .Values.config.kafka.broker }}
-      broker:
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    # --------------------- endpoint -------------
+    endpoint:
+      poly: "http://polyapi"
+      form: "http://localhost:80"
+      formInner: "http://localhost:8080"
+      search: "http://search"
+    # --------------------- transport -----------------
+    transport:
+      timeout: 20s
+      keepAlive: 20s
+      maxIdleConns: 10
+      idleConnTimeout: 20s
+      tlsHandshakeTimeout: 10s
+      expectContinueTimeout: 1s
+
+
+    redis:
+      {{- with .Values.config.redis.addrs }}
+      addrs:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      username: {{ .Values.config.redis.username }}
+      password: {{ .Values.config.redis.password }}

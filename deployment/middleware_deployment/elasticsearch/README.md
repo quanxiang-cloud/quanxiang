@@ -99,8 +99,8 @@ volumes in a StatefulSet. By setting it up this way it makes it possible to add
 more nodes with a new storage size then drain the old ones. It also solves the
 problem of allowing the user to determine which node groups to update first when
 doing upgrades or changes.
-* We have designed this chart to be very un-opinionated about how to configure
-Elasticsearch. It exposes ways to set environment variables and mount secrets
+* W**e have designed this chart to be very un-opinionated about how to configure
+Elasticsearch. It exposes ways to set environment variables** and mount secrets
 inside of the container. Doing this makes it much easier for this chart to
 support multiple versions with minimal changes.
 

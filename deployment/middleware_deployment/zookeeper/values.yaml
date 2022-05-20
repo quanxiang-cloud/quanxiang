@@ -125,7 +125,7 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "csi-standard"
+  storageClass: "csi-high-perf"
   accessMode: ReadWriteOnce
   size: 5Gi
 

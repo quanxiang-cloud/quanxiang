@@ -27,12 +27,6 @@ data:
       password: {{ .Values.config.mysql.password }}
       log: {{ .Values.config.mysql.log }}
 
-    kafka:
-      {{- with .Values.config.kafka.broker }}
-      broker:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-
     #  -------------------- log --------------------
     # comply with zap log specification
     log:
@@ -68,11 +62,22 @@ data:
       resetCode: org_resetcode
       forgetCode: org_forgetcode
       resetPWD: org_resetpwd
-    #--------------------使用的kafka订阅topic-------------------
-    kafkaTopic:
-      messageTopic: "org.message"
 
     #  -------------------- internalNet --------------------
     internalNet:
       timeout: 20
       maxIdleConns: 10
+
+    # -------------------- elastic --------------------
+    elastic:
+      {{- with .Values.config.elastic.host }}
+      host:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      log: {{ .Values.config.elastic.log }}
+
+
+    #------------ 关于ldap登陆------------
+    ldap:
+      open: false
+      regex: yunify.com  #以邮箱后缀名为此的

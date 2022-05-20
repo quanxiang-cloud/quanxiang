@@ -1,6 +1,6 @@
 image:
   name: setauth
-  repo: qxcr.io/qxp
-  tag: v1.0.0
+  repo: qxcr.io/lowcode
+  tag: v1.1.1_nofaas
 namespace: ""
 imagePullSecrets: qxcr

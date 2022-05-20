@@ -31,6 +31,7 @@ type values struct {
 	}
 	Namespace string `yaml:"namespace"`
 	Domain string `yaml:"domain"`
+	Mongo_host string `yaml:"mongo_host"`
 	Args struct{
 		Enabled bool `yaml:"enabled"`
 		Endpoint string `yaml:"endpoint"`
@@ -38,6 +39,10 @@ type values struct {
 	}
 	Kafka struct{
 		Value string `yaml:"value"`
+	}
+	Redis struct{
+		Host string `yaml:"host"`
+		Password string `yaml:"password"`
 	}
 	ImagePullSecrets string `yaml:"imagePullSecrets"`
 	Service struct{
@@ -129,6 +134,16 @@ func ModifyValuesFile(filepath,namespace string,configs *Configs,ngGateWay bool)
 		value.Config.Mysql.User = configs.Config.Mysql.User
 		value.Config.Mysql.Log = configs.Config.Mysql.Log
 	}
+	//value.Config.Redis = configs.Config.Redis
+	if strings.Contains(filepath,"flow"){
+		value.Redis.Host = ""
+		for _,v := range value.Config.Redis.Addrs{
+			value.Redis.Host += v
+			value.Redis.Host += ","
+		}
+		value.Redis.Host = strings.TrimSuffix(value.Redis.Host,",")
+		value.Redis.Password = configs.Config.Redis.Password
+	}
 	if configs.Redis.Enabled{
 		for i,_ := range value.Config.Redis.Addrs{
 			value.Config.Redis.Addrs[i],err = AddrParase(configs.Config.Redis.Addrs[i],namespace)
@@ -142,14 +157,9 @@ func ModifyValuesFile(filepath,namespace string,configs *Configs,ngGateWay bool)
 		value.Config.Redis = configs.Config.Redis
 	}
 	if configs.Elastic.Enabled{
-		value.Config.Elastic.Host[0],err = AddrParase(configs.Config.Elastic.Host[0],namespace)
-		for i,_ := range value.Config.Elastic.Host{
-			if i == 0{
-				continue
-			}else{
-				value.Config.Elastic.Host[i] = ""
-			}
-		}
+		ev,_ := AddrParase(configs.Config.Elastic.Host[0],namespace)
+		elas_v := []string{ev}
+		value.Config.Elastic.Host = elas_v
 		value.Config.Elastic.Log = configs.Config.Elastic.Log
 	}else{
 		value.Config.Elastic = configs.Config.Elastic
@@ -199,6 +209,9 @@ func ModifyValuesFile(filepath,namespace string,configs *Configs,ngGateWay bool)
 	}
 	if strings.Contains(filepath,"polyapi"){
 		value.Ingress.Hosts[0].Host = "polyapi." +  configs.Domain
+	}
+	if strings.Contains(filepath,"form"){
+		value.Mongo_host = value.Config.Mongo.Hosts[0]
 	}
 	if configs.Kafka.Enabled{
 		value.Config.Kafka.Broker[0],err = AddrParase(configs.Config.Kafka.Broker[0],namespace)

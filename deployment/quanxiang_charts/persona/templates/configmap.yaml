@@ -40,7 +40,16 @@ data:
       timeout: 5
 
 
-
+    #-------------------es配置-----------------
+    elasticsearch:
+      {{- with .Values.config.elastic.host }}
+      host:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      log: {{ .Values.config.elastic.log }}
+      timeout: 5
+      cafingerprint:
+      defaultindex: "persona_kv"  # 初始化默认存储index
 
     #  -------------------- internalNet --------------------
     internalNet:

@@ -62,6 +62,7 @@ data:
       orgHost: http://org/
       goalieHost: http://goalie/
       formHost: http://form/
+      formHost: http://form:8080/
       appCenterHost: http://app-center/
       messageCenterHost: http://message/
       structorHost: http://structor/

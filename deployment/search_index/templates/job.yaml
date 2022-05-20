@@ -1,0 +1,34 @@
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: search-job
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: search-job
+spec:
+  parallelism: 1
+  completions: 1
+  activeDeadlineSeconds: 3600
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        app: search-job
+        job-name: search-job
+    spec:
+      containers:
+        - name: container-o55dxy
+          image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: default
+      serviceAccount: default
+      securityContext: {}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      schedulerName: default-scheduler

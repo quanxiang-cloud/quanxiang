@@ -347,6 +347,16 @@ INSERT INTO `role_func` (`id`, `role_id`,`func_id`,`created_at`,`updated_at`)
     VALUES ("67","3","701",0,0);
 COMMIT;
 
-insert into role_owner (`id`, `role_id`, `type`, `owner_id`, `created_at`)values ('1', '1', '1', 'admin',0);
+-- insert into role_owner (`id`, `role_id`, `type`, `owner_id`, `created_at`)values ('1', '1', '1', 'admin',0);
 
-update func set created_at=1629257919 where p_id!='' or p_id is not null
+-- update func set created_at=1629257919 where p_id!='' or p_id is not null
+
+-- 默认超管 --
+insert into role_owner (`id`, `role_id`, `type`, `owner_id`, `created_at`)values ('1', '1', '1', '1',0);
+
+-- role 新增字段 --
+alter table role add created_by varchar(64) null;
+
+alter table role add updated_by varchar(64) null;
+
+alter table role add tenant_id varchar(64) null;

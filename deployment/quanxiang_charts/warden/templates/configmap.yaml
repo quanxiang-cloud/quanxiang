@@ -54,4 +54,12 @@ data:
 
     #  -------------------- orgAPIS --------------------
     orgAPI:
-      loginURL: http://org/api/v1/org/checkPWD
+      host: http://org
+      loginURI: /api/v1/org/h/account/check
+      updateUserStatusURI: /api/v1/org/o/user/update/status
+      updateUsersStatusURI: /api/v1/org/o/user/updates/status
+      adminResetPasswordURI: /api/v1/org/m/account/admin/reset
+      userResetPasswordURI: /api/v1/org/h/account/user/reset
+      userForgetResetPasswordURI: /api/v1/org/h/account/user/forget
+      # exp minute
+      exp: 0

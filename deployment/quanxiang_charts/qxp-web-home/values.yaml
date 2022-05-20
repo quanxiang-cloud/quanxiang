@@ -1,15 +1,19 @@
 image:
   name: qxp-web-home
-  repo: qxcr.io/qxp
-  tag: v1.0.0
+  repo: qxcr.io/lowcode
+  tag: v1.1.1
 namespace: ""
-domain: example.com
+domain: test.com
+mongo_host: ""
 args:
   enabled: true
-  endpoint: example.com:31198
+  endpoint: test.com:31198
   ip: 172.31.162.201
 kafka:
   value: kafka.lowcode.svc.cluster.local:9092
+redis:
+  host: ""
+  password: ""
 imagePullSecrets: ""
 service:
   type: ClusterIP
@@ -17,9 +21,9 @@ service:
   rpcPort: 0
 nameOverride: ""
 fullnameOverride: ""
-websocket_hostname: ws.example.com
-home_hostname: home.example.com
-portal_hostname: portal.example.com
+websocket_hostname: ws.test.com
+home_hostname: home.test.com
+portal_hostname: portal.test.com
 serviceAccount:
   name: ""
 podSecurityContext: {}
@@ -37,13 +41,12 @@ config:
     - example-distributedrediscluster-0.lowcode.svc.cluster.local:6379
     - example-distributedrediscluster-1.lowcode.svc.cluster.local:6379
     - example-distributedrediscluster-2.lowcode.svc.cluster.local:6379
-    username: null
+    username: ""
     password: qxp1234
   elastic:
     log: true
     host:
     - http://elasticsearch-master.lowcode.svc.cluster.local:9200
-    - ""
   kafka:
     broker:
     - kafka.lowcode.svc.cluster.local:9092
@@ -85,7 +88,7 @@ config:
 ingress:
   enabled: true
   hosts:
-  - host: home.example.com
+  - host: home.test.com
     paths:
     - fullName: qxp-web-home
       path: /
