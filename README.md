@@ -16,7 +16,7 @@
 
 [![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/en/roadmap)
 [![](https://img.shields.io/badge/Content-Blog-blue.svg)]()
-[![](https://img.shields.io/badge/release-1.0.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)
+[![](https://img.shields.io/badge/release-1.1.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0)
 [![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
@@ -141,7 +141,7 @@ Before deploying QuanXiang, below options are required in local environment:
 
 ##### Download release
 
-You can download the [release version](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1) directly. **QuanXiang privodes various architecture package.**
+You can download the [release version](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0) directly. **QuanXiang privodes various architecture package.**
 
 ##### Build from source code
 
