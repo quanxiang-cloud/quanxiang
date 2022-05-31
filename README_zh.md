@@ -19,7 +19,7 @@
 
 [![](https://img.shields.io/badge/Roadmap-QuanXiang-orange.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/roadmap)
 [![](https://img.shields.io/badge/Content-Blog-blue.svg)](https://github.com/quanxiang-cloud/website/tree/main/content/zh/blogs)
-[![](https://img.shields.io/badge/release-1.0.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)
+[![](https://img.shields.io/badge/release-1.1.0-brightgreen.svg)](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0)
 [![GitHub contributors](https://img.shields.io/github/contributors/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/quanxiang-cloud/quanxiang)](https://github.com/quanxiang-cloud/quanxiang/issues)
 [![GitHub stars](https://img.shields.io/github/stars/quanxiang-cloud/quanxiang.svg?style=social&label=Stars)](https://github.com/quanxiang-cloud/quanxiang)
@@ -145,7 +145,7 @@ KubeSphere 部署环境的要求如下：
 
 ##### 使用发行版
 
-如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.0.0-rc1)。***注意区别不同版本的系统架构***。
+如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0)。***注意区别不同版本的系统架构***。
 
 ##### 使用源码编译 
 
@@ -256,14 +256,34 @@ KubeSphere 部署环境的要求如下：
 
 请参考官方文档[快速入门](https://docs.clouden.io/quickstart/app_modeling/)。
 
-## 组件开源计划
+## 全象开源组件及功能列表
 
-|  服务名称   | 功能及作用  | 计划开源日期 |
-|  ----  | ---- | ---- |
-| [structor](https://github.com/quanxiang-cloud/structor) | 业务层与数据库之间的抽象层，可以让用户在没有数据库知识的情况下使用数据库。 | 2022/5/17 |
-| process | 流程引擎内核：流程模型定义、流程调度和实例数据记录。 | 2022/6/6 |
-| persona | 应用配置中心：应用个性化配置数据存储。 | 2022/7/1 |
-| kms | 密钥管理：平台密钥管理及签名验证，外部密钥代理及鉴权。 | 待定 |
+| 组件名称 | 组件功能 | 组件链接 |
+| --- | --- | --- |
+| app-center | 应用管理中心：应用基本信息及应用权限管理 |	https://github.com/quanxiang-cloud/appcenter |
+| audit |	无	|
+| dispatcher |	时间调度服务： 定时回掉指定任务接口 |	
+| entrepot	| 任务管理中心：异步任务管理中心	| https://github.com/quanxiang-cloud/entrepot |
+| fileserver |	文件服务：支持 aws s3 协议的对象存储上传与下载 |	https://github.com/quanxiang-cloud/fileserver |
+| flow |	低代码流程引擎：低代码流程定义、低代码业务节点扩展和低代码其它业务整合 | https://github.com/quanxiang-cloud/flow |	
+| form |	表单引擎：表单高级组件、以及 schema 的处理，与 structor 配合使用	| https://github.com/quanxiang-cloud/form |
+| goalie |	权限管理：角色权限管理，RBAC 权限模型	|
+| kms| 	密钥管理：平台密钥管理及签名验证，外部密钥代理及鉴权	| https://github.com/quanxiang-cloud/kms |
+| message |	消息服务：消息内容管理，邮件、站内信分发 | https://github.com/quanxiang-cloud/message |
+| nurturing |	已废弃	|
+| organizations |	组织服务：人员部门等信息管理，内置人员扩展字段服务功能	| https://github.com/quanxiang-cloud/organizations |
+| persona |	应用配置中心：应用个性化配置数据存储	| https://github.com/quanxiang-cloud/persona |
+|polyapi |	API 管理：API 注册，API 文档管理，第三方 API 代理，API 编排，API 统一调用	| https://github.com/quanxiang-cloud/polyapi |
+| polygate	| API 网关：token/signature 认证，透明代理	| https://github.com/quanxiang-cloud/polygate |
+| process |	流程引擎内核：流程模型定义、流程调度和实例数据记录	| https://github.com/quanxiang-cloud/process |
+| qxp-web-home | web 用户端服务	| https://github.com/quanxiang-cloud/qxp-web |
+| qxp-web-nginx	| web 静态文件，后面要废弃 |
+| qxp-web-portal |	web 管理端服务	|
+| structor |	元数据管理：CURD 数据抽象，对接数据库管理	| https://github.com/quanxiang-cloud/structor |
+| transaction |	已废弃	|
+| warden |	认证服务：jwt 协议认证，生产管理 accesstoken，refreshtoken，支持第三方 jwt 协议 sso；|
+
+除此之外，还有我们的博客版块，该部分内容全部是全象开发团队写作分享的一些技术干货，原计划在官网下一版本更新中增加，大家有兴趣可以点击 [Blog](https://github.com/quanxiang-cloud/website/tree/main/content/zh/blogs) 进行查看，也可以访问我们的公众号/[知乎号](https://www.zhihu.com/people/quan-xiang-yun-di-dai-ma/posts)（全象云低代码）查看历史内容。
 
 ## 交流互动
 
