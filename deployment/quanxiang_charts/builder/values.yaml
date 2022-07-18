@@ -1,0 +1,53 @@
+image:
+  name: ""
+  repo: qxcr.io/lowcode
+  tag: v1.1.1
+namespace: ""
+domain: example.com
+mongo_host: ""
+args:
+  enabled: true
+  endpoint: example.com:31198
+  ip: xx.xx.xx.xx
+kafka:
+  value: kafka.lowcode.svc.cluster.local:9092
+redis:
+  host: ""
+  password: ""
+imagePullSecrets: ""
+service:
+  type: ""
+  port: 0
+  rpcPort: 0
+nameOverride: ""
+fullnameOverride: ""
+websocket_hostname: ""
+home_hostname: ""
+portal_hostname: ""
+vendor:
+  protocol: ""
+  hostname: ""
+  port: 0
+serviceAccount:
+  create: true
+  name: builder
+podSecurityContext: {}
+securityContext: {}
+dockerConfig:
+  name: faas-harbor
+  data: 
+
+gitSSH:
+  name: rsa
+  annotations: 
+    tekton.dev/git-0: 
+  ssh_privatekey: 
+  known_hosts: 
+
+ingress:
+  enabled: false
+  hosts: []
+app:
+  kubernetes:
+    io:
+      name: ""

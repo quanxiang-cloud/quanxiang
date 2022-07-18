@@ -3,12 +3,12 @@ image:
   repo: qxcr.io/lowcode
   tag: v1.1.1
 namespace: ""
-domain: test.com
+domain: example.com
 mongo_host: ""
 args:
   enabled: true
-  endpoint: test.com:31198
-  ip: 172.31.162.201
+  endpoint: example.com:31198
+  ip: xx.xx.xx.xx
 kafka:
   value: kafka.lowcode.svc.cluster.local:9092
 redis:
@@ -24,12 +24,16 @@ fullnameOverride: ""
 websocket_hostname: ""
 home_hostname: ""
 portal_hostname: ""
+vendor:
+  protocol: ""
+  hostname: ""
+  port: 0
 serviceAccount:
   name: ""
 podSecurityContext: {}
 securityContext: {}
 config:
-  jwtKey: 7f83737d-3563-4341-8588-0d7dfcba3fe5
+  jwtKey: c0b4d808-1b55-42fa-b12a-6149d716a88e
   mysql:
     db: ""
     host: mysql.lowcode.svc.cluster.local:3306

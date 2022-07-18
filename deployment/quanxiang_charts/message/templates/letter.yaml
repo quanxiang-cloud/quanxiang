@@ -16,7 +16,7 @@ spec:
     - name: http-web
       protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 8081
   selector:
     app: letter
   type: ClusterIP
@@ -51,7 +51,7 @@ spec:
         version: v1
       annotations:
         dapr.io/app-id: letter
-        dapr.io/app-port: '80'
+        dapr.io/app-port: '8081'
         dapr.io/enabled: 'true'
         kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
         logging.kubesphere.io/logsidecar-config: '{}'
@@ -65,7 +65,7 @@ spec:
             - '--message-server=http://message'
           ports:
             - name: http-web
-              containerPort: 80
+              containerPort: 8081
               protocol: TCP
           imagePullPolicy: IfNotPresent
       restartPolicy: Always

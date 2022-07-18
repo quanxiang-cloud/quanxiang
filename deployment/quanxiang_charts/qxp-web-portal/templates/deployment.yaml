@@ -56,6 +56,12 @@ spec:
       dnsPolicy: ClusterFirst
       serviceAccountName: default
       serviceAccount: default
+      {{- if .Values.args.enabled }}
+      hostAliases:
+        - hostnames:
+            - vendors.{{ .Values.domain }}
+          ip: {{ .Values.args.ip }}
+      {{- end }}
       securityContext: {}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}

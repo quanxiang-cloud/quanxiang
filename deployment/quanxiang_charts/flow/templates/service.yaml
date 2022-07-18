@@ -16,7 +16,7 @@ spec:
     - name: flow
       protocol: TCP
       port: {{ .Values.service.port }}
-      targetPort: 80
+      targetPort: 8081
     - name: flow-rpc
       protocol: TCP
       port: {{ .Values.service.rpcPort }}
