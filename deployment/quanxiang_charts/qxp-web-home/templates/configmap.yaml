@@ -53,3 +53,7 @@ data:
       home_hostname: {{ .Values.home_hostname }}
       portal_hostname: {{ .Values.portal_hostname }}
       docs_hostname: docs.clouden.io
+      vendor:
+        protocol: {{ .Values.vendor.protocol }}
+        hostname: {{ .Values.vendor.hostname }}
+        port: {{ .Values.vendor.port }}

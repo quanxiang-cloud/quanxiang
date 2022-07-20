@@ -3,12 +3,12 @@ image:
   repo: qxcr.io/lowcode
   tag: v1.1.1
 namespace: ""
-domain: test.com
+domain: example.com
 mongo_host: ""
 args:
   enabled: true
-  endpoint: test.com:31198
-  ip: 172.31.162.201
+  endpoint: example.com:31198
+  ip: xx.xx.xx.xx
 kafka:
   value: kafka.lowcode.svc.cluster.local:9092
 redis:
@@ -21,9 +21,13 @@ service:
   rpcPort: 0
 nameOverride: ""
 fullnameOverride: ""
-websocket_hostname: ws.test.com
-home_hostname: home.test.com
-portal_hostname: portal.test.com
+websocket_hostname: ws.example.com
+home_hostname: home.example.com
+portal_hostname: portal.example.com
+vendor:
+  protocol: http
+  hostname: vendors.example.com
+  port: 80
 serviceAccount:
   name: ""
 podSecurityContext: {}
@@ -88,7 +92,7 @@ config:
 ingress:
   enabled: true
   hosts:
-  - host: home.test.com
+  - host: home.example.com
     paths:
     - fullName: qxp-web-home
       path: /

@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: message-sms
+  namespace: {{ .Values.namespace }}
+scopes:
+- sms
+spec:
+  pubsubname: message-kafka-pubsub
+  routes:
+    default: /send
+  topic: lowcode.Sms

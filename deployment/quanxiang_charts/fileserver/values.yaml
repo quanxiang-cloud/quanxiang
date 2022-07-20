@@ -3,12 +3,12 @@ image:
   repo: qxcr.io/lowcode
   tag: v1.1.1
 namespace: ""
-domain: test.com
+domain: example.com
 mongo_host: ""
 args:
   enabled: true
-  endpoint: test.com:31198
-  ip: 172.31.162.201
+  endpoint: example.com:31198
+  ip: xx.xx.xx.xx
 kafka:
   value: kafka.lowcode.svc.cluster.local:9092
 redis:
@@ -24,6 +24,10 @@ fullnameOverride: ""
 websocket_hostname: ""
 home_hostname: ""
 portal_hostname: ""
+vendor:
+  protocol: ""
+  hostname: ""
+  port: 0
 serviceAccount:
   name: ""
 podSecurityContext: {}
@@ -84,7 +88,7 @@ config:
 ingress:
   enabled: false
   hosts:
-  - host: '*.fs.test.com'
+  - host: '*.fs.example.com'
     paths:
     - fullName: minio
       path: /

@@ -14,8 +14,9 @@ limitations under the License.
 package pkg
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v2"
 )
 
 // Mysql
@@ -74,29 +75,53 @@ type MiddlewareRedis struct {
 
 // Middleware
 type Configs struct {
-	Image            Image          `yaml:"image"`
-	ImagePullSecrets interface{}    `yaml:"imagePullSecrets"`
-	Domain string `yaml:"domain"`
-	Args Args   `yaml:"args"`
-	Persis Persis `yaml:"persis"`
-	Config           Config         `yaml:"config"`
+	Image            Image             `yaml:"image"`
+	ImagePullSecrets interface{}       `yaml:"imagePullSecrets"`
+	Domain           string            `yaml:"domain"`
+	Args             Args              `yaml:"args"`
+	Persis           Persis            `yaml:"persis"`
+	Faas             Faas              `yaml:"faas"`
+	Config           Config            `yaml:"config"`
 	Elastic          MiddlewareElastic `yaml:"elastic"`
 	Mongo            MiddlewareMongo   `yaml:"mongo"`
 	Kafka            MiddlewareKafka   `yaml:"kafka"`
-	Minio            Minio          `yaml:"minio"`
+	Minio            Minio             `yaml:"minio"`
 	Mysql            MiddlewareMysql   `yaml:"mysql"`
-	Etcd             Etcd             `yaml:"etcd"`
+	Etcd             Etcd              `yaml:"etcd"`
 	Redis            MiddlewareRedis   `yaml:"redis"`
 }
+
+// Faas
+type Git struct {
+	KnownHosts string `yaml:"known_hosts"`
+	Privatekey string `yaml:"privatekey"`
+	GitSSh string `yaml:"gitSSh"`
+	Token string `yaml:"token"`
+}
+
+// Faas
+type Faas struct {
+	Docker Docker `yaml:"docker"`
+	Git    Git    `yaml:"git"`
+}
+
+// Docker
+type Docker struct {
+	Server string `yaml:"server"`
+	Name   string `yaml:"name"`
+	Pass   string `yaml:"pass"`
+}
+
 type Persis struct {
-	Enabled bool `yaml:"enabled"`
+	Enabled          bool   `yaml:"enabled"`
 	StorageClassName string `yaml:"storageClassName"`
 }
 type Args struct {
-	Enabled bool `yaml:"enabled"`
+	Enabled  bool   `yaml:"enabled"`
 	Endpoint string `yaml:"endpoint"`
-	Ip string `yaml:"ip"`
+	Ip       string `yaml:"ip"`
 }
+
 // Config
 type Config struct {
 	Redis   Redis   `yaml:"redis"`
@@ -105,15 +130,15 @@ type Config struct {
 	Mongo   Mongo   `yaml:"mongo"`
 	Email   Email   `yaml:"email"`
 	Storage Storage `yaml:"storage"`
-	Etcd   Etcd   `yaml:"etcd"`
+	Etcd    Etcd    `yaml:"etcd"`
 	Mysql   Mysql   `yaml:"mysql"`
 }
 
 // Redis
 type Redis struct {
-	Addrs    []string    `yaml:"addrs"`
-	Username string `yaml:"username"`
-	Password string      `yaml:"password"`
+	Addrs    []string `yaml:"addrs"`
+	Username string   `yaml:"username"`
+	Password string   `yaml:"password"`
 }
 
 // Minio
@@ -123,11 +148,12 @@ type Minio struct {
 	SecretKey string `yaml:"secretKey"`
 }
 type Etcd struct {
-	Enabled   bool   `yaml:"enabled"`
+	Enabled  bool        `yaml:"enabled"`
 	Addrs    []string    `yaml:"addrs"`
 	Username interface{} `yaml:"username"`
 	Password string      `yaml:"password"`
 }
+
 // Email
 type Email struct {
 	Emails []Emails `yaml:"emails"`
@@ -179,15 +205,15 @@ type MiddlewareMongo struct {
 	Enabled  bool   `yaml:"enabled"`
 }
 
-func ParaseConfig(filepath string) (*Configs,error) {
+func ParaseConfig(filepath string) (*Configs, error) {
 	c := new(Configs)
-	buf,err := ioutil.ReadFile(filepath)
+	buf, err := ioutil.ReadFile(filepath)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	err = yaml.Unmarshal(buf,c)
+	err = yaml.Unmarshal(buf, c)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	return c,nil
+	return c, nil
 }

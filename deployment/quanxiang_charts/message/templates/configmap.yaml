@@ -9,7 +9,7 @@ data:
   config.yml: |
     # port 端口
     # e.g :80
-    port: :80
+    port: :8081
 
     # model 模式 debug|release
     # debug模式，可以输出更加详细的日志，但是运行速度会减慢

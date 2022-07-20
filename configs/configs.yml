@@ -21,7 +21,7 @@ minio:
 #Service profile 服务的配置文件
 image:
   repo: qxcr.io/lowcode
-  tag: v1.1.1
+  tag: v1.1.2
 imagePullSecrets: ""
 domain: example.com       #设置访问平台的域名
 persis:
@@ -31,6 +31,17 @@ args:
   enabled: true   #如果使用的是未被公网解析的域名，需要设置enabled为true
   endpoint: "example.com:31198"    #fileserver 域名    域名要与domain设置的域名一致
   ip: "xx.xx.xx.xx"   #k8s master节点的ip
+faas:
+  git: 
+    known_hosts: "XXX"    #ssh-keyscan -p 22端口 gitlab域名或者ip |base64
+    privatekey: ""   #ssh-keygen -f git_rsa -t rsa -N '' -C "git@yunify.com"
+    gitSSh: ""     #http://gitlab域名或者ip:22端口
+    token: ""   #将公钥写入gitlab并生成token放到这里
+  docker:
+    server: ""
+    name: ""
+    pass: ""
+
 config:
   mysql:
     host: mysql.{{.}}.svc.cluster.local:3306     #如果上面中间件配置中mysql.enabled为true此处为mysql，否则请根据您的设置填写mysql host地址和端口

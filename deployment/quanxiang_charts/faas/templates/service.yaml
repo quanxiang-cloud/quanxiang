@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: faas
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: faas
+spec:
+  ports:
+    - name: http-80
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 32370
+  selector:
+    app: faas
+  type: NodePort
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
