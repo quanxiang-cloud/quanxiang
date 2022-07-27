@@ -1,7 +1,7 @@
 image:
   name: qxp-web-portal
-  repo: qxcr.io/lowcode
-  tag: v1.1.1
+  repo: docker.io/quanxiang
+  tag: v1.1.2
 namespace: ""
 domain: example.com
 mongo_host: ""

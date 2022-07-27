@@ -20,7 +20,7 @@ minio:
   secretKey: Minio123456 #Set Mongo secretKey. Required when enabled is true  设置minio secretKey，enabled为true时必填
 #Service profile 服务的配置文件
 image:
-  repo: qxcr.io/lowcode
+  repo: docker.io/quanxiang
   tag: v1.1.2
 imagePullSecrets: ""
 domain: example.com       #设置访问平台的域名
