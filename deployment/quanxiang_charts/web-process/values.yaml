@@ -1,5 +1,5 @@
 image:
-  name: web-process
+  name: web-processors
   repo: docker.io/quanxiang
   tag: v1.1.2
 namespace: ""
