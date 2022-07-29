@@ -59,10 +59,10 @@ type values struct {
 	Portal_hostname    string `yaml:"portal_hostname"`
 	Vendor             Vendor `yaml:"vendor"`
 	ServiceAccount     struct {
-		Create bool   `yaml:create`
+		Create bool   `yaml:"create"`
 		Name   string `yaml:"name"`
 	} `yaml:"serviceAccount"`
-	ClusterRole ClusterRole `json:"clusterRole"`
+	ClusterRole        ClusterRole            `json:"clusterRole"`
 	PodSecurityContext map[string]interface{} `yaml:"podSecurityContext"`
 	SecurityContext    map[string]interface{} `yaml:"securityContext"`
 	Config             struct {
@@ -107,8 +107,8 @@ type Annotations struct {
 	RbacAuthorizationKubernetesIoAutoupdate string `json:"rbac.authorization.kubernetes.io/autoupdate"`
 }
 type ClusterRole struct {
-	Create bool `json:"create"`
-	Name string `json:"name"`
+	Create      bool        `json:"create"`
+	Name        string      `json:"name"`
 	Annotations Annotations `json:"annotations"`
 }
 
@@ -166,8 +166,8 @@ func ModifyValuesFile(filepath, namespace string, configs *Configs, ngGateWay bo
 		value.Redis.Password = configs.Config.Redis.Password
 	}
 	if configs.Redis.Enabled {
-		for i, _ := range value.Config.Redis.Addrs {
-			value.Config.Redis.Addrs[i], err = AddrParase(configs.Config.Redis.Addrs[i], namespace)
+		for i, v := range value.Config.Redis.Addrs {
+			value.Config.Redis.Addrs[i], err = AddrParase(v, namespace)
 			if err != nil {
 				return err
 			}
@@ -186,7 +186,15 @@ func ModifyValuesFile(filepath, namespace string, configs *Configs, ngGateWay bo
 		value.Config.Elastic = configs.Config.Elastic
 	}
 	if configs.Mongo.Enabled {
-		value.Config.Mongo.Hosts[0], err = AddrParase(configs.Config.Mongo.Hosts[0], namespace)
+		mongoHost, err := AddrParase(configs.Config.Mongo.Hosts[0], namespace)
+		if err != nil {
+			fmt.Println(err)
+		}
+		if len(value.Config.Mongo.Hosts) == 0 {
+			value.Config.Mongo.Hosts = append(value.Config.Mongo.Hosts, mongoHost)
+		}
+		value.Config.Mongo.Hosts[0] = mongoHost
+
 		value.Config.Mongo.Credential = configs.Config.Mongo.Credential
 		value.Config.Mongo.Direct = configs.Config.Mongo.Direct
 	} else {
@@ -194,6 +202,9 @@ func ModifyValuesFile(filepath, namespace string, configs *Configs, ngGateWay bo
 	}
 	if configs.Etcd.Enabled {
 		value.Config.Etcd.Addrs[0], err = AddrParase(configs.Config.Etcd.Addrs[0], namespace)
+		if err != nil {
+			fmt.Println(err)
+		}
 		for i, _ := range value.Config.Etcd.Addrs {
 			if i == 0 {
 				continue
@@ -245,6 +256,9 @@ func ModifyValuesFile(filepath, namespace string, configs *Configs, ngGateWay bo
 	}
 	if configs.Kafka.Enabled {
 		value.Config.Kafka.Broker[0], err = AddrParase(configs.Config.Kafka.Broker[0], namespace)
+		if err != nil {
+			fmt.Println(err)
+		}
 		for i, _ := range value.Config.Kafka.Broker {
 			if i == 0 {
 				continue

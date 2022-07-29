@@ -17,31 +17,30 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"k8s.io/client-go/util/homedir"
 	"path/filepath"
 	"strings"
+
+	"k8s.io/client-go/util/homedir"
 )
 
-func UninstallServece(namespace,depPath,kubeconfig string,uninstallMiddlerware bool) error {
-	if kubeconfig == ""{
+func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerware bool) error {
+	if kubeconfig == "" {
 		if home := homedir.HomeDir(); home != "" {
 			kubeconfig = filepath.Join(home, ".kube", "config")
-		}else {
+		} else {
 			fmt.Println("-------请输入 -k 参数获取kubeconfig信息")
 			return errors.New("NO_KUBECONFIG")
 		}
-	}else {
-		kubeconfig = kubeconfig
 	}
 	fmt.Println("----------------------------------------->开始卸载服务")
-	releases,err := ioutil.ReadDir(depPath + "/quanxiang_charts")
+	releases, err := ioutil.ReadDir(depPath + "/quanxiang_charts")
 	if err != nil {
 		return err
 	}
-	for _,release := range releases{
-		if release.IsDir(){
+	for _, release := range releases {
+		if release.IsDir() {
 			fmt.Println("--------->卸载" + release.Name() + "服务 \n")
-			command := "helm uninstall " + release.Name()  + " --kubeconfig " + kubeconfig + " -n "+ namespace
+			command := "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
 			err := execBash(command)
 			if err != nil {
 				return err
@@ -50,20 +49,20 @@ func UninstallServece(namespace,depPath,kubeconfig string,uninstallMiddlerware b
 			//fmt.Println()
 		}
 	}
-	if uninstallMiddlerware{
+	if uninstallMiddlerware {
 		fmt.Println("----------------------------------------->开始卸载中间件")
-		releases,err = ioutil.ReadDir(depPath + "/middleware_deployment")
+		releases, err = ioutil.ReadDir(depPath + "/middleware_deployment")
 		if err != nil {
 			return err
 		}
-		for _,release := range releases{
-			if release.IsDir(){
+		for _, release := range releases {
+			if release.IsDir() {
 				fmt.Println("--------->卸载" + release.Name() + "服务 \n")
 				var command string
-				if strings.Contains(release.Name(),"dapr"){
-					command = "helm uninstall " + release.Name()  + " --kubeconfig " + kubeconfig + " -n dapr-system"
-				}else{
-					command = "helm uninstall " + release.Name()  + " --kubeconfig " + kubeconfig + " -n "+ namespace
+				if strings.Contains(release.Name(), "dapr") {
+					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n dapr-system"
+				} else {
+					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
 				}
 
 				err := execBash(command)

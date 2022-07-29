@@ -22,6 +22,7 @@ import (
 	"strings"
 	"time"
 )
+
 func tcpGather(ip string, port string) bool {
 	isConn := false
 
@@ -42,33 +43,33 @@ func tcpGather(ip string, port string) bool {
 	return isConn
 }
 
-func InitCondiion(filePath string) (error,map[string]string) {
+func InitCondiion(filePath string) (map[string]string, error) {
 	var NameMapPort = map[string]string{}
-	file,err := ioutil.ReadFile(filePath)
+	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		fmt.Println("读取配置文件错误，请检查！！！")
-		return err,nil
+		return nil, err
 	}
-	err = json.Unmarshal(file,&NameMapPort)
+	err = json.Unmarshal(file, &NameMapPort)
 	if err != nil {
 		fmt.Println("配置文件格式有问题，请检查！！！")
-		return err,nil
+		return nil, err
 	}
-	return nil,NameMapPort
+	return NameMapPort, err
 }
 func TestCondition(filePath string) error {
-	err,TestItems := InitCondiion(filePath)
+	TestItems, err := InitCondiion(filePath)
 	if err != nil {
 		return err
 	}
-	for itemKey,testItem :=range TestItems{
-		ipAndPort := strings.Split(testItem,":")
-		isConn := tcpGather(ipAndPort[0],ipAndPort[1])
+	for itemKey, testItem := range TestItems {
+		ipAndPort := strings.Split(testItem, ":")
+		isConn := tcpGather(ipAndPort[0], ipAndPort[1])
 		if !isConn {
-			fmt.Printf("安装前检查失败：%s 没有就绪！！！ \n",itemKey)
+			fmt.Printf("安装前检查失败：%s 没有就绪！！！ \n", itemKey)
 			return errors.New("NUILL_INSTALL")
 		}
-		fmt.Printf("安装前检查成功：%s 已经就绪！！！ \n",itemKey)
+		fmt.Printf("安装前检查成功：%s 已经就绪！！！ \n", itemKey)
 	}
 	return nil
 }

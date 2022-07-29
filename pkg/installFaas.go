@@ -4,14 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"path/filepath"
+
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
-	"path/filepath"
 	ctrl "sigs.k8s.io/controller-runtime"
 )
 
@@ -48,7 +48,7 @@ type Dockers struct {
 	TenantID  string `gorm:"column:tenant_id;type:varchar(64); " json:"tenantID"`             //租户id
 }
 
-func applyGitSeret(host, know_host, ssh,kubeconfig, namespace string) error {
+func applyGitSeret(host, know_host, ssh, kubeconfig, namespace string) error {
 	if kubeconfig == "" || kubeconfig == "~/.kube/config" {
 		if home := homedir.HomeDir(); home != "" {
 			kubeconfig = filepath.Join(home, ".kube", "config")
@@ -93,19 +93,21 @@ func applyGitSeret(host, know_host, ssh,kubeconfig, namespace string) error {
 	return err
 }
 
-func applyHarbor(username,password,server string) error {
-	command := "kubectl create secret docker-registry faas-harbor --docker-username="+username+" --docker-password="+password+" --docker-server="+server+" -n builder"
+func applyHarbor(username, password, server string) error {
+	command := "kubectl create secret docker-registry faas-harbor --docker-username=" + username + " --docker-password=" + password + " --docker-server=" + server + " -n builder"
 	err := execBash(command)
 	if err != nil {
 		return err
 	}
-	command = "kubectl create secret docker-registry faas-harbor --docker-username="+username+" --docker-password="+password+" --docker-server="+server+" -n serving"
+	command = "kubectl create secret docker-registry faas-harbor --docker-username=" + username + " --docker-password=" + password + " --docker-server=" + server + " -n serving"
 	err = execBash(command)
 	if err != nil {
 		return err
 	}
 	return nil
 }
+
+/*
 func applyFaasSql(msserver,msport,username,password,token,git_host,knows_hosts,ssh,docker_host,docker_username,docker_pass string) error {
 	gits := Gits{}
 	gits.ID="J2P57lAS"
@@ -130,3 +132,4 @@ func applyFaasSql(msserver,msport,username,password,token,git_host,knows_hosts,s
 	db.Create(&docker)
 	return nil
 }
+*/

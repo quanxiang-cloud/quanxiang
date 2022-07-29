@@ -1,46 +1,41 @@
-{{- with .Values.clusterRole }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  {{- with .annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  labels:
-    kubernetes.io/bootstrapping: rbac-defaults
-  name: {{ .name }}
+  name: implant
 rules:
-  - apiGroups:
-      - overseer.quanxiang.cloud.io
-    resources:
-      - builders
-      - overseers
-      - servings
-    verbs:
-      - create
-      - delete
-      - get
-      - list
-      - patch
-      - update
-      - watch
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    verbs:
-      - get
-      - list
-      - watch
-      - create
-      - update
-      - patch
-      - delete
-  - apiGroups:
-      - ""
-    resources:
-      - events
-    verbs:
-      - create
-      - patch
-  {{- end }}
+- apiGroups:
+  - core.openfunction.io
+  resources:
+  - functions
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - tekton.dev
+  resources:
+  - pipelineruns
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - serving.knative.dev
+  resources:
+  - services
+  verbs:
+  - get
+  - list
+  - watch

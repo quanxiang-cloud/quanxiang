@@ -101,16 +101,17 @@ func Start(kubeconfig, namespace, configFile, depFile, registry, regisUser, regi
 				}
 			}
 			var command string
-			if strings.Contains(release.Name(), "builder") {
+			switch {
+			case strings.Contains(release.Name(), "builder"):
 				command = "helm install " + release.Name() + " " + depFile + "/quanxiang_charts/" + release.Name() + " --kubeconfig " + kubeconfig + " -n builder" + " --timeout 1800s --create-namespace"
-			}
-			if strings.Contains(release.Name(), "serving") {
+			case strings.Contains(release.Name(), "serving"):
 				command = "helm install " + release.Name() + " " + depFile + "/quanxiang_charts/" + release.Name() + " --kubeconfig " + kubeconfig + " -n serving" + " --timeout 1800s --create-namespace"
-			}
-			if strings.Contains(release.Name(), "fluent") {
+			case strings.Contains(release.Name(), "fluent"):
 				command = "helm install " + release.Name() + " " + depFile + "/quanxiang_charts/" + release.Name() + " --kubeconfig " + kubeconfig + " -n builder" + " --timeout 1800s --create-namespace"
+			default:
+				command = "helm install " + release.Name() + " " + depFile + "/quanxiang_charts/" + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace + " --timeout 1800s --create-namespace"
+
 			}
-			command = "helm install " + release.Name() + " " + depFile + "/quanxiang_charts/" + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace + " --timeout 1800s --create-namespace"
 			execBash(command)
 			fmt.Printf("--------->%s 部署完成，如果出现Error错误请参照检查 \n", strings.Split(command, " ")[2])
 			fmt.Println()
@@ -122,12 +123,12 @@ func Start(kubeconfig, namespace, configFile, depFile, registry, regisUser, regi
 		fmt.Println(err)
 		return
 	}
-	err = applyGitSeret(configs.Faas.Git.GitSSh,configs.Faas.Git.KnownHosts,configs.Faas.Git.Privatekey,kubeconfig,namespace)
+	err = applyGitSeret(configs.Faas.Git.GitSSh, configs.Faas.Git.KnownHosts, configs.Faas.Git.Privatekey, kubeconfig, namespace)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	err = applyHarbor(configs.Faas.Docker.Name,configs.Faas.Docker.Pass,configs.Faas.Docker.Server)
+	err = applyHarbor(configs.Faas.Docker.Name, configs.Faas.Docker.Pass, configs.Faas.Docker.Server)
 	if err != nil {
 		fmt.Println(err)
 		return

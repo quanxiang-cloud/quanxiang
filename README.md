@@ -105,10 +105,13 @@ QuanXiang privodes a deployment tool, which can help user to quckly deploy QuanX
 ### Prerequisites
 
 - Kubernetes cluster environment
+- OpenFunction v0.6.0
 
 ### Deploy QuanXiang on KubeShpere(recommend)
 
-#### Step 1. Deploy KubeSphere
+#### Step 1. Deploy KubeSphere and Openfunction
+
+##### KubeSphere
 
 - Deploy KubeSphere manully, refer [office documentation](https://kubesphere.io/docs/) for more details.
 - Using [KubeSphere(R)（QKE） ](https://docsv3.qingcloud.com/container/qke/)(recommend) to deploy KubeShere cluster, which is high availability and support automatic inspection and repair.
@@ -119,6 +122,11 @@ KubeSphere cluster requirments:
 | --------- | -------- | -------------------------------------- |
 | Master    | 1        | CPU: 4 core, Memory: 8 GB, Disk: 80 GB |
 | Worker    | 5        | CPU: 4 core, Memory: 8 GB, Disk: 80 GB |
+
+##### OpenFunction
+
+- Deploy Openfunction manully, refer [office documentation](https://openfunction.dev/docs/getting-started/installation/)
+
 
 > **Notice**
 >
