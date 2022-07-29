@@ -48,3 +48,9 @@ data:
       {{- end }}
       username: {{ .Values.config.redis.username }}
       password: {{ .Values.config.redis.password }}
+    #  -------------------- internal server client --------------------
+    api:
+      orgHost: http://org
+      flowHost: http://flow
+
+    flowRpcServer: flow:9081
