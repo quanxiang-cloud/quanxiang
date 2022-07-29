@@ -232,7 +232,7 @@ Refer [KubeSphere official documentation](https://kubesphere.io/docs/project-adm
 
 ##### Access QuanXiang
 
-To access QuanxiangCloud console, you should configure your hosts file or add dns records into dns server. Use default admin user and password `Admin@Admin.com)/654321a..` to login.
+To access QuanxiangCloud console, you should configure your hosts file or add dns records into dns server. Use default admin user and password `admin@quanxiang.dev/654321a..` to login.
 
 - Go to [http://portal.qxp.com](http://portal.qxp.com/) to access QuanxiangCloud administration console.
 - Go to [http://home.qxp.com](http://home.qxp.com/) to access QuanxiangCloud client console.

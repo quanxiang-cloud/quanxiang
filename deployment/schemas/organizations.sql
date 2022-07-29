@@ -188,7 +188,7 @@ create table org_user_leader_relation
 INSERT INTO org_user
 (id, name, phone, email, self_email, id_card, address, use_status, tenant_id, position, avatar, job_number, gender, source, password_status, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by)
 VALUES
-    ('1', 'SuperAdmin', '13888886666', 'admin@yunify.com', 'admin@yunify.com', '', '', 1, '', '', '', '', 1, '', 1, 1649429260908, 1649433071, 0, '', '', '');
+    ('1', 'SuperAdmin', '13888886666', 'admin@quanxiang.dev', 'admin@quanxiang.dev', '', '', 1, '', '', '', '', 1, '', 1, 1649429260908, 1649433071, 0, '', '', '');
 
 
 INSERT INTO org_department
@@ -201,7 +201,7 @@ VALUES
 INSERT INTO org_user_account
 (id, account, user_id, password, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id)
 VALUES
-    ('1', 'admin@yunify.com', '1', '24d04ec3c9f0e285791035a47ba3e61a', 1635761030, 1649433067, 0, '', '', '', '');
+    ('1', 'admin@quanxiang.dev', '1', '24d04ec3c9f0e285791035a47ba3e61a', 1635761030, 1649433067, 0, '', '', '', '');
 
 
 

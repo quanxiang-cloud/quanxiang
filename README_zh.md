@@ -241,7 +241,7 @@ KubeSphere 部署环境的要求如下：
 
 ##### 配置访问
 
-访问 QuanxiangCloud 控制台，需要使用域名进行访问，可以配置 dns 或者指定本地 hosts 的方式进行访问。默认的用户名和密码是`Admin@Admin.com/654321a..`
+访问 QuanxiangCloud 控制台，需要使用域名进行访问，可以配置 dns 或者指定本地 hosts 的方式进行访问。默认的用户名和密码是`admin@quanxiang.dev/654321a..`
 
 - 通过 http://portal.qxp.com 访问 QuanxiangCloud 的管理端控制台。
 - 通过 http://home.qxp.com 访问 QuanxiangCloud 的用户端。
