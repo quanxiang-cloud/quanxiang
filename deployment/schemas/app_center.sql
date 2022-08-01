@@ -94,4 +94,6 @@ alter table t_app_center
 
 ALTER TABLE t_app_center ADD COLUMN server INT COMMENT 'initialized modules of app' AFTER use_status;
 
+ALTER table t_app_center ADD per_poly BOOLEAN default  false ;
+
 -- update t_app_center set use_status = -5;
