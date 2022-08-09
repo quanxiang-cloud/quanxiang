@@ -104,7 +104,7 @@ QuanXiang privodes a deployment tool, which can help user to quckly deploy QuanX
 
 ### Prerequisites
 
-- Kubernetes cluster environment
+- Kubernetes cluster environment  v1.21.*
 - OpenFunction v0.6.0
 
 ### Deploy QuanXiang on KubeShpere(recommend)
