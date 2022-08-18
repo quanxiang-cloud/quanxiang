@@ -80,14 +80,14 @@ Return the appropriate apiVersion for ingress.
 {{- else if semverCompare "<1.14-0" (include "common.capabilities.kubeVersion" .) -}}
 {{- print "extensions/v1beta1" -}}
 {{- else if semverCompare "<1.19-0" (include "common.capabilities.kubeVersion" .) -}}
-{{- print "networking.k8s.io/v1beta1" -}}
+{{- print "networking.k8s.io/v1" -}}
 {{- else -}}
 {{- print "networking.k8s.io/v1" -}}
 {{- end }}
 {{- else if semverCompare "<1.14-0" (include "common.capabilities.kubeVersion" .) -}}
 {{- print "extensions/v1beta1" -}}
 {{- else if semverCompare "<1.19-0" (include "common.capabilities.kubeVersion" .) -}}
-{{- print "networking.k8s.io/v1beta1" -}}
+{{- print "networking.k8s.io/v1" -}}
 {{- else -}}
 {{- print "networking.k8s.io/v1" -}}
 {{- end -}}

@@ -113,7 +113,7 @@ create table projects
     version      varchar(30)  null,
     status       int          null,
     user_id      varchar(64)  null,
-    repo_url     varchar(200) null
+    repo_url     text null
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 create table users

@@ -10,7 +10,7 @@ args:
   endpoint: example.com:31198
   ip: xx.xx.xx.xx
 kafka:
-  value: kafka.lowcode.svc.cluster.local:9092
+  value: kafka.{{.}}.svc.cluster.local:9092
 redis:
   host: ""
   password: ""
@@ -36,29 +36,29 @@ config:
   jwtKey: ""
   mysql:
     db: ""
-    host: mysql.lowcode.svc.cluster.local:3306
+    host: mysql.{{.}}.svc.cluster.local:3306
     user: root
     password: qxp1234
     log: true
   redis:
     addrs:
-    - example-distributedrediscluster-0.lowcode.svc.cluster.local:6379
-    - example-distributedrediscluster-1.lowcode.svc.cluster.local:6379
-    - example-distributedrediscluster-2.lowcode.svc.cluster.local:6379
+    - redis-cluster-0.redis-cluster-headless.{{.}}.svc.cluster.local:6379
+    - redis-cluster-1.redis-cluster-headless.{{.}}.svc.cluster.local:6379
+    - redis-cluster-2.redis-cluster-headless.{{.}}.svc.cluster.local:6379
     username: ""
     password: qxp1234
   elastic:
     log: true
     host:
-    - http://elasticsearch-master.lowcode.svc.cluster.local:9200
+    - http://elasticsearch-master.{{.}}.svc.cluster.local:9200
   kafka:
     broker:
-    - kafka.lowcode.svc.cluster.local:9092
+    - kafka.{{.}}.svc.cluster.local:9092
     - ""
     - ""
   mongo:
     hosts:
-    - mongodb.lowcode.svc.cluster.local:27017
+    - mongodb.{{.}}.svc.cluster.local:27017
     - ""
     - ""
     direct: false
@@ -68,12 +68,6 @@ config:
       username: root
       password: qxp1234
       passwordSet: false
-  etcd:
-    enabled: false
-    addrs:
-    - etcd-cluster.lowcode.svc.cluster.local:2379
-    username: null
-    password: ""
   storage:
     option: minio
     urlExpire: 600

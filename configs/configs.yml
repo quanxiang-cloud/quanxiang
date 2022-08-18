@@ -4,12 +4,10 @@ mysql:
   rootPassword: qxp1234     #It is required to set the root user password if enabled equal to true    设置root用户密码 enabled为true时必填
 redis:
   enabled: true
-  password: cXhwMTIzNA==    #The password here is the base64 code of the password. For example, the base64 code of qxp1234 is cxhwmjm0cg==  这里的password为密码的base64编码，比如qxp1234的base64编码为cXhwMjM0Cg==
+  password: qxp1234    #It is required to set the user password if enabled equal to true 设置用户密码 enabled为true时必填
 kafka:
   enabled: true
 elastic:
-  enabled: true
-etcd:
   enabled: true
 mongo:
   enabled: true
@@ -50,9 +48,9 @@ config:
     log: true
   redis:
     addrs:
-      - example-distributedrediscluster-0.{{.}}.svc.cluster.local:6379     #如果上面中间件配置中redis.enabled为true此处不需要更改，否则请根据您的设置填写redis ip地址和端口
-      - example-distributedrediscluster-1.{{.}}.svc.cluster.local:6379
-      - example-distributedrediscluster-2.{{.}}.svc.cluster.local:6379
+      - redis-cluster-0.redis-cluster-headless.{{.}}.svc.cluster.local:6379     #如果上面中间件配置中redis.enabled为true此处不需要更改，否则请根据您的设置填写redis ip地址和端口
+      - redis-cluster-1.redis-cluster-headless.{{.}}.svc.cluster.local:6379
+      - redis-cluster-2.redis-cluster-headless.{{.}}.svc.cluster.local:6379
     username:
     password: qxp1234    #如果上面中间件配置中redis.enabled为true此处为上述中间件配置中的redis.password，否则请根据您的设置填写您的redis密码
   elastic:
@@ -83,12 +81,6 @@ config:
 #  email:
 #    emails:
 #      - { emailfrom: "XXX@XXX.com",username: "XXX",aliasname: "别名",password: "XXX",host: "邮件服务器地址",port: 111 }  #设置email信息以接收验证码
-
-  etcd:
-    addrs:
-      - etcd-cluster.{{.}}.svc.cluster.local:2379     #如果上面中间件配置中etcd.enabled为true此处不需要更改，否则请根据您的设置填写etcd ip地址和端口
-    username:
-    password:
   storage:
     option: minio
     urlExpire: 600

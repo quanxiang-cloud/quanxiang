@@ -95,7 +95,7 @@ data:
           "fmt"
           "net/http"
 
-          "github.com/quanxiang-cloud/faas-lowcode-interface/lowcode"
+          "github.com/quanxiang-cloud/faas-{{.}}-interface/{{.}}"
         )
 
         type Request struct {
@@ -116,7 +116,7 @@ data:
         // @Router / [post]
         func Handle(w http.ResponseWriter, r *http.Request) {
           ctx := r.Context()
-          _, ok := ctx.Value(lowcode.LOWCODE).(lowcode.Lowcode)
+          _, ok := ctx.Value({{.}}.LOWCODE).(lowcode.Lowcode)
           if !ok {
             fmt.Printf("error")
             return

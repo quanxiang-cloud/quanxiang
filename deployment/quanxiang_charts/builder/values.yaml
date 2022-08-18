@@ -10,7 +10,7 @@ args:
   endpoint: example.com:31198
   ip: xx.xx.xx.xx
 kafka:
-  value: kafka.lowcode.svc.cluster.local:9092
+  value: kafka.{{.}}.svc.cluster.local:9092
 redis:
   host: ""
   password: ""
