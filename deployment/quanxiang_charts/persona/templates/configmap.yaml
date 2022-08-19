@@ -29,17 +29,6 @@ data:
       errorOutputPath:
         - stderr
 
-    #-------------------etcd配置-----------------
-    etcd:
-      {{- with .Values.config.etcd.addrs }}
-      addrs:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      username: {{ .Values.config.etcd.username }}
-      password: {{ .Values.config.etcd.password }}
-      timeout: 5
-
-
     #-------------------es配置-----------------
     elasticsearch:
       {{- with .Values.config.elastic.host }}

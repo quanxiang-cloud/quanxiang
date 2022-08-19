@@ -51,4 +51,4 @@ spec:
         - name: HOST
           value: "$(params.HOST)"
         - name: POLYAPI_PATH
-          value: http://polyapi.lowcode.svc.cluster.local:9090/api/v1/polyapi/inner/regSwaggerAlone/system/app/$(params.APPID)/raw/faas/$(params.GROUP_NAME)/$(params.PROJECT_NAME)
+          value: http://polyapi.{{.}}.svc.cluster.local:9090/api/v1/polyapi/inner/regSwaggerAlone/system/app/$(params.APPID)/raw/faas/$(params.GROUP_NAME)/$(params.PROJECT_NAME)

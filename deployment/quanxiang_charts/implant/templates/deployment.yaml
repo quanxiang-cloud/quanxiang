@@ -37,9 +37,9 @@ spec:
           image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
           args:
             - '-target=midfielder:8080'
-            - '-lease-lock-namespace=lowcode'
+            - '-lease-lock-namespace={{.}}'
             - '-lease-lock-name=implant'
-            - '-namespace=lowcode'
+            - '-namespace={{.}}'
           ports:
             - name: http-web
               containerPort: 80

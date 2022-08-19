@@ -59,9 +59,16 @@ func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerwar
 			if release.IsDir() {
 				fmt.Println("--------->卸载" + release.Name() + "服务 \n")
 				var command string
-				if strings.Contains(release.Name(), "dapr") {
+				switch {
+				case strings.Contains(release.Name(), "dapr"):
 					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n dapr-system"
-				} else {
+				case strings.Contains(release.Name(), "builder"):
+					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n builder"
+				case strings.Contains(release.Name(), "serving"):
+					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n serving"
+				case strings.Contains(release.Name(), "fluent"):
+					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n builder"
+				default:
 					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
 				}
 

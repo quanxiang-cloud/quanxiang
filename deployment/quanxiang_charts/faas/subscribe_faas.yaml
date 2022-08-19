@@ -3,7 +3,7 @@ kind: Subscription
 metadata:
   name: faas-dapr
 spec:
-  topic: lowcode.faas
+  topic: {{.}}.faas
   route:  /event
   pubsubname: faas-redis-pubsub
 scopes:
