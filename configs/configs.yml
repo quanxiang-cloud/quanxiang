@@ -19,7 +19,7 @@ minio:
 #Service profile 服务的配置文件
 image:
   repo: docker.io/quanxiang
-  tag: v1.1.2
+  tag: v1.1.2-rc1
 imagePullSecrets: ""
 domain: example.com       #设置访问平台的域名
 persis:

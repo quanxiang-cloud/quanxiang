@@ -106,17 +106,14 @@ func Start(kubeconfig, namespace, configFile, depFile, registry, regisUser, regi
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, "builder")
 			case strings.Contains(release.Name(), "serving"):
-				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s --timeout 1800s --create-namespace",
+				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n serving --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, "serving")
 			case strings.Contains(release.Name(), "fluent"):
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, "builder")
-			case strings.Contains(release.Name(), "implant"):
+			default:
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n %s --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, namespace, namespace)
-			default:
-				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n %s --timeout 1800s --create-namespace",
-					release.Name(), depFile, release.Name(), kubeconfig, namespace)
 			}
 			execBash(command)
 			fmt.Printf("--------->%s 部署完成，如果出现Error错误请参照检查 \n", strings.Split(command, " ")[2])

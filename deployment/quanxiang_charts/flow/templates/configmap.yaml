@@ -61,13 +61,14 @@ data:
     api:
       orgHost: http://org/
       goalieHost: http://goalie/
-      formHost: http://form/
       formHost: http://form:8080/
       appCenterHost: http://app-center/
       messageCenterHost: http://message/
       structorHost: http://structor/
       dispatcherHost: http://dispatcher/
       processHost: http://process/
+      polyAPIHost: http://polyapi:9090/
+      homeHost: http://home.faasall.com/
 
     # ----------------------rpc config-----------------------------------
     Name: message.rpc

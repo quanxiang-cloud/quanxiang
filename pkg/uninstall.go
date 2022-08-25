@@ -40,7 +40,18 @@ func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerwar
 	for _, release := range releases {
 		if release.IsDir() {
 			fmt.Println("--------->卸载" + release.Name() + "服务 \n")
-			command := "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
+			var command string
+			switch {
+			case strings.Contains(release.Name(), "builder"):
+				command = fmt.Sprintf("helm uninstall %s --kubeconfig %s -n builder", release.Name(), kubeconfig)
+			case strings.Contains(release.Name(), "serving"):
+				command = fmt.Sprintf("helm uninstall %s --kubeconfig %s -n serving", release.Name(), kubeconfig)
+			case strings.Contains(release.Name(), "fluent"):
+				command = fmt.Sprintf("helm uninstall %s  --kubeconfig %s -n builder ", release.Name(), kubeconfig)
+			default:
+				command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
+			}
+
 			err := execBash(command)
 			if err != nil {
 				return err
@@ -62,12 +73,14 @@ func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerwar
 				switch {
 				case strings.Contains(release.Name(), "dapr"):
 					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n dapr-system"
-				case strings.Contains(release.Name(), "builder"):
-					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n builder"
-				case strings.Contains(release.Name(), "serving"):
-					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n serving"
-				case strings.Contains(release.Name(), "fluent"):
-					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n builder"
+					/*
+						case strings.Contains(release.Name(), "builder"):
+							command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n builder"
+						case strings.Contains(release.Name(), "serving"):
+							command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n serving"
+						case strings.Contains(release.Name(), "fluent"):
+							command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n builder"
+					*/
 				default:
 					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
 				}
