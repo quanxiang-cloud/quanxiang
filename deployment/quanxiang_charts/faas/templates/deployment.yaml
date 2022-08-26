@@ -51,6 +51,8 @@ spec:
       containers:
         - name: container
           image: '{{ .Values.image.repo }}/{{ .Values.image.name }}:{{ .Values.image.tag }}'
+          args:
+            - '--config=/configs/config.yml'
           ports:
             - name: faas
               containerPort: 80
