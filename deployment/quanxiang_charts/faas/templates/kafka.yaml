@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: faas-redis-pubsub
+  name: faas-pubsub
 spec:
   type: pubsub.kafka
   version: v1
@@ -13,3 +13,5 @@ spec:
       value: "false"
     - name: maxMessageBytes
       value: 1024
+    - name: disableTls
+      value: "true"

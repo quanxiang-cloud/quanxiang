@@ -8,7 +8,7 @@ redis:
 kafka:
   enabled: true
 dapr:
-  enabled: true
+  enabled: false
 elastic:
   enabled: true
 mongo:

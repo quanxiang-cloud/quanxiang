@@ -14,3 +14,5 @@ spec:
       value: "false"
     - name: maxMessageBytes
       value: 1024
+    - name: disableTls
+      value: "true"

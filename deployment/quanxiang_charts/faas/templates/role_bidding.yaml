@@ -9,4 +9,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: qxp-faas
-    namespace: lowcode
+    namespace: {{ .Values.namespace }}
