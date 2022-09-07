@@ -61,7 +61,7 @@ spec:
         - name: letter
           image: '{{ .Values.image.repo }}/letter:{{ .Values.image.tag }}'
           args:
-            - '--port=:80'
+            - '--port=:8081'
             - '--message-server=http://message'
           ports:
             - name: http-web

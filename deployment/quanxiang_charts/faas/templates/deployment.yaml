@@ -36,7 +36,7 @@ spec:
         version: v1
       annotations:
         dapr.io/app-id: faas-dapr
-        dapr.io/app-port: '80'
+        dapr.io/app-port: '8081'
         dapr.io/enabled: 'true'
         kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
         kubesphere.io/restartedAt: '2022-06-09T06:40:16.101Z'
@@ -55,7 +55,7 @@ spec:
             - '--config=/configs/config.yml'
           ports:
             - name: faas
-              containerPort: 80
+              containerPort: 8081
               protocol: TCP
           resources: {}
           volumeMounts:

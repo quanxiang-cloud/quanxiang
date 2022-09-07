@@ -10,7 +10,7 @@ spec:
     - name: http-80
       protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 8081
       nodePort: 32370
   selector:
     app: faas
