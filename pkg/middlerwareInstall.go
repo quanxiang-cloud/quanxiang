@@ -33,11 +33,14 @@ func middlewareInstall(namespace, depPath, kubeconfig, registry string, configs 
 		}
 	}
 	if !isOffline {
-		err := installDapr(depPath, kubeconfig)
-		if err != nil {
-			fmt.Println("安装dapr时出现错误，请检查")
-			return needMiddleware, err
+		if configs.Dapr.Enabled {
+			err := installDapr(depPath, kubeconfig)
+			if err != nil {
+				fmt.Println("安装dapr时出现错误，请检查")
+				return needMiddleware, err
+			}
 		}
+
 		if configs.Mysql.Enabled {
 			needMiddleware = true
 			err := mysqlInstall(namespace, depPath, configs.Mysql.RootPassword, kubeconfig, configs.Persis)

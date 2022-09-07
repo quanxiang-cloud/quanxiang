@@ -12,5 +12,9 @@ spec:
       value: {{ .Values.kafka.value }}
     - name: authRequired
       value: "false"
+    - name: authType # Required.
+      value: "none"
     - name: maxMessageBytes
       value: 1024
+    - name: disableTls
+      value: "true"

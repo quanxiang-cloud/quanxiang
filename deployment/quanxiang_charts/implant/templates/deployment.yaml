@@ -33,7 +33,7 @@ spec:
             - '-svc-namespace'
             - serving
             - '-pubsub'
-            - faas-redis-pubsub
+            - faas-pubsub
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File

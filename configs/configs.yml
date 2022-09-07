@@ -7,6 +7,8 @@ redis:
   password: qxp1234    #It is required to set the user password if enabled equal to true 设置用户密码 enabled为true时必填
 kafka:
   enabled: true
+dapr:
+  enabled: false
 elastic:
   enabled: true
 mongo:

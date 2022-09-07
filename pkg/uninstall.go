@@ -23,7 +23,7 @@ import (
 	"k8s.io/client-go/util/homedir"
 )
 
-func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerware bool) error {
+func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerware bool, skipDapr bool) error {
 	if kubeconfig == "" {
 		if home := homedir.HomeDir(); home != "" {
 			kubeconfig = filepath.Join(home, ".kube", "config")
@@ -51,7 +51,6 @@ func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerwar
 			default:
 				command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
 			}
-
 			err := execBash(command)
 			if err != nil {
 				return err
@@ -84,11 +83,15 @@ func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerwar
 				default:
 					command = "helm uninstall " + release.Name() + " --kubeconfig " + kubeconfig + " -n " + namespace
 				}
-
-				err := execBash(command)
-				if err != nil {
-					return err
+				if skipDapr && strings.Contains(release.Name(), "dapr") {
+					fmt.Println("跳过Dapr系统的卸载")
+				} else {
+					err := execBash(command)
+					if err != nil {
+						return err
+					}
 				}
+
 			}
 		}
 	}

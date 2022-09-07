@@ -12,7 +12,7 @@ metadata:
   annotations:
     deployment.kubernetes.io/revision: '69'
     meta.helm.sh/release-name: web-processors
-    meta.helm.sh/release-namespace: lowcode
+    meta.helm.sh/release-namespace: {{ .Values.namespace }}
     servicemesh.kubesphere.io/enabled: 'false'
 spec:
   replicas: 1

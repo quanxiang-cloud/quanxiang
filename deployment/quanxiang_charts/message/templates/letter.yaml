@@ -51,7 +51,7 @@ spec:
         version: v1
       annotations:
         dapr.io/app-id: letter
-        dapr.io/app-port: '80'
+        dapr.io/app-port: '8081'
         dapr.io/enabled: 'true'
         kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
         logging.kubesphere.io/logsidecar-config: '{}'
@@ -61,7 +61,7 @@ spec:
         - name: letter
           image: '{{ .Values.image.repo }}/letter:{{ .Values.image.tag }}'
           args:
-            - '--port=:80'
+            - '--port=:8081'
             - '--message-server=http://message'
           ports:
             - name: http-web

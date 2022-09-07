@@ -89,14 +89,15 @@ type Configs struct {
 	Mysql            MiddlewareMysql   `yaml:"mysql"`
 	Etcd             Etcd              `yaml:"etcd"`
 	Redis            MiddlewareRedis   `yaml:"redis"`
+	Dapr             Dapr              `yaml:"dapr"`
 }
 
 // Faas
 type Git struct {
 	KnownHosts string `yaml:"known_hosts"`
 	Privatekey string `yaml:"privatekey"`
-	GitSSh string `yaml:"gitSSh"`
-	Token string `yaml:"token"`
+	GitSSh     string `yaml:"gitSSh"`
+	Token      string `yaml:"token"`
 }
 
 // Faas
@@ -132,6 +133,10 @@ type Config struct {
 	Storage Storage `yaml:"storage"`
 	Etcd    Etcd    `yaml:"etcd"`
 	Mysql   Mysql   `yaml:"mysql"`
+}
+
+type Dapr struct {
+	Enabled bool `yaml:"enabled"`
 }
 
 // Redis
