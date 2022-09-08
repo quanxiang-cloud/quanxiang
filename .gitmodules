@@ -1,0 +1,63 @@
+[submodule "message"]
+	path = message
+	url = git@github.com:quanxiang-cloud/message.git
+[submodule "appcenter"]
+	path = appcenter
+	url = git@github.com:quanxiang-cloud/appcenter.git
+[submodule "organizations"]
+	path = organizations
+	url = git@github.com:quanxiang-cloud/organizations.git
+[submodule "flow"]
+	path = flow
+	url = git@github.com:quanxiang-cloud/flow.git
+[submodule "dispatcher"]
+	path = dispatcher
+	url = git@github.com:quanxiang-cloud/dispatcher.git
+[submodule "entrepot"]
+	path = entrepot
+	url = git@github.com:quanxiang-cloud/entrepot.git
+[submodule "faas"]
+	path = faas
+	url = git@github.com:quanxiang-cloud/faas.git
+[submodule "form"]
+	path = form
+	url = git@github.com:quanxiang-cloud/form.git
+[submodule "search"]
+	path = search
+	url = git@github.com:quanxiang-cloud/search.git
+[submodule "persona"]
+	path = persona
+	url = git@github.com:quanxiang-cloud/persona.git
+[submodule "audit"]
+	path = audit
+	url = git@github.com:quanxiang-cloud/audit.git
+[submodule "warden"]
+	path = warden
+	url = git@github.com:quanxiang-cloud/warden.git
+[submodule "kms"]
+	path = kms
+	url = git@github.com:quanxiang-cloud/kms.git
+[submodule "structor"]
+	path = structor
+	url = git@github.com:quanxiang-cloud/structor.git
+[submodule "polyapi"]
+	path = polyapi
+	url = git@github.com:quanxiang-cloud/polyapi.git
+[submodule "implant"]
+	path = implant
+	url = git@github.com:quanxiang-cloud/implant.git
+[submodule "builder"]
+	path = builder
+	url = git@github.com:quanxiang-cloud/builder.git
+[submodule "fileserver"]
+	path = fileserver
+	url = git@github.com:quanxiang-cloud/fileserver.git
+[submodule "web-processors"]
+	path = web-processors
+	url = git@github.com:quanxiang-cloud/web-processors.git
+[submodule "polygate"]
+	path = polygate
+	url = git@github.com:quanxiang-cloud/polygate.git
+[submodule "process"]
+	path = process
+	url = git@github.com:quanxiang-cloud/process.git
