@@ -46,6 +46,8 @@ data:
 
     docker:
       namespace: faas
+      builder: builder
+      serving: serving
 
 
     # ---------- redis ----------
@@ -95,7 +97,7 @@ data:
           "fmt"
           "net/http"
 
-          "github.com/quanxiang-cloud/faas-{{.}}-interface/{{.}}"
+          "{{ .Values.golangImport }}"
         )
 
         type Request struct {
