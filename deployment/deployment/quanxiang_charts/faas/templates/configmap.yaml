@@ -97,7 +97,7 @@ data:
           "fmt"
           "net/http"
 
-          "{{ .Values.golangImport }}"
+          "github.com/quanxiang-cloud/faas-{{.}}-interface/{{.}}"
         )
 
         type Request struct {
