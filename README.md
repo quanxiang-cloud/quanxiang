@@ -224,6 +224,8 @@ Parameters description:
 | -n/--namespace            | The namespace in which the service is deployed in the k8s cluster | If not specified, the default namespace is default.          |
 | -u/--uninstallMiddlerware | Do you need to uninstall the middleware deployed by the tool | If there is no middleware deployed using this tool, you can not add this parameter. When the middleware is loaded and unloaded, it will be reported that there is no such resource and can be ignored. |
 
+
+
 #### How to access
 
 ##### Configure gateway
@@ -240,6 +242,19 @@ To access QuanxiangCloud console, you should configure your hosts file or add dn
 > **Notice**
 >
 > Refer [KubeSphere office documentation](https://kubesphere.io/zh/docs/project-user-guide/application-workloads/routes/) to customize the domain.
+
+##### initialize web configurations
+
+Portal console does not initialize after installation, follow below steps to initialize:
+>
+> 1. Open QuanXiangCloud portal console by browser.
+> 2. Open "Developer tool" in browser. MacOS  shortcut is "Option + command + I", Windows/Linux shortcut is "F12" or "Control + Alt + I"
+> 3. Find "Sources" in "Developer tool" and chose "Snippets".
+> 4. click "New snippet" and Paste scripts content one by one
+>  **notice: scripts files' path is GITROOTDIR/deployment/scripts/**
+
+Details please refer to the image:
+![snippets](./doc/images/initialize_configuration.png)
 
 </details>
 
