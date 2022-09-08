@@ -250,6 +250,19 @@ KubeSphere 部署环境的要求如下：
 >
 > 如果需要修改访问域名，可参见 kubesphere 的[官方文档](https://kubesphere.io/zh/docs/project-user-guide/application-workloads/routes/)。
 
+##### 初始化Web配置
+
+Portal 控制台需要在安装完成后进行初始化，参照以下步骤进行初始化:
+>
+> 1. 在浏览器中打开全象云的管理端控制台
+> 2. 在浏览器中打开开发者工具. MacOS快捷键 "Option + command + I", Windows/Linux快捷键"F12" 或者 "Control + Alt + I"
+> 3. 在“开发者工具”中找到“source”，然后找到“snippets”.
+> 4. 点击 "New snippet"然后在输入框中填入脚本内容，需要一个个的执行。
+>  **注意: 脚本文件在 GITROOTDIR/deployment/scripts/ 中**
+
+下图是执行脚本的位置：
+![snippets](./doc/images/initialize_configuration.png)
+
  </details>
 
 <details>
