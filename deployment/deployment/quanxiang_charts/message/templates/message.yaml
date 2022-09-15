@@ -69,6 +69,8 @@ spec:
       containers:
         - name: auth
           image: '{{ .Values.image.repo }}/auth:{{ .Values.image.tag }}'
+          args:
+           - "--entrypoint=http://localhost:8081"
           ports:
           - name: auth-web
             containerPort: 40001

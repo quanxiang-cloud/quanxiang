@@ -3,6 +3,7 @@ image:
   repo: docker.io/quanxiang
   tag: v1.1.2
 namespace: ""
+lowcode: lowcode
 domain: example.com
 mongo_host: ""
 args:

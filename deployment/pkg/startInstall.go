@@ -103,8 +103,8 @@ func Start(kubeconfig, namespace, configFile, depFile, registry, regisUser, regi
 			var command string
 			switch {
 			case strings.Contains(release.Name(), "builder"):
-				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s --timeout 1800s --create-namespace",
-					release.Name(), depFile, release.Name(), kubeconfig, "builder")
+				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s  --set lowcode=%s --timeout 1800s --create-namespace",
+					release.Name(), depFile, release.Name(), kubeconfig, "builder", namespace)
 			case strings.Contains(release.Name(), "serving"):
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n serving --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, "serving")
