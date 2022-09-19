@@ -45,7 +45,7 @@ spec:
         - name: PROJECT_TITLE
           value: "$(params.PROJECT_TITLE)"
         - name: SWAGGER_IMAGE
-          value: qxcr.xyz/faas/swag:v0.0.2
+          value: '{{ .Values.image.repo }}/swag:{{ .Values.image.tag }}'
         - name: OPERATE_ID
           value: "$(params.OPERATE_ID)"
         - name: HOST
