@@ -158,7 +158,7 @@ To build QianXiang deployment tool, that golang 1.16 is needed and special corre
 ```bash
  git clone https://github.com/quanxiang-cloud/quanxiang.git
  cd quanxiang/deployment
- git checkout master
+ git checkout main
  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o installApp main.go
 ```
 
