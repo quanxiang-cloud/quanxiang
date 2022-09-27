@@ -160,8 +160,7 @@ KubeSphere 部署环境的要求如下：
 
 ```bash
  git clone https://github.com/quanxiang-cloud/quanxiang.git
- cd quanxiang/quanxiang
- git checkout master
+ cd quanxiang/deployment
  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o installApp main.go
 ```
 
