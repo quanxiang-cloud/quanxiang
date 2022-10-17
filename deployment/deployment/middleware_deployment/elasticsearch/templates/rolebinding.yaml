@@ -1,24 +1,17 @@
-{{- if .Values.rbac.create -}}
-{{- $fullName := include "elasticsearch.uname" . -}}
-apiVersion: rbac.authorization.k8s.io/v1
+{{- if and .Values.curator.enabled .Values.curator.rbac.enabled }}
 kind: RoleBinding
+apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 metadata:
-  name: {{ $fullName | quote }}
-  labels:
-    heritage: {{ .Release.Service | quote }}
-    release: {{ .Release.Name | quote }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    app: {{ $fullName | quote }}
-subjects:
-  - kind: ServiceAccount
-    {{- if eq .Values.rbac.serviceAccountName "" }}
-    name: {{ $fullName | quote }}
-    {{- else }}
-    name: {{ .Values.rbac.serviceAccountName | quote }}
-    {{- end }}
-    namespace: {{ .Release.Namespace | quote }}
+  name: {{ include "elasticsearch.curator.fullname" . }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    role: curator
+    component: elasticsearch-curator-configmap
 roleRef:
   kind: Role
-  name: {{ $fullName | quote }}
+  name: {{ template "elasticsearch.curator.fullname" . }}
   apiGroup: rbac.authorization.k8s.io
-{{- end -}}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "elasticsearch.curator.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}

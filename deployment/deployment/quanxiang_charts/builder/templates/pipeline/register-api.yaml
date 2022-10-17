@@ -39,7 +39,7 @@ spec:
         - name: url
           value: $(params.SOURCE_URL)
         - name: gitInitImage
-          value: wentevill/grc.io.git-init:v0.29.0
+          value: docker.io/quanxiang/grc.io.git-init:v0.29.0
         - name: PROJECT_NAME
           value: "$(params.PROJECT_NAME)"
         - name: PROJECT_TITLE

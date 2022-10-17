@@ -35,7 +35,7 @@ serviceAccount:
 podSecurityContext: {}
 securityContext: {}
 dockerConfig:
-  name: faas-harbor
+  name: faas-docker
   data: 
 
 gitSSH:

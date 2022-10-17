@@ -1,105 +1,117 @@
 package pkg
 
 import (
-	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
-	"path/filepath"
+	"os"
+	"strings"
 
-	_ "github.com/go-sql-driver/mysql"
-	v1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
-	ctrl "sigs.k8s.io/controller-runtime"
+	"gopkg.in/yaml.v2"
 )
 
-type Gits struct {
-	ID         string `gorm:"column:id;type:varchar(64);PRIMARY_KEY" json:"id"`
-	Host       string `gorm:"column:host;type:varchar(200);" json:"host"`
-	KnownHosts string `gorm:"column:known_hosts;type:text;" json:"knownHosts"`
-	SSH        string `gorm:"column:ssh;type:text;" json:"ssh"`
-	Token      string `gorm:"column:token;type:text;" json:"token"`
-	Name       string `gorm:"column:name;type:varchar(200);" json:"name"`
-
-	CreatedAt int64  `gorm:"column:created_at;type:bigint; " json:"createdAt,omitempty" `
-	UpdatedAt int64  `gorm:"column:updated_at;type:bigint; " json:"updatedAt,omitempty" `
-	DeletedAt int64  `gorm:"column:deleted_at;type:bigint; " json:"deletedAt,omitempty" `
-	CreatedBy string `gorm:"column:created_by;type:varchar(64); " json:"createdBy,omitempty"` //创建者
-	UpdatedBy string `gorm:"column:updated_by;type:varchar(64); " json:"updatedBy,omitempty"` //创建者
-	DeletedBy string `gorm:"column:deleted_by;type:varchar(64); " json:"deletedBy,omitempty"` //删除者
-	TenantID  string `gorm:"column:tenant_id;type:varchar(64); " json:"tenantID"`             //租户id
-}
-type Dockers struct {
-	ID        string `gorm:"column:id;type:varchar(64);PRIMARY_KEY" json:"id"`
-	Host      string `gorm:"column:host;type:varchar(200);" json:"host"`
-	UserName  string `gorm:"column:user_name;type:varchar(64);" json:"userName"`
-	NameSpace string `gorm:"column:name_space;type:varchar(64);" json:"nameSpace"`
-	Secret    string `gorm:"column:secret;type:text;" json:"secret"`
-	Name      string `gorm:"column:name;type:varchar(64);" json:"name"`
-
-	CreatedAt int64  `gorm:"column:created_at;type:bigint; " json:"createdAt,omitempty" `
-	UpdatedAt int64  `gorm:"column:updated_at;type:bigint; " json:"updatedAt,omitempty" `
-	DeletedAt int64  `gorm:"column:deleted_at;type:bigint; " json:"deletedAt,omitempty" `
-	CreatedBy string `gorm:"column:created_by;type:varchar(64); " json:"createdBy,omitempty"` //创建者
-	UpdatedBy string `gorm:"column:updated_by;type:varchar(64); " json:"updatedBy,omitempty"` //创建者
-	DeletedBy string `gorm:"column:deleted_by;type:varchar(64); " json:"deletedBy,omitempty"` //删除者
-	TenantID  string `gorm:"column:tenant_id;type:varchar(64); " json:"tenantID"`             //租户id
+type SecretSSH struct {
+	Kind       string   `yaml:"kind"`       // Secret
+	ApiVersion string   `yaml:"apiVersion"` // v1
+	Data       SSHData  `yaml:"data"`
+	Meta       MetaData `yaml:"metadata"`
+	Type       string   `yaml:"type"` //kubernetes.io/ssh-auth
 }
 
-func applyGitSeret(host, know_host, ssh, kubeconfig, namespace string) error {
-	if kubeconfig == "" || kubeconfig == "~/.kube/config" {
-		if home := homedir.HomeDir(); home != "" {
-			kubeconfig = filepath.Join(home, ".kube", "config")
-		} else {
-			fmt.Println("-------请输入 -k 参数获取kubeconfig信息")
-			return errors.New("NO_KUBECONFIG")
-		}
+type SSHAnnota struct {
+	Token string `yaml:"tekton.dev/git-0"` // 'http://192.168.208.51:8080'
+}
+type MetaData struct {
+	Name        string    `yaml:"name" json:"name,omitempty"`            // rsa
+	NameSpace   string    `yaml:"namespace" json:"name_space,omitempty"` //builder
+	Annotations SSHAnnota `yaml:"annotations" json:"annotations,omitempty"`
+}
+type SSHData struct {
+	KnownHosts    string `yaml:"known_hosts"`    //使用 ssh-keyscan -p 22端口 gitlab域名或者ip |base64 -w 0 生成
+	SSHPrivatekey string `yaml:"ssh-privatekey"` //ssh-keygen -t rsa -f git_rsa -C "admin@quanxiang.dev" 生成ssh key, 将私钥使用base64编码, cat git_rsa|base64 -w 0
+}
+
+func InitFaas(kubeconfig, namespace, depPath string, configs *Configs) error {
+	sqlFile := "./initfaas.sql"
+	knowHosts := fmt.Sprintf("ssh://git@%s:%d/", configs.Faas.Git.GitSSHAddress, configs.Faas.Git.GitSSHPort)
+	knowHostsScan := fmt.Sprintf("ssh://%s:%d/", configs.Faas.Git.GitSSHAddress, configs.Faas.Git.GitSSHPort)
+	sshKey := DecodeBase64String(configs.Faas.Git.SSHPrivatekey)
+	if sshKey == "" {
+		return errors.New("decoder ssh failed")
 	}
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	gitSql := fmt.Sprintf("insert into gits (id, host, token, name, known_hosts, key_scan_known_hosts, ssh) values('%s', '%s','%s', '%s','%s', '%s', '%s');",
+		"mzHjx1QR", configs.Faas.Git.Host, configs.Faas.Git.Token, "rsa", knowHosts, knowHostsScan, string(sshKey))
+	dockerSql := fmt.Sprintf("insert into dockers (id, host, user_name, name_space, secret, name) values('aZhvb2qR', '%s', '%s', '%s', '%s', '%s');",
+		configs.Faas.Docker.Host, configs.Faas.Docker.User, configs.Faas.Docker.NameSpace, configs.Faas.Docker.Pass, "faas-docker")
+	dbUse := "USE faas;\n"
+	_, err := os.Stat(sqlFile)
+	if err == nil {
+		_ = os.Remove(sqlFile)
+	}
+	f, err := os.OpenFile(sqlFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
-
-	// create the clientset
-	clientset, err := kubernetes.NewForConfig(config)
+	defer f.Close()
+	str := fmt.Sprintf("%s\n%s\n%s\n", dbUse, gitSql, dockerSql)
+	_, err = f.Write([]byte(str))
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
-	secret := clientset.CoreV1().Secrets(namespace)
-	data := make(map[string][]byte)
-	// ssh-keyscan github.com | base64
-	data["known_hosts"] = []byte(know_host)
-	data["ssh-privatekey"] = []byte(ssh)
-
-	tekton := make(map[string]string)
-	tekton["tekton.dev/git-0"] = host
-
-	s := &v1.Secret{
-		Type: v1.SecretTypeSSHAuth,
-		ObjectMeta: ctrl.ObjectMeta{
-			Name:        "rsa",
-			Namespace:   namespace,
-			Annotations: tekton,
-		},
-		Data: data,
-	}
-	options := metav1.CreateOptions{}
-	_, err = secret.Create(context.Background(), s, options)
+	err = deployMysql(kubeconfig, namespace, "./initfaas.sql", depPath, configs)
 	if err != nil {
 		return err
 	}
 	return err
 }
 
-func applyHarbor(username, password, server string) error {
-	command := "kubectl create secret docker-registry faas-harbor --docker-username=" + username + " --docker-password=" + password + " --docker-server=" + server + " -n builder"
+func applyGitSecret(host, known_hosts, ssh, kubeconfig, namespace string) error {
+	var sshSecret SecretSSH
+	yamlFile := "./secret.yaml"
+
+	sshSecret.ApiVersion = "v1"
+	sshSecret.Kind = "Secret"
+	sshSecret.Type = "kubernetes.io/ssh-auth"
+	sshSecret.Data.KnownHosts = known_hosts
+	sshSecret.Meta.Annotations.Token = host
+	sshSecret.Meta.Name = "rsa"
+	sshSecret.Meta.NameSpace = namespace
+	sshSecret.Data.SSHPrivatekey = ssh
+
+	sshBytes, err := yaml.Marshal(&sshSecret)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	_, err = os.Stat(yamlFile)
+	if err == nil {
+		_ = os.Remove(yamlFile)
+	}
+	f, err := os.OpenFile(yamlFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	_, err = f.Write(sshBytes)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	command := fmt.Sprintf("kubectl apply -f %s --kubeconfig %s", yamlFile, kubeconfig)
+	err = execBash(command)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+func applyHarbor(username, password, server, kubeconfig string) error {
+	command := "kubectl create secret docker-registry faas-docker --docker-username=" + username + " --docker-password=" + password + " --docker-server=" + server + " -n builder" + " --kubeconfig " + kubeconfig
 	err := execBash(command)
 	if err != nil {
 		return err
 	}
-	command = "kubectl create secret docker-registry faas-harbor --docker-username=" + username + " --docker-password=" + password + " --docker-server=" + server + " -n serving"
+	command = "kubectl create secret docker-registry faas-docker --docker-username=" + username + " --docker-password=" + password + " --docker-server=" + server + " -n serving" + " --kubeconfig " + kubeconfig
 	err = execBash(command)
 	if err != nil {
 		return err
@@ -107,29 +119,17 @@ func applyHarbor(username, password, server string) error {
 	return nil
 }
 
-/*
-func applyFaasSql(msserver,msport,username,password,token,git_host,knows_hosts,ssh,docker_host,docker_username,docker_pass string) error {
-	gits := Gits{}
-	gits.ID="J2P57lAS"
-	gits.Host = git_host
-	gits.Token = token
-	gits.KnownHosts = knows_hosts
-	gits.Name = "rsa"
-	gits.SSH = ssh
-	fqn := username+ ":" + password+"@tcp("+msserver+":"+msport+")/faas?charset=utf8&parseTime=True&loc=Local"
-	db, err := gorm.Open("mysql", fqn)
-	if err != nil {
-		return err
+func DecodeBase64String(enc string) string {
+	reader := strings.NewReader(enc)
+	decoder := base64.NewDecoder(base64.RawStdEncoding, reader)
+	buf := make([]byte, 1024)
+	dst := ""
+	for {
+		n, err := decoder.Read(buf)
+		dst += string(buf[:n])
+		if err != nil || n == 0 {
+			break
+		}
 	}
-	defer db.Close()
-	db.Create(&gits)
-	docker := Dockers{}
-	docker.ID = "1"
-	docker.Host = docker_host
-	docker.Name = "faas-harbor"
-	docker.UserName = docker_username
-	docker.Secret = docker_pass
-	db.Create(&docker)
-	return nil
+	return dst
 }
-*/

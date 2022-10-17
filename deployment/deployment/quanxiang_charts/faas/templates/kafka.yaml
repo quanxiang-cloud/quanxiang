@@ -14,6 +14,6 @@ spec:
     - name: authType # Required.
       value: "none"
     - name: maxMessageBytes
-      value: 1024
+      value: 1024000
     - name: disableTls
       value: "true"

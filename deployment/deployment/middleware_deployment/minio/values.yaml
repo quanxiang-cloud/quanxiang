@@ -94,7 +94,7 @@ tls:
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
 persistence:
-  enabled: false
+  enabled: true
 
   ## A manually managed Persistent Volume and Claim
   ## Requires persistence.enabled: true
@@ -110,7 +110,7 @@ persistence:
   ##
   ## Storage class of PV to bind. By default it looks for standard storage class.
   ## If the PV uses a different storage class, specify that here.
-  storageClass: "csi-high-perf"
+  storageClass: ""
   VolumeName: ""
   accessMode: ReadWriteOnce
   size: 10Gi

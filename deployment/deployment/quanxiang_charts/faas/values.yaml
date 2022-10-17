@@ -5,6 +5,8 @@ image:
 namespace: ""
 domain: example.com
 mongo_host: ""
+code:
+  import: github.com/quanxiang-cloud/faas-lowcode-interface/lowcode
 args:
   enabled: true
   endpoint: example.com:31198
