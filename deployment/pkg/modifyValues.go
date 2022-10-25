@@ -220,16 +220,17 @@ func ModifyValuesFile(filepath, namespace string, configs *Configs, ngGateWay bo
 			value.Config.Etcd.Username = configs.Config.Etcd.Username
 			value.Config.Etcd.Password = configs.Config.Etcd.Password
 		}
-		if strings.Contains(filepath, "portal") {
-			value.Ingress.Hosts[0].Host = "portal." + configs.Domain
-			value.Websocket_hostname = "ws." + configs.Domain
-			value.Home_hostname = "home." + configs.Domain
-			value.Portal_hostname = "portal." + configs.Domain
-			value.Vendor.Hostname = "vendors." + configs.Domain
-			value.Vendor.Port = 80
-			value.Vendor.Protocol = "http"
-		}
 	*/
+	if strings.Contains(filepath, "portal") {
+		value.Ingress.Hosts[0].Host = "portal." + configs.Domain
+		value.Websocket_hostname = "ws." + configs.Domain
+		value.Home_hostname = "home." + configs.Domain
+		value.Portal_hostname = "portal." + configs.Domain
+		value.Vendor.Hostname = "vendors." + configs.Domain
+		value.Vendor.Port = 80
+		value.Vendor.Protocol = "http"
+	}
+
 	if strings.Contains(filepath, "home") {
 		value.Ingress.Hosts[0].Host = "home." + configs.Domain
 		value.Websocket_hostname = "ws." + configs.Domain

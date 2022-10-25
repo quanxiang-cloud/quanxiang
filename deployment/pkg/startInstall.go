@@ -78,7 +78,8 @@ func Start(kubeconfig, namespace, configFile, depFile, registry, regisUser, regi
 		fmt.Println("----------------------------------------->开始初始化mysql")
 		releases, _ := ioutil.ReadDir(depFile + "/schemas")
 		for _, release := range releases {
-			err := deployMysql(kubeconfig, namespace, release.Name(), depFile, configs)
+			sqlName := "./deployment/schemas/" + release.Name()
+			err := deployMysql(kubeconfig, namespace, sqlName, depFile, configs)
 			if err != nil {
 				fmt.Println("---------------------------------------> 数据库初始化失败")
 				return
@@ -101,16 +102,24 @@ func Start(kubeconfig, namespace, configFile, depFile, registry, regisUser, regi
 				}
 			}
 			var command string
-			switch {
-			case strings.Contains(release.Name(), "builder"):
+			switch release.Name() {
+			case "builder":
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s  --set lowcode=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, "builder", namespace)
-			case strings.Contains(release.Name(), "serving"):
+			case "serving":
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n serving --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, "serving")
-			case strings.Contains(release.Name(), "fluent"):
+			case "fluent":
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, "builder")
+			case "fluent-bit":
+				eshost, err := AddrParase(configs.Config.Elastic.Host[0], namespace)
+				if err != nil {
+					fmt.Println(err)
+				}
+				esHosts := strings.Split(eshost, ":")
+				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n builder --set namespace=%s --timeout 1800s --set backend.es.host=%s --set backend.es.port=%s --create-namespace",
+					release.Name(), depFile, release.Name(), kubeconfig, "builder", esHosts[1][2:], esHosts[2])
 			default:
 				command = fmt.Sprintf("helm install %s %s/quanxiang_charts/%s --kubeconfig %s -n %s --set namespace=%s --timeout 1800s --create-namespace",
 					release.Name(), depFile, release.Name(), kubeconfig, namespace, namespace)
@@ -126,19 +135,24 @@ func Start(kubeconfig, namespace, configFile, depFile, registry, regisUser, regi
 		fmt.Println(err)
 		return
 	}
-	err = applyGitSeret(configs.Faas.Git.GitSSh, configs.Faas.Git.KnownHosts, configs.Faas.Git.Privatekey, kubeconfig, namespace)
+	err = applyGitSecret(configs.Faas.Git.Host, configs.Faas.Git.KnownHostsScan, configs.Faas.Git.SSHPrivatekey, kubeconfig, "builder")
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
-	err = applyHarbor(configs.Faas.Docker.Name, configs.Faas.Docker.Pass, configs.Faas.Docker.Server)
+	err = applyHarbor(configs.Faas.Docker.User, configs.Faas.Docker.Pass, configs.Faas.Docker.Host, kubeconfig)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
-	command := "helm install searchindex " + depFile + "/search_index" + " --kubeconfig " + kubeconfig + " -n " + namespace + " --timeout 1800s"
-	execBash(command)
-	command = "helm install auth " + depFile + "/portalauth" + " --kubeconfig " + kubeconfig + " -n " + namespace + " --timeout 1800s"
-	execBash(command)
+
+	err = InitFaas(kubeconfig, namespace, depFile, configs)
+	if err != nil {
+		fmt.Println(err)
+	}
+	/*
+		command := "helm install searchindex " + depFile + "/search_index" + " --kubeconfig " + kubeconfig + " -n " + namespace + " --timeout 1800s"
+		execBash(command)
+		command = "helm install auth " + depFile + "/portalauth" + " --kubeconfig " + kubeconfig + " -n " + namespace + " --timeout 1800s"
+		execBash(command)
+	*/
 	fmt.Println("----------------------------------------->部署完成")
 }

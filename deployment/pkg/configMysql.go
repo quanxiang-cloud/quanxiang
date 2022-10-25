@@ -75,7 +75,7 @@ func deployMysql(kubeconfig, namespace, sqlName, depPath string, configs *Config
 	mysqlUserPass := configs.Config.Mysql.Password
 	for _, pod := range pods.Items {
 		if strings.Contains(pod.Name, "mysql") {
-			command := "kubectl exec -it -n " + namespace + " --kubeconfig " + kubeconfig + " " + pod.Name + " -- mysql -h" + mysqlAddress + " -u" + mysqlUserName + " -p" + mysqlUserPass + " -P" + mysqlPort + " --default-character-set=utf8 < " + "./deployment/schemas/" + sqlName
+			command := "kubectl exec -it -n " + namespace + " --kubeconfig " + kubeconfig + " " + pod.Name + " -- mysql -h" + mysqlAddress + " -u" + mysqlUserName + " -p" + mysqlUserPass + " -P" + mysqlPort + " --default-character-set=utf8 < " + sqlName
 			err := execBash(command)
 			if err != nil {
 				return err

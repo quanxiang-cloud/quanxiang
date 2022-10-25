@@ -95,6 +95,20 @@ func UninstallServece(namespace, depPath, kubeconfig string, uninstallMiddlerwar
 			}
 		}
 	}
-
+	command := "kubectl delete secret rsa -n builder --kubeconfig " + kubeconfig
+	err = execBash(command)
+	if err != nil {
+		fmt.Println(err)
+	}
+	command = "kubectl delete secret faas-docker -n serving --kubeconfig " + kubeconfig
+	err = execBash(command)
+	if err != nil {
+		fmt.Println(err)
+	}
+	command = "kubectl delete secret faas-docker -n builder" + " --kubeconfig " + kubeconfig
+	err = execBash(command)
+	if err != nil {
+		fmt.Println(err)
+	}
 	return nil
 }

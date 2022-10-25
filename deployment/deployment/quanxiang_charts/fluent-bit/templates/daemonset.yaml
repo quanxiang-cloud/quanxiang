@@ -26,7 +26,7 @@ spec:
 {{ toYaml .Values.podLabels | indent 8 }}
 {{- end }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fluent-bit-secret.yaml") . | sha256sum }}
 {{- if .Values.podAnnotations }}
 {{ toYaml .Values.podAnnotations | indent 8 }}
 {{- end }}
@@ -191,8 +191,8 @@ spec:
           type: DirectoryOrCreate
 {{- end }}
       - name: config
-        configMap:
-          name: {{ if .Values.existingConfigMap }}{{ .Values.existingConfigMap }}{{- else }}{{ template "fluent-bit.fullname" . }}-config{{- end }}
+        secret:
+          secretName: {{ template "fluent-bit.fullname" . }}-config
 {{- if .Values.extraVolumes }}
 {{ toYaml .Values.extraVolumes | indent 6 }}
 {{- end }}

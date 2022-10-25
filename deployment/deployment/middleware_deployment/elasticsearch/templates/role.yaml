@@ -1,25 +1,21 @@
-{{- if .Values.rbac.create -}}
-{{- $fullName := include "elasticsearch.uname" . -}}
-apiVersion: rbac.authorization.k8s.io/v1
+{{- if and .Values.curator.enabled .Values.curator.rbac.enabled }}
 kind: Role
+apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
 metadata:
-  name: {{ $fullName | quote }}
-  labels:
-    heritage: {{ .Release.Service | quote }}
-    release: {{ .Release.Name | quote }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    app: {{ $fullName | quote }}
+  name: {{ include "elasticsearch.curator.fullname" . }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    role: curator
+    component: elasticsearch-curator-configmap
 rules:
-  - apiGroups:
-      - extensions
-    resources:
-      - podsecuritypolicies
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["update", "patch"]
+  {{- $pspAvailable := (semverCompare "<1.25-0" (include "common.capabilities.kubeVersion" .)) -}}
+  {{- if and $pspAvailable .Values.curator.psp.create }}
+  - apiGroups: ["extensions"]
+    resources: ["podsecuritypolicies"]
+    verbs: ["use"]
     resourceNames:
-      {{- if eq .Values.podSecurityPolicy.name "" }}
-      - {{ $fullName | quote }}
-      {{- else }}
-      - {{ .Values.podSecurityPolicy.name | quote }}
-      {{- end }}
-    verbs:
-      - use
-{{- end -}}
+      - {{ include "elasticsearch.curator.fullname" . }}
+  {{- end }}
+{{- end }}

@@ -300,6 +300,21 @@ CREATE TABLE `instance_execution` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
+
+DROP TABLE IF EXISTS `flow_process_relation`;
+CREATE TABLE `flow_process_relation`
+(
+    `id`          varchar(40) NOT NULL DEFAULT '' COMMENT '流程id',
+    `bpmn_text`   text        NOT NULL COMMENT '流程xml文件内容',
+    `flow_id`     varchar(40) NOT NULL DEFAULT '' COMMENT 'flowID',
+    `process_id`  varchar(40) NOT NULL DEFAULT '' COMMENT 'process中流程的id',
+    `creator_id`  varchar(40) NOT NULL DEFAULT '' COMMENT '创建人',
+    `create_time` varchar(40)          DEFAULT NULL COMMENT '创建时间',
+    `modifier_id` varchar(40) NOT NULL DEFAULT '' COMMENT '更新人',
+    `modify_time` varchar(40)          DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='流程实例关系表';
+
 INSERT INTO flow_variables (id,flow_id,name,`type`,code,field_type,format,default_value,`desc`,creator_id,create_time,modifier_id,modify_time) VALUES
 	 ('1','0','流程发起人','SYSTEM','flowVar_instanceCreatorName','string','','','','0','2021-09-14T14:30:18+0000','0','2021-09-14T14:30:18+0000'),
 	 ('2','0','流程发起时间','SYSTEM','flowVar_instanceCreateTime','datetime','','','','0','2021-09-14T14:30:18+0000','0','2021-09-14T14:30:18+0000'),

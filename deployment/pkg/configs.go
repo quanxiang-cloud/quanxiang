@@ -94,10 +94,12 @@ type Configs struct {
 
 // Faas
 type Git struct {
-	KnownHosts string `yaml:"known_hosts"`
-	Privatekey string `yaml:"privatekey"`
-	GitSSh     string `yaml:"gitSSh"`
-	Token      string `yaml:"token"`
+	Host           string `yaml:"host"`
+	KnownHostsScan string `yaml:"known_hosts_scan"`
+	SSHPrivatekey  string `yaml:"sshPrivatekey"`
+	GitSSHAddress  string `yaml:"gitSSHAddress"`
+	GitSSHPort     int    `yaml:"gitSSHPort"`
+	Token          string `yaml:"token"`
 }
 
 // Faas
@@ -108,9 +110,10 @@ type Faas struct {
 
 // Docker
 type Docker struct {
-	Server string `yaml:"server"`
-	Name   string `yaml:"name"`
-	Pass   string `yaml:"pass"`
+	Host      string `yaml:"host"`
+	NameSpace string `yaml:"nameSpace"`
+	User      string `yaml:"user"`
+	Pass      string `yaml:"pass"`
 }
 
 type Persis struct {
