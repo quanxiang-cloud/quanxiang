@@ -164,17 +164,13 @@ type Etcd struct {
 
 // Email
 type Email struct {
-	Emails []Emails `yaml:"emails"`
-}
-
-// Emails
-type Emails struct {
-	Password  string `yaml:"password"`
-	Host      string `yaml:"host"`
-	Port      int    `yaml:"port"`
-	Emailfrom string `yaml:"emailfrom"`
-	Username  string `yaml:"username"`
-	Aliasname string `yaml:"aliasname"`
+	Enabled  bool   `yaml:"enabled"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	UserName string `yaml:"username"`
+	Password string `yaml:"password"`
+	Alias    string `yaml:"alias"`
+	Sender   string `yaml:"sender"`
 }
 
 // Storages

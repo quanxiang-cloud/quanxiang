@@ -64,7 +64,7 @@ config:
     log: true
   kafka:
     broker:
-      - kafka.{{.}}.svc.cluster.local:9092  #如果上面中间件配置中kafka.enabled为true此处不需要改动，否则请根据您的设置填写您kafka集群的ip和端口
+      - kafka-headless.{{.}}.svc.cluster.local:9092  #如果上面中间件配置中kafka.enabled为true此处不需要改动，否则请根据您的设置填写您kafka集群的ip和端口
   mongo:
     hosts:
       - mongodb.{{.}}.svc.cluster.local:27017   #如果上面中间件配置中mongo.enabled为true此处不需要改动，否则请根据您的设置填写您mongo集群的ip和端口
@@ -78,7 +78,7 @@ config:
   email:
     enabled: true
     host: xx.xx.xx
-    port: xx
+    port: 465
     username: xx
     password: xx
     alias: xx

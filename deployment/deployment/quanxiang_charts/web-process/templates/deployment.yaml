@@ -47,7 +47,7 @@ spec:
               protocol: TCP
           env:
             - name: FILESERVER_ENDPOINT
-              value: 'http://fileserver2'
+              value: 'http://fileserver'
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File

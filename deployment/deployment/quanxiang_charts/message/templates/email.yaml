@@ -62,7 +62,7 @@ spec:
         - name: email
           image: '{{ .Values.image.repo }}/email:{{ .Values.image.tag }}'
           args:
-            - '--port=:80'
+            - '--port=:8081'
             - '--email-host={{ .Values.config.email.host }}'
             - '--email-port={{ .Values.config.email.port }}'
             - '--email-username={{ .Values.config.email.username }}'

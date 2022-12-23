@@ -54,8 +54,6 @@ config:
   kafka:
     broker:
     - kafka.{{.}}.svc.cluster.local:9092
-    - ""
-    - ""
   mongo:
     hosts:
     - mongodb.{{.}}.svc.cluster.local:27017
@@ -82,7 +80,13 @@ config:
       location: us-east-1
       bucketName: default
   email:
-    emails: []
+    enabled: true
+    host: xx.xx.xx
+    port: 465
+    username: xx
+    password: xx
+    alias: xx
+    sender: xx@.com
 ingress:
   enabled: false
   hosts: []

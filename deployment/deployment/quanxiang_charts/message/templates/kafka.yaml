@@ -9,12 +9,12 @@ spec:
   metadata:
       # Kafka broker connection setting
     - name: brokers
-      value: {{ .Values.kafka.value }}
+      value: '{{ join "," .Values.config.kafka.broker }}'
     - name: authRequired
       value: "false"
     - name: authType # Required.
       value: "none"
     - name: maxMessageBytes
-      value: 1024
+      value: 10240
     - name: disableTls
       value: "true"
