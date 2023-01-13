@@ -1,0 +1,22 @@
+image:
+  repository: quanxiang/appcenter
+  tag: v2.0.0
+imagePullSecrets: ""
+namespace: ""
+
+mysql: {}
+redis:
+  addrs:
+    - redis-cluster-0.redis-cluster-headless:6379
+    - redis-cluster-1.redis-cluster-headless:6379
+    - redis-cluster-2.redis-cluster-headless:6379
+
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+
+app:
+  kubernetes:
+    io:
+      name: backend

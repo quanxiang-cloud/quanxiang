@@ -1,0 +1,26 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: warden
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: warden
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    kubesphere.io/description: jwt认证服务
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 80
+  selector:
+    app: warden
+    app.kubernetes.io/version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  type: {{ .Values.service.type }}
+  sessionAffinity: None

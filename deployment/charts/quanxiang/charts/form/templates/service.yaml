@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: form
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: form
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: form
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 40001
+    - name: form-inner
+      protocol: TCP
+      port: {{ .Values.service.rpcPort }}
+      targetPort: 8080
+  selector:
+    app: form
+    app.kubernetes.io/version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  type: {{ .Values.service.type }}
+  sessionAffinity: None

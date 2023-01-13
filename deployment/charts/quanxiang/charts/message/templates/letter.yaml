@@ -1,0 +1,74 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: letter
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: letter
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: http-web
+      protocol: TCP
+      port: 80
+      targetPort: 8081
+  selector:
+    app: letter
+  type: ClusterIP
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: letter
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: letter
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    dapr.io/enabled: 'true'
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: letter
+      app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+      app.kubernetes.io/version: v1
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: letter
+        app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+        app.kubernetes.io/version: v1
+        version: v1
+      annotations:
+        dapr.io/app-id: letter
+        dapr.io/app-port: '8081'
+        dapr.io/enabled: 'true'
+        kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
+        logging.kubesphere.io/logsidecar-config: '{}'
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+        - name: letter
+          image: '{{ .Values.images.letter.repository }}:{{ .Values.images.letter.tag }}'
+          args:
+            - '--port=:8081'
+            - '--message-server=http://message'
+          ports:
+            - name: http-web
+              containerPort: 8081
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      affinity: {}

@@ -1,0 +1,29 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: qxp-portal
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/version: v1
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 30m
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: {{ or .Values.global.portal_hostname  .Values.portal_hostname }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: qxp-web-portal
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: qxp-web-nginx
+            port:
+              number: 80

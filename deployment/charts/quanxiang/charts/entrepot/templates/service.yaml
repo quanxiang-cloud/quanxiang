@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: entrepot
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: entrepot
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: http-web
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 80
+  selector:
+    app: entrepot
+  type: {{ .Values.service.type }}
+  sessionAffinity: None

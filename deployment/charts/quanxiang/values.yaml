@@ -1,0 +1,405 @@
+# Default values for quanxiang.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#replicaCount: 1
+
+global:
+  namespace: ""
+  domain: lijy.me                  # replace value to your domain. 修改成您自己的域名。
+  websocket_hostname: ws.lijy.me   # socket server访问地址
+  home_hostname: home.lijy.me      # 用户端访问地址
+  portal_hostname: portal.lijy.me  # 管理端访问地址
+  vendor:
+    protocol: http
+    hostname: vendors.lijy.me      # 前端渲染配置访问地址。
+    port: 80                           # 前端渲染配置端口。
+  faas:
+    enabled: true                      # 是否安装faas。
+
+
+mysql: 
+  enabled: true
+  fullnameOverride: mysql
+  internal: &mysql
+    host: mysql:3306
+    user: root
+    password: qxp1234
+    log: true
+  auth:
+    rootPassword: qxp1234
+    user: root
+    password: qxp1234
+
+redis-cluster: 
+  enabled: true
+  fullnameOverride: redis-cluster
+  password: qxp1234
+  internal: &redis
+    addrs:
+      - redis-cluster-0.redis-cluster-headless:6379
+      - redis-cluster-1.redis-cluster-headless:6379
+      - redis-cluster-2.redis-cluster-headless:6379
+    password: qxp1234
+
+elasticsearch:
+  enabled: true 
+  fullnameOverride: elasticsearch
+  internal: &elastic
+    host: 
+      - http://elasticsearch-master:9200
+    log: true
+
+kafka:
+  enabled: true
+  fullnameOverride: kafka
+  zookeeper:
+    fullnameOverride: zookeeper
+  internal: &kafka
+    broker:
+      - kafka-headless:9092
+
+mongodb:
+  enabled: true
+  fullnameOverride: mongodb
+  auth:
+    rootPassword: qxp1234
+    usernames: ["root"]
+    passwords: ["qxp1234"]
+    databases: ["form"]
+  internal: &mongodb
+    hosts:
+      - mongodb:27017
+    direct: false
+    credential:
+      authMechanism: SCRAM-SHA-1
+      authSource: admin
+      username: root
+      password: qxp1234
+      passwordSet: false
+
+minio: 
+  enabled: true
+  fullnameOverride: minio
+  rootUser: Minio
+  rootPassword: Minio123456
+  replicas: 3
+  persistence:
+    size: 20Gi
+  resources:
+    requests:
+      memory: 10Mi
+   
+  storage:
+    type: minio
+    protocol: http
+    endpendpoint: http://minio:9000
+    accessKey: Minio
+    secretKey: Minio123456
+    location: us-east-1
+    bucketName: default
+  
+
+
+##############
+### quanxiang configurations
+##############
+polygate:
+  jwtKey: "1232234yqwufdyuiasdfsdf"
+  service:
+    type: ClusterIP
+    port: 80
+    rpcPort: 9090
+  imagePullSecrets: ""
+  image:
+    repository: quanxiang/polygate
+    tag: v2.0.0
+  ingress:
+    enabled: true
+    hosts:
+    - host: ws.lijy.me   # 根据您使用的域名修改此项配置
+      paths:
+      - fullName: message
+        path: /
+        svcPort: 8080
+    - host: api.lijy.me   # 根据您使用的域名修改此项配置
+      paths:
+      - fullName: polygate
+        path: /
+        svcPort: 80
+
+appcenter:
+  image:
+    repository: quanxiang/appcenter
+    tag: v2.0.0
+  mysql:
+    <<: *mysql
+    db: app_center
+
+audit:
+  image:
+    repository: quanxiang/audit
+    tag: v2.0.0
+
+builder:
+  namespace: builder
+  gitInitImage: docker.io/quanxiang/grc.io.git-init:v0.29.0
+  swageImage: docker.io/quanxiang/swag:v1.1.2
+  docker:
+    name: faas-docker  # 不要修改此项 DO NOT CHANGE THIS VALUE.
+  git:
+    name: rsa               # git ssh 的secret的名字， 不要修改。
+    host: "http://192.168.208.51:8080"                # git server的访问地址，例如：http://git.quanxiang.dev 或者 http://192.168.0.3
+    known_hosts_scan: "WzE5Mi4xNjguMjA4LjUxXToxMDIyIHNzaC1lZDI1NTE5IEFBQUFDM056YUMxbFpESTFOVEU1QUFBQUlOaFNQQlFXYUZLaWYzVUp4aWNCdzRFRjhMS0VreE5jVWorU2RzN3VjZGlFClsxOTIuMTY4LjIwOC41MV06MTAyMiBzc2gtcnNhIEFBQUFCM056YUMxeWMyRUFBQUFEQVFBQkFBQUJnUURBakpBdmRMOEtabkxvbFpFcGlUbWV2S2ppZDZtME5VVktyN0lPT0hHc2d2bnBnVUVudXRwV2R2cG80OEY1cTZIN3lIRkVETUpVS0JqeS9jNFBOS1JhdExpL3NmNlF2WURjcm00TDFONEV3NFliamcyN2UvVnByWGp6eHhUeGM0TG1WNVNPTmpnbVdvQmJGc0xFanNFL2RtT1hiclhRWGREai9ndXlQbjE2dXNhazh1cEpGV21ZWllmOGp3MXg2WFFXelVXUUZBTERsNHdyMnB6YkR5RSsyVzlYeUloeU1PV2dDdGMycjZ4ZVVXTENaZXQrblQ4Wk9iRW5DakFZV3l3VnBnRE5aL28vR0FRKzdBelJEUmxLa1M1TU9pYWlMY2V0OWpta0M5THlueVdQV0hLQWVYMk8zaTNYWERoU2czMlRWeVJTa0V1c0oyajhTOGtJVHdTVVdYeDIvaG1DNEdjREVPSnlZamRYOU9oM3IzWStYVHpBQThNVE9CNnhVVWtObUtWenpXVWh6RGtmNDNqaFNOT094dG9rQWw1eEtpbWwwMGplaVdFRmw3RzVFd2xHWmRaWlk2amhIRzBQUGxSeTQyQld5SGlFQWd0N2ZXSU9LUFVHVVM0bU9pMnNnVDlmOE1BOWgxVVVHM0p0cG1nTzhnc2hCZXlhTUkweTN0cz0KWzE5Mi4xNjguMjA4LjUxXToxMDIyIGVjZHNhLXNoYTItbmlzdHAyNTYgQUFBQUUyVmpaSE5oTFhOb1lUSXRibWx6ZEhBeU5UWUFBQUFJYm1semRIQXlOVFlBQUFCQkJQejZiRXRBOUJ1ZElWR29EL2lYLzlOZWhCd1lGV1EvdHpUM1VkWlkyUDRvcDNBdHpkNnFiODl2Nmt0bzVpNC9GRkhob1JtbEgrWFExSktjRjNPRnBMWT0K"
+    sshPrivatekey: "LS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0KYjNCbGJuTnphQzFyWlhrdGRqRUFBQUFBQkc1dmJtVUFBQUFFYm05dVpRQUFBQUFBQUFBQkFBQUJGd0FBQUFkemMyZ3RjbgpOaEFBQUFBd0VBQVFBQUFRRUFzNVFvSk9jakhHdWc1eDhzZGoyemtCQlVQcC85NjUrWWlvcldkZ2ZPMVM4aXc0dGtyODZ1CkU5ZjFJQ3FKVnJKUkZDWDU4VDlGeU9yNEViRkZ5TG9UbmozUnZtZlRHVUZ5RlBkaHl0UURTVE93bVFSWWh5ckgvSjY0RjUKNkhGM2dTTjUrbkk3cTRrbVdUQ0tJK0ZROXBLaEorc3MxR0RpUUtEaE0yNlk1bDZyMU9lRXdYd0xOR0pyMHZpWWZzUFpUeApMeUZRTmRqSy9TU1RHbHc0RnNpNzlsVXRZdmtFWWRkbVdVeXI3SndTbFRWUngveG9tM3RIYUpUSUQ0dXFhUnpsZFovNjlaCkZidUR0QzZaV3BUNWQ1emhNU3I5b0lNb3QvcE9ZZCsvODZSYndSNFd2V3ZXcE9mTy9IN0k3YXFNaTF0TUJ0UEtFeGtOVXQKQy9obzI1SjZKd0FBQTlDZjVqNjBuK1krdEFBQUFBZHpjMmd0Y25OaEFBQUJBUUN6bENnazV5TWNhNkRuSHl4MlBiT1FFRgpRK24vM3JuNWlLaXRaMkI4N1ZMeUxEaTJTdnpxNFQxL1VnS29sV3NsRVVKZm54UDBYSTZ2Z1JzVVhJdWhPZVBkRytaOU1aClFYSVU5MkhLMUFOSk03Q1pCRmlIS3NmOG5yZ1hub2NYZUJJM242Y2p1cmlTWlpNSW9qNFZEMmtxRW42eXpVWU9KQW9PRXoKYnBqbVhxdlU1NFRCZkFzMFltdlMrSmgrdzlsUEV2SVZBMTJNcjlKSk1hWERnV3lMdjJWUzFpK1FSaDEyWlpUS3ZzbkJLVgpOVkhIL0dpYmUwZG9sTWdQaTZwcEhPVjFuL3Ixa1Z1NE8wTHBsYWxQbDNuT0V4S3YyZ2d5aTMrazVoMzcvenBGdkJIaGE5CmE5YWs1ODc4ZnNqdHFveUxXMHdHMDhvVEdRMVMwTCtHamJrbm9uQUFBQUF3RUFBUUFBQVFFQWtOZWpPWUNrdFR1cVlFQ28Kb0FaTVdwcVJHS0g3TUoxZGNBRmowWGVpd0Jod3RjQXN5aEN1SDV0RVAxbVB4TG0yNDhWdHY4UUZDWFZiK1FrKy9CUDUxdAp5TjNFSHA1cWorMXlKaFlqTjNJd2ZxSE1HQWxpVlBnTmFVTFpqVDVYNFhVMzRXVlo4NVYvdE5pTjB6cmREc1JkNzlDa0svCmlwQk8rK05MbXo0YnZpVHZ6Wk4razEvei9LQWlsOEJIeTdwNEx1ZzVrMUZTZjlYR3Q0U0xLVS9uQ1VEQ2xySTMzN052dVgKcXZXbDZwNDRHcFBPU3NlaFpkSW5BQ09KMU5YUnBRSW1IWjVJWklsdUdkTWs2Y2pDd1hsRkowemFPMHo5ZnRrTDZOR202VAo2b2tpTjZZMlpFS2w2cTN0N2VmazdBcDQzWVBmRDNvRWlIdWNtL0NvRTI0RGdRQUFBSUJIazVJeUlnTG1aWVFEeEI3TGgzCmJJTjQ3VkpmZEx0c042MldHUWZjSnNpTnJRMWxIVkhDSmdWb3ZWYldqM0FXNVhkN2RtVnNheGxDRElZTnhmcHBZYUk0QVgKUUxGNGlRVC9kWERpblBIUlFFQ2ZzZ0RqN1NlK01rV3ZuN3pEcUpySXlSYjdHZWZkQ3psWm56ajlqMkNodXQwZzg0T0hUNgp3K1pTZ2NoeFFld0FBQUFJRUE1M1MxdUpYTld0aHZpdFdHMGYzNkt0K1k2c1I4SmdBQ3dZeFdmSVBFdHBCU0ROYllnN1lUCndpU2NJWmRwaWNpK2dBU2c1eUw1NFdIR0tjZmZKN0hZSFI1L0dGR3JGQkE2Wm5ZckZ6eE96Mk5TZ2YzWDJFWVBpUFIwMngKcjFIWno5cUNYSmc0c2pyN1BEeFNQb0tvcDlaNXp1bTBrUXVzb2pOWWRKN3JoVGRMRUFBQUNCQU1hZkpia24yREFENmgwOApYbVpoVFA4dUUxUlIvQllFdElkNFl6VnFLak9UVi9BdHBXdWF1R09kaWNYcWJjK3JpTGNuTU90citqbWFWcEU0WkVoUk9BCnlhaUh3cnJTOTVkaG1DOUJqeTFURGJMVkJTYk14a215QlE5U2Zlclh2QUk5YzlHRFp2dk9vQUpuSzhKYndYS3hEV3pjbTQKdFFuQ0duUW8wRkhjNzNKWEFBQUFFMkZrYldsdVFIRjFZVzU0YVdGdVp5NWtaWFlCQWdNRUJRWUgKLS0tLS1FTkQgT1BFTlNTSCBQUklWQVRFIEtFWS0tLS0tCg=="
+    gitSSHAddress: "192.168.208.51"       # git server 的域名或者IP，例如：git.quanxiang.dev 或者 192.168.0.3
+    gitSSHPort: 1022          # git server 对外暴露的ssh端口，例如：22
+    token: "glpat-TQE5zFwDhqp2UkGA65Uk"              # 将公钥写入gitlab并生成token放到这里
+
+dispatcher:
+  image:
+    repository: docker.io/quanxiang/dispatcher
+    tag: v2.0.0
+  imagePullSecrets: ""
+  mysql:
+    <<: *mysql
+    db: dispatcher
+
+entrepot:
+  image:
+    repository: docker.io/quanxiang/entrepot
+    tag: v2.0.0
+  imagePullSecrets: ""
+  mysql:
+    <<: *mysql
+    db: entrepot
+
+faas:
+  image:
+    repository: docker.io/quanxiang/faas
+    tag: v2.0.0
+  imagePullSecrets: ""
+  goBuildImage: docker.io/quanxiang/builder-go:v1.16
+  mysql:
+    <<: *mysql
+    db: faas
+  redis:
+    <<: *redis
+  elastic:
+    <<: *elastic
+  kafka:
+    <<: *kafka
+  docker:
+    name:  "faas-harbor"  # docker registry的 secret名字。不要修改。
+    registry: "qxcr.io"  #docker registry配置地址
+    nameSpace: "qxp" #镜像地址的中间部分，比如：[qxcr.xyz]/[quanxiang]/[faas:v1.1.2]中的quanxiang
+    username: "admin"  #有push/pull这个registry空间的用户
+    password: "ZHU99jie8" #用户的密码
+
+fileserver:
+  image:
+    repository: docker.io/quanxiang/fileserver
+    tag: v2.0.0
+  imagePullSecrets: ""
+  mysql:
+    <<: *mysql
+    db: fileserver
+  redis:
+    <<: *redis
+  s3:
+    buckets:
+      readable: qxp-static
+      private: default
+  ingress:
+    enabled: true
+    hosts:
+    - host: '*.fs.lijy.me'
+      paths:
+      - fullName: minio
+        path: /
+        svcPort: 9000
+flow:
+  image:
+    repository: docker.io/quanxiang/flow
+    tag: v2.0.0
+  imagePullSecrets: ""
+  mysql:
+    <<: *mysql
+    db: flow
+  redis:
+    <<: *redis
+
+fluent-bit:
+  namespace: builder
+
+form:
+  images:
+    premit:
+      repository: docker.io/quanxiang/permit
+      tag: v2.0.0
+    structor:
+      repository: docker.io/quanxiang/structor
+      tag: v2.0.0
+    form:
+      repository: docker.io/quanxiang/form
+      tag: v2.0.0
+  imagePullSecrets: ""
+  mysql:
+    <<: *mysql
+    db: form
+  redis:
+    <<: *redis
+  kafka: *kafka
+
+goalie:
+  image:
+    repository: docker.io/quanxiang/goalie
+    tag: v2.0.0
+  imagePullSecrets: ""
+  mysql:
+    <<: *mysql
+    db: goalie
+  redis:
+    <<: *redis
+
+implant:
+  image:
+    repository: docker.io/quanxiang/implant
+    tag: v2.0.0
+    pullPolicy: IfNotPresent
+  imagePullSecrets: ""
+
+kms:
+  image:
+    repository: docker.io/quanxiang/kms
+    tag: v2.0.0
+  imagePullSecrets: ""
+  signKey: replace-this-place  # 替换此项的值，尽量复杂。
+  mysql:
+    <<: *mysql
+    db: kms
+  redis:
+    <<: *redis
+
+message:
+  images:
+    message:
+      repository: docker.io/quanxiang/message
+      tag: v2.0.0
+    email:
+      repository: docker.io/quanxiang/email
+      tag: v2.0.0
+    letter:
+      repository: docker.io/quanxiang/letter
+      tag: v2.0.0
+  mysql:
+    <<: *mysql
+    db: message
+  redis: 
+    <<: *redis
+  kafka:
+    <<: *kafka
+  email:
+    enabled: true
+    host: smtp.lijy.me
+    port: 465
+    username: example
+    password: password
+    alias: quanxiang
+    sender: mail@lijy.me
+
+organizations:
+  image:
+    repository: docker.io/quanxiang/organizations
+    tag: v2.0.0
+  mysql:
+    <<: *mysql
+    db: organizations
+  redis:
+    <<: *redis
+  elastic:
+    <<: *elastic
+
+persona:
+  image:
+    repository: docker.io/quanxiang/persona
+    tag: v2.0.0
+  elastic:
+    <<: *elastic
+
+polyapi:
+  image:
+    repo: docker.io/quanxiang
+    name: polyapi
+    tag: v2.0.0
+  mysql:
+    <<: *mysql
+    db: polyapi
+  redis:
+    <<: *redis
+  ingress:
+    enabled: true
+    hosts:
+    - host: polyapi.lijy.me  # 修改域名。
+      paths:
+      - fullName: polyapi
+        path: /
+        svcPort: 80
+process:
+  image:
+    repository: docker.io/quanxiang/process
+    tag: v2.0.0
+  imagePullSecrets: ""
+  mysql:
+    <<: *mysql
+    db: process
+  process:
+    <<: *redis
+
+search:
+  image: 
+    repository: docker.io/quanxiang/search
+    tag: v2.0.0
+  imagePullSecrets: ""
+  elastic:
+    <<: *elastic
+
+qxp-web-home:
+  image:
+    repository: docker.io/quanxiang/qxp-web-home
+    tag: v2.0.0
+  imagePullSecrets: ""
+  redis:
+    <<: *redis
+
+qxp-web-nginx:
+  image:
+    repository: docker.io/quanxiang/qxp-web-nginx
+    tag: v2.0.0
+  imagePullSecrets: ""
+
+qxp-web-portal:
+  image:
+    repository: docker.io/quanxiang/qxp-web-portal
+    tag: v2.0.0
+  imagePullSecrets: ""
+
+warden:
+  image:
+    repository: docker.io/quanxiang/warden
+    tag: v2.0.0
+  imagePullSecrets: ""
+  redis:
+    <<: *redis
+  jwtKey: ""                           # jwt加密密钥，尽量复杂
+  accessTokenExp: 2                    # access token 失效时间 默认2小时。
+  refreshTokenExp: 24                  # refresh token 失效时间 默认24小时。
+
+web-process:
+  image:
+    repo: docker.io/quanxiang/web-processors
+    tag: v2.0.0
+  imagePullSecrets: ""
+  hostAliases:
+    enabled: true
+    ip: 192.168.0.10

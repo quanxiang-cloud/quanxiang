@@ -1,0 +1,18 @@
+namespace: ""
+image:
+    repository: docker.io/quanxiang/kms
+    tag: v2.0.0
+imagePullSecrets: ""
+signKey: replace-this-place  # 替换此项的值，尽量复杂。
+
+mysql: {}
+redis: {}
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+app:
+  kubernetes:
+    io:
+      name: backend
+

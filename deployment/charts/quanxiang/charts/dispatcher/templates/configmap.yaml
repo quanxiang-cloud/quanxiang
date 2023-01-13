@@ -1,0 +1,64 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: dispatcher
+  namespace: {{ .Release.Namespace }}
+
+data:
+  config.yml: |
+
+    # port 端口
+    # e.g :80
+    port: :80
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    # processorNum 分发并行数
+    processorNum: 5
+
+    # syncChannel 内部分布式同步
+    syncChannel: dispatcher:task:listen:rest
+
+    #  -------------------- hand out --------------------
+    handout:
+      deadline: 30
+      dialTimeout: 30
+      maxIdleConns: 10
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: 0
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    # -------------------- kafka --------------------
+    kafka:
+      {{- with .Values.kafka.broker }}
+      broker:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+    # -------------------- mysql --------------------
+    mysql:
+      db: {{ .Values.mysql.db }}
+      host: {{ .Values.mysql.host }}
+      user: {{ .Values.mysql.user }}
+      password: {{ .Values.mysql.password }}
+      log: {{ or .Values.global.password .Values.mysql.log }}
+
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}

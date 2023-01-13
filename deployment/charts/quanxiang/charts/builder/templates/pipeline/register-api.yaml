@@ -1,0 +1,54 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: register-polyapi
+  namespace: {{ .Values.namespace }}
+spec:
+  description: >-
+    Go to the polyapi there to register the swagger document
+  workspaces:
+    - name: source-ws
+      description: Location where source is stored.
+  params:
+    - name: SOURCE_URL
+      description: A git repo url where the source code resides.
+      default: ""
+    - name: PROJECT_NAME
+      description: The name of project
+      default: ""
+    - name: PROJECT_TITLE
+      description: ProjectTile is the alias of param.PROJECT_NAME
+    - name: OPERATE_ID
+      description: The name of  that is  polyapi param
+      default: ""
+    - name: HOST
+      description: The name of  that is serving host address
+      default: "localhost:9999"
+    - name: APPID
+      description: AppID is defined by appcenter
+    - name: GROUP_NAME
+      description: GroupName is defined by git
+  tasks:
+    - name: generate-register-swagger
+      taskRef:
+        name: register-api
+      workspaces:
+        - name: source
+          workspace: source-ws
+      params:
+        - name: url
+          value: $(params.SOURCE_URL)
+        - name: gitInitImage
+          value: {{ .Values.gitInitImage }}
+        - name: PROJECT_NAME
+          value: "$(params.PROJECT_NAME)"
+        - name: PROJECT_TITLE
+          value: "$(params.PROJECT_TITLE)"
+        - name: SWAGGER_IMAGE
+          value: {{ .Values.swagImage }}
+        - name: OPERATE_ID
+          value: "$(params.OPERATE_ID)"
+        - name: HOST
+          value: "$(params.HOST)"
+        - name: POLYAPI_PATH
+          value: http://polyapi.{{.Values.global.namespace}}.svc.cluster.local:9090/api/v1/polyapi/inner/regSwaggerAlone/system/app/$(params.APPID)/raw/faas/$(params.GROUP_NAME)/$(params.PROJECT_NAME)

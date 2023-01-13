@@ -1,0 +1,97 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: app-center
+  namespace: {{ .Release.Namespace }}
+
+data:
+  config.yml: >
+    # -------------------------------- AppCenter
+    -----------------------------------
+
+    app-center:
+      # model: debug|release
+      model: debug
+      http:
+        port: 80
+        readHeaderTimeOut: 15
+        writeTimeOut: 600
+        maxHeaderBytes: 1048576
+
+    # initialized server
+
+    initServerBits: 3
+
+
+    innerHost:
+      structor: "http://structor"
+      flow: "http://flow"
+      polyAPI: "http://polyapi:9090"
+      org: "http://org"
+
+    # import app minimum version
+
+    compatibleVersion: "0.7.3"
+
+
+    # ------------------------------------ Common
+    -----------------------------------
+
+    mysql:
+      db: {{ .Values.mysql.db }}
+      host: {{ .Values.mysql.host }}
+      user: {{ .Values.mysql.user }}
+      password: {{ .Values.mysql.password }}
+      log: {{ .Values.mysql.log }}
+
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}
+
+    # comply with zap log specification
+
+    log:
+      level: -1
+
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    # ----------------------------------- Chaos
+    -----------------------------------------
+
+    chaos:
+      model: debug
+      http:
+        port: 6666
+
+    # Amount of goroutine to handle tasks
+
+    workLoad: 3
+
+
+    # Maximum number of retries
+
+    maximumRetry: 3
+
+
+    # Duration of retrying
+
+    waitTime: 2
+
+
+    cachePath: /cache/data.tmp
+
+
+    # Custom defination
+
+    kv:
+      form-role: http://form:8080/api/v1/form/%s/internal/apiRole/create
+      form-assign: http://form:8080/api/v1/form/%s/internal/apiRole/grant/assign/%s
+      init-back: http://localhost/api/v1/app-center/initCallBack
+      poly-init: http://polyapi:9090/api/v1/polyapi/inner/initAppPath
+      init-reload: http://localhost/api/v1/app-center/listAppByStatus

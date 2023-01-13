@@ -1,0 +1,106 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: polyapi
+  namespace: {{ .Release.Namespace }}
+
+data:
+  config.yml: |
+    # port 端口
+    # e.g :80
+    port: :80
+
+    # port for innner only
+    portInner: :9090
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    # my access base, eg: http(s)://api.xxx.com
+    myHostBase: http://polyapi.qxp.com
+    gate:
+      limitRate:
+        enable: true
+        # 1 ~ 10,0000
+        ratePerSecond: 50
+      apiBlock:
+        enable: true
+        # 1 ~ 100
+        maxAllowError: 3
+        # 10 ~ 3600
+        blockSeconds: 30
+        # 1 ~
+        apiTimeoutMS: 500
+      ipBlock:
+        enable: true
+        white:
+          - "*.*.*.*"
+        black:
+          - "192.168.100.*"
+
+
+    authorize:
+      #  -------------------- oauth --------------------
+      oauthToken:
+        addr: http://jwt/api/v1/jwt/check
+        timeout: 20
+        maxIdleConns: 10
+
+      #  -------------------- oauth by api-key --------------------
+      oauthKey:
+        addr: http://kms/api/v1/kms/key/signature
+        timeout: 20
+        maxIdleConns: 10
+
+      #  -------------------- goalie --------------------
+      goalie:
+        addr: http://goalie/api/v1/goalie/role
+        timeout: 20
+        maxIdleConns: 10
+
+      #  -------------------- fileserver --------------------
+      fileServer:
+        addr: http://fileserver/api/v1/fileserver/uploadFile
+        timeout: 20
+        maxIdleConns: 5
+      appAccess:
+        addr: http://app-center/api/v1/app-center/checkAppAccess
+        timeout: 20
+        maxIdleConns: 5
+
+      appAdmin:
+        addr: http://app-center/api/v1/app-center/checkIsAdmin
+        timeout: 20
+        maxIdleConns: 5
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    # -------------------- mysql --------------------
+    mysql:
+      db: {{ .Values.mysql.db }}
+      host: {{ .Values.mysql.host }}
+      user: {{ .Values.mysql.user }}
+      password: {{ .Values.mysql.password }}
+      log: {{ .Values.mysql.log }}
+
+
+    # -------------------- redis --------------------
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}

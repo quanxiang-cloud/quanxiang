@@ -1,0 +1,44 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: persona
+  namespace: {{ .Release.Namespace }}
+data:
+  config.yml: |-
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    port: :80
+
+    hostName: persona
+
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    #-------------------es配置-----------------
+    elasticsearch:
+      {{- with .Values.elastic.host }}
+      host:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      log: {{ .Values.elastic.log }}
+      timeout: 5
+      cafingerprint:
+      defaultindex: "persona_kv"  # 初始化默认存储index
+
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 5
+      maxIdleConns: 10

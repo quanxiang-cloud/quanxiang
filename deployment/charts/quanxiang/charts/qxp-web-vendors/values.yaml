@@ -1,0 +1,17 @@
+image:
+  repository: docker.io/quanxiang/qxp-web-vendors
+  tag: v2.0.0
+namespace: ""
+imagePullSecrets: ""
+vendor:
+  protocol: ""
+  hostname: ""
+  port: 0
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+app:
+  kubernetes:
+    io:
+      name: fronted

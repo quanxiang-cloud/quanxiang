@@ -1,0 +1,57 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: qxp-web-portal-config
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubesphere.io/alias-name: qxp-web-portal-config
+
+data:
+  config.yaml: |-
+    dev_mode: false
+
+    api_endpoint:
+      protocol: http
+      hostname: polygate
+      port: 80
+
+    http_client:
+      timeout: 30
+      max_conn: 100
+      dial_timeout: 30
+      idle_conn_timeout: 90
+
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}
+    portal_server:
+      server_port: 80
+      log_level: debug
+      log_dir: /var/log/qxp-web
+      # todo remove this
+      templates_dir: /qxp-web/dist/templates
+      # enable log to stdout
+      enable_stdout: true
+
+    home_server:
+      server_port: 80
+      log_level: debug
+      log_dir: /var/log/qxp-web
+      # todo remove this
+      templates_dir: /qxp-web/dist/templates
+      # enable log to stdout
+      enable_stdout: true
+
+    client_config:
+      websocket_hostname: {{ or .Values.global.websocket_hostname .Values.websocket_hostname }}
+      home_hostname: {{ or .Values.global.home_hostname .Values.home_hostname }}
+      portal_hostname: {{ or .Values.global.portal_hostname .Values.portal_hostname }}
+      docs_hostname: docs.clouden.io
+      vendor:
+        protocol: {{ or .Values.global.vendor.protocol .Values.vendor.protocol }}
+        hostname: {{ or .Values.global.vendor.hostname .Values.vendor.hostname }}
+        port: {{ or .Values.global.vendor.port .Values.vendor.port }}

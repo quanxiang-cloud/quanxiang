@@ -1,0 +1,16 @@
+image:
+  repository: docker.io/quanxiang/serving
+  tag: v2.0.0
+namespace: serving
+
+## docker 配置项
+docker:
+  name:  "faas-harbor"  # docker registry的 secret名字。不要修改。
+  registry: ""  #docker registry配置地址
+  nameSpace: "" #镜像地址的中间部分，比如：[qxcr.xyz]/[quanxiang]/[faas:v1.1.2]中的quanxiang
+  username: ""  #有push/pull这个registry空间的用户
+  password: "" #用户的密码
+app:
+  kubernetes:
+    io:
+      name: backend

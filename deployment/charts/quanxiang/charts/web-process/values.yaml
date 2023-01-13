@@ -1,0 +1,13 @@
+image:
+  repo: docker.io/quanxiang/web-processors
+  tag: v2.0.0
+imagePullSecrets: ""
+namespace: ""
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+app:
+  kubernetes:
+    io:
+      name: backend

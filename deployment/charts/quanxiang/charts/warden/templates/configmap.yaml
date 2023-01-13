@@ -1,0 +1,65 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: warden
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubesphere.io/alias-name: warden
+    kubesphere.io/creator: weitao
+    kubesphere.io/description: jwt协议认证服务
+data:
+  config.yml: |
+    # port 端口
+    # e.g :80
+    port: :80
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    #  -------------------- jwt token --------------------
+    jwtConfig:
+      #token失效小时计
+      accessTokenExp: {{ .Values.accessTokenExp }}
+      refreshTokenExp: {{ .Values.refreshTokenExp }}
+      jwtKey: {{ .Values.jwtKey }}
+
+
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    #-------------------redis配置-----------------
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}
+
+    #  -------------------- orgAPIS --------------------
+    orgAPI:
+      host: http://org
+      loginURI: /api/v1/org/h/account/check
+      updateUserStatusURI: /api/v1/org/o/user/update/status
+      updateUsersStatusURI: /api/v1/org/o/user/updates/status
+      adminResetPasswordURI: /api/v1/org/m/account/admin/reset
+      userResetPasswordURI: /api/v1/org/h/account/user/reset
+      userForgetResetPasswordURI: /api/v1/org/h/account/user/forget
+      # exp minute
+      exp: 0

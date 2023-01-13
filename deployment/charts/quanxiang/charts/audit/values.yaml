@@ -1,0 +1,20 @@
+image:
+  repository: quanxiang/audit
+  tag: v2.0.0
+imagePullSecrets: ""
+namespace: ""
+elastic:
+  log: true
+  host:
+  - http://elasticsearch-master:9200
+kafka:
+    broker:
+    - kafka:9092
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+app:
+  kubernetes:
+    io:
+      name: backend

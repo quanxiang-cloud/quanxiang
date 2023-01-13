@@ -1,0 +1,96 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: message
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: message
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+    dapr.io/enabled: 'true'
+  annotations:
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: http-web
+      protocol: TCP
+      port: 80
+      targetPort: 8081
+    - name: auth-web
+      protocol: TCP
+      port: 8080
+      targetPort: 40001
+  selector:
+    app: message
+  type: ClusterIP
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: message
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: message
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message
+      app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+      app.kubernetes.io/version: v1
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: message
+        app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+        app.kubernetes.io/version: v1
+        version: v1
+      annotations:
+        dapr.io/app-id: message
+        dapr.io/app-port: '8081'
+        dapr.io/enabled: 'true'
+        kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
+        logging.kubesphere.io/logsidecar-config: '{}'
+        sidecar.istio.io/inject: 'false'
+    spec:
+      volumes:
+        - name: volume
+          configMap:
+            name: message
+            defaultMode: 420
+      containers:
+        - name: auth
+          image: '{{ .Values.images.auth.repository }}:{{ .Values.images.auth.tag }}'
+          args:
+           - "--entrypoint=http://localhost:8081"
+          ports:
+          - name: auth-web
+            containerPort: 40001
+            protocol: TCP
+          imagePullPolicy: Always
+        - name: message
+          image: '{{ .Values.images.message.repository }}:{{ .Values.images.message.tag }}'
+          args:
+            - '--tenant=lowcode'
+            - '--config=/configs/config.yml'
+            - '--pubsub-name=message-kafka-pubsub'
+          ports:
+            - name: http-web
+              containerPort: 8081
+              protocol: TCP
+          volumeMounts:
+            - name: volume
+              readOnly: true
+              mountPath: /configs
+          imagePullPolicy: Always
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}

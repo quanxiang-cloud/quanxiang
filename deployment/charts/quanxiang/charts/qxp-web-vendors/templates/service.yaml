@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: qxp-web-vendors
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: qxp-web-vendors
+    version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  annotations:
+    kubesphere.io/alias-name: qxp-web-vendors
+    kubesphere.io/creator: markduan
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  type: ClusterIP
+  ports:
+    - name: portal
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: qxp-web-vendors
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+
