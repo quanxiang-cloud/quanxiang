@@ -74,6 +74,14 @@ spec:
         - name: {{ .Values.imagePullSecrets }}
       affinity: {}
       schedulerName: default-scheduler
+      {{ if .Values.hostAliases.enabled }}
+      hostAliases: 
+        - ip: {{ .Values.hostAliases.loadBalancerIP }}
+          hostnames:
+            {{- range .Values.hostAliases.hostnames }}
+            - {{ . | quote }}
+            {{- end }}
+      {{ end }}
   strategy:
     type: RollingUpdate
     rollingUpdate:

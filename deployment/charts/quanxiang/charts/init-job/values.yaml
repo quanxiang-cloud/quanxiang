@@ -1,0 +1,9 @@
+images:
+  initdb:
+    repository: docker.io/quanxiang/initdb
+    tag: latest
+mysql: {}
+
+imagePullSecrets: ""
+namespace: ""
+

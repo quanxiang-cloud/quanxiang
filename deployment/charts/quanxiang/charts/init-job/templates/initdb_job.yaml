@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "init-job"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  template:
+    metadata:
+      name: "init-job"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: initdb-job
+        image: {{ .Values.images.initdb.repository }}:{{ .Values.images.initdb.tag }}
+        imagePullPolicy: Always
+        env:
+          - name: DBTYPE
+            value: mysql
+          - name: DBHOST
+            value: {{ .Values.mysql.host }}
+          - name: DBUSER
+            value: {{ .Values.mysql.user }}
+          - name: DBPASSWORD
+            value: {{ .Values.mysql.password }}

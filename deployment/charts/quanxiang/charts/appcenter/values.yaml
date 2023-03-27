@@ -1,6 +1,10 @@
-image:
-  repository: quanxiang/appcenter
-  tag: v2.0.0
+images:
+  chaos:
+    repository: quanxiang/chaos
+    tag: v2.0.0
+  appcenter:
+    repository: quanxiang/appcenter
+    tag: v2.0.0
 imagePullSecrets: ""
 namespace: ""
 

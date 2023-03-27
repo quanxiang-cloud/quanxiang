@@ -35,7 +35,7 @@ spec:
         sidecar.istio.io/inject: 'false'
     spec:
       containers:
-        - name: container-kudq8k
+        - name: container
           image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
           command:
             - ./web-processors
@@ -61,10 +61,12 @@ spec:
       affinity: {}
       schedulerName: default-scheduler
       {{- if .Values.hostAliases.enabled }}
-      hostAliases:
-        - hostnames:
-            - qxp-static.fs.{{ .Values.global.domain }}
-          ip: {{ .Values.hostAliases.ip }}
+      hostAliases: 
+        - ip: {{  .Values.hostAliases.loadBalancerIP }}
+          hostnames:
+            {{- range .Values.hostAliases.hostnames }}
+            - {{ . | quote }}
+            {{- end }}
       {{- end }}
   strategy:
     type: RollingUpdate

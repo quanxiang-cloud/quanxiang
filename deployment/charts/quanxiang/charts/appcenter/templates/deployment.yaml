@@ -41,7 +41,7 @@ spec:
           emptyDir: {}
       containers:
         - name: chaos
-          image: '{{ .Values.image.repo }}/chaos:{{ .Values.image.tag }}'
+          image: '{{ .Values.images.chaos.repository }}:{{ .Values.images.chaos.tag }}'
           ports:
             - name: chaos
               containerPort: 6666
@@ -57,7 +57,7 @@ spec:
           terminationMessagePolicy: File
           imagePullPolicy: IfNotPresent
         - name: container
-          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          image: '{{ .Values.images.appcenter.repository }}:{{ .Values.images.appcenter.tag }}'
           ports:
             - name: app-center
               containerPort: 80

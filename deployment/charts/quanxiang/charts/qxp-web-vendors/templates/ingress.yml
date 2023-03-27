@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/version: v1
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 30m
-    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: {{ .Values.ingressClass }}
   rules:
   - host: {{ or .Values.global.vendor.hostname .Values.vendor.hostname }}
     http:

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  finalizers:
+  - finalizers.kubesphere.io/namespaces
+  name: builder
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active

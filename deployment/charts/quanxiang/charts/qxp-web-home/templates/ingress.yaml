@@ -1,0 +1,29 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: qxp-home
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/version: v1
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 30m
+spec:
+  ingressClassName: {{ .Values.ingressClass }}
+  rules:
+  - host: {{ or .Values.global.home_hostname  .Values.home_hostname }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: qxp-web-home
+            port:
+              number: 80
+      - path: /dist
+        pathType: Prefix
+        backend:
+          service:
+            name: qxp-web-nginx
+            port:
+              number: 80

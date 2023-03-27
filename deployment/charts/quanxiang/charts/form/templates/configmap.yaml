@@ -60,7 +60,7 @@ data:
       polyInner: "http://polyapi:9090"
       structor: "localhost:8081"
   db_database: structor
-  db_host: '{{ .Values.mongo.hosts }}'
+  db_host: '{{ join "," .Values.mongo.hosts }}'
   db_password: {{ .Values.mongo.credential.password }}
   db_user_name: {{ .Values.mongo.credential.username }}
   permit.yml: |+

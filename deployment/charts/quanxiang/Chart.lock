@@ -1,7 +1,10 @@
 dependencies:
+- name: nginx-ingress
+  repository: file://../nginx-ingress
+  version: 0.16.1
 - name: mysql
   repository: file://../mysql
-  version: 9.4.6
+  version: 1.6.9
 - name: redis-cluster
   repository: file://../redis-cluster
   version: 7.1.0
@@ -95,5 +98,8 @@ dependencies:
 - name: qxp-web-vendors
   repository: ""
   version: 0.1.0
-digest: sha256:8d1580b5818330eabbb5090eafb8fe3059d5901e8bda499e487f947556aa98aa
-generated: "2023-01-12T15:13:07.654347+08:00"
+- name: init-job
+  repository: ""
+  version: 0.1.0
+digest: sha256:ee4aa501e1a96c6355c3a9090506e1b19fd4bc9e459c9e259b7c8a8b4afc3e0f
+generated: "2023-02-01T16:26:34.004025+08:00"

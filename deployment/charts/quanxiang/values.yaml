@@ -11,31 +11,52 @@ global:
   home_hostname: home.lijy.me      # 用户端访问地址
   portal_hostname: portal.lijy.me  # 管理端访问地址
   vendor:
-    protocol: http
+    protocol: http                 # 前端渲染配置访问协议。
     hostname: vendors.lijy.me      # 前端渲染配置访问地址。
-    port: 80                           # 前端渲染配置端口。
+    port: 80                       # 前端渲染配置端口。
   faas:
-    enabled: true                      # 是否安装faas。
+    enabled: true                  # 是否安装faas。
+  loadBalancer: &lb                # DONNOT CHAGE  &lbIP, 不要修改 &lbIP
+    loadBalancerIP: '192.168.208.193' # 此处填写LB的可用地址,如果使用了MetalLB，在定义的IP pool里的可用地址。
+  ingress: &ingressClass
+    ingressClass: nginx
 
+
+
+hostAliases: &hostAliases
+  enabled: true                # 没有可用的DNS服务做解析时，需要将此处设置为true，配置容器内hosts文件。
+  <<: *lb                      # DONNOT CHAGE THIS LINE, 不要修改此行
+  hostnames:
+    - 'qxp-static.fs.lijy.me'
+    - 'default.fs.lijy.me'  
 
 mysql: 
   enabled: true
   fullnameOverride: mysql
-  internal: &mysql
+  internal: &mysql                  # DONNOT CHAGE THIS LINE, 不要修改此行
     host: mysql:3306
     user: root
     password: qxp1234
     log: true
-  auth:
-    rootPassword: qxp1234
-    user: root
-    password: qxp1234
+  mysqlRootPassword: qxp1234
+  mysqlUser: root
+  mysqlPassword: qxp1234
+  persistence:
+    size: 8Gi
+
+nginx-ingress:
+  enabled: false
+  fullnameOverride: ingress-nginx
+  controller: 
+    <<: *ingressClass
+    service:
+      <<: *lb           # DONNOT CHAGE THIS LINE, 不要修改此行
 
 redis-cluster: 
   enabled: true
   fullnameOverride: redis-cluster
   password: qxp1234
-  internal: &redis
+  internal: &redis                         # DONNOT CHAGE THIS LINE, 不要修改此行
     addrs:
       - redis-cluster-0.redis-cluster-headless:6379
       - redis-cluster-1.redis-cluster-headless:6379
@@ -45,8 +66,8 @@ redis-cluster:
 elasticsearch:
   enabled: true 
   fullnameOverride: elasticsearch
-  internal: &elastic
-    host: 
+  internal: &elastic                       # DONNOT CHAGE THIS LINE, 不要修改此行
+    host:
       - http://elasticsearch-master:9200
     log: true
 
@@ -55,7 +76,7 @@ kafka:
   fullnameOverride: kafka
   zookeeper:
     fullnameOverride: zookeeper
-  internal: &kafka
+  internal: &kafka             # DONNOT CHAGE THIS LINE, 不要修改此行
     broker:
       - kafka-headless:9092
 
@@ -67,7 +88,7 @@ mongodb:
     usernames: ["root"]
     passwords: ["qxp1234"]
     databases: ["form"]
-  internal: &mongodb
+  internal: &mongodb            # DONNOT CHAGE THIS LINE, 不要修改此行
     hosts:
       - mongodb:27017
     direct: false
@@ -89,23 +110,32 @@ minio:
   resources:
     requests:
       memory: 10Mi
-   
-  storage:
+  
+  # 存储的配置，目前支持S3协议的存储，默认使用的Minio。
+  storage: &storage
     type: minio
     protocol: http
-    endpendpoint: http://minio:9000
+    endpoint: http://fs.lijy.me        
     accessKey: Minio
     secretKey: Minio123456
     location: us-east-1
     bucketName: default
-  
-
 
 ##############
 ### quanxiang configurations
 ##############
+fluent-bit:
+  enabled: true
+  namespace: builder
+  image:
+    repository: fluent/fluent-bit
+    tag: 1.3.7
+  elastic:
+    <<: *elastic                    # DONNOT CHAGE THIS LINE, 不要修改此行
+
 polygate:
   jwtKey: "1232234yqwufdyuiasdfsdf"
+  <<: *ingressClass
   service:
     type: ClusterIP
     port: 80
@@ -129,12 +159,18 @@ polygate:
         svcPort: 80
 
 appcenter:
-  image:
-    repository: quanxiang/appcenter
-    tag: v2.0.0
+  images:
+    chaos:
+      repository: quanxiang/chaos
+      tag: v2.0.0
+    appcenter:
+      repository: quanxiang/appcenter
+      tag: v2.0.0
   mysql:
-    <<: *mysql
+    <<: *mysql                     # DONNOT CHAGE THIS LINE, 不要修改此行
     db: app_center
+  redis:
+    <<: *redis                     # DONNOT CHAGE THIS LINE, 不要修改此行
 
 audit:
   image:
@@ -147,7 +183,7 @@ builder:
   swageImage: docker.io/quanxiang/swag:v1.1.2
   docker:
     name: faas-docker  # 不要修改此项 DO NOT CHANGE THIS VALUE.
-  git:
+  git: &gitlab
     name: rsa               # git ssh 的secret的名字， 不要修改。
     host: "http://192.168.208.51:8080"                # git server的访问地址，例如：http://git.quanxiang.dev 或者 http://192.168.0.3
     known_hosts_scan: "WzE5Mi4xNjguMjA4LjUxXToxMDIyIHNzaC1lZDI1NTE5IEFBQUFDM056YUMxbFpESTFOVEU1QUFBQUlOaFNQQlFXYUZLaWYzVUp4aWNCdzRFRjhMS0VreE5jVWorU2RzN3VjZGlFClsxOTIuMTY4LjIwOC41MV06MTAyMiBzc2gtcnNhIEFBQUFCM056YUMxeWMyRUFBQUFEQVFBQkFBQUJnUURBakpBdmRMOEtabkxvbFpFcGlUbWV2S2ppZDZtME5VVktyN0lPT0hHc2d2bnBnVUVudXRwV2R2cG80OEY1cTZIN3lIRkVETUpVS0JqeS9jNFBOS1JhdExpL3NmNlF2WURjcm00TDFONEV3NFliamcyN2UvVnByWGp6eHhUeGM0TG1WNVNPTmpnbVdvQmJGc0xFanNFL2RtT1hiclhRWGREai9ndXlQbjE2dXNhazh1cEpGV21ZWllmOGp3MXg2WFFXelVXUUZBTERsNHdyMnB6YkR5RSsyVzlYeUloeU1PV2dDdGMycjZ4ZVVXTENaZXQrblQ4Wk9iRW5DakFZV3l3VnBnRE5aL28vR0FRKzdBelJEUmxLa1M1TU9pYWlMY2V0OWpta0M5THlueVdQV0hLQWVYMk8zaTNYWERoU2czMlRWeVJTa0V1c0oyajhTOGtJVHdTVVdYeDIvaG1DNEdjREVPSnlZamRYOU9oM3IzWStYVHpBQThNVE9CNnhVVWtObUtWenpXVWh6RGtmNDNqaFNOT094dG9rQWw1eEtpbWwwMGplaVdFRmw3RzVFd2xHWmRaWlk2amhIRzBQUGxSeTQyQld5SGlFQWd0N2ZXSU9LUFVHVVM0bU9pMnNnVDlmOE1BOWgxVVVHM0p0cG1nTzhnc2hCZXlhTUkweTN0cz0KWzE5Mi4xNjguMjA4LjUxXToxMDIyIGVjZHNhLXNoYTItbmlzdHAyNTYgQUFBQUUyVmpaSE5oTFhOb1lUSXRibWx6ZEhBeU5UWUFBQUFJYm1semRIQXlOVFlBQUFCQkJQejZiRXRBOUJ1ZElWR29EL2lYLzlOZWhCd1lGV1EvdHpUM1VkWlkyUDRvcDNBdHpkNnFiODl2Nmt0bzVpNC9GRkhob1JtbEgrWFExSktjRjNPRnBMWT0K"
@@ -162,7 +198,7 @@ dispatcher:
     tag: v2.0.0
   imagePullSecrets: ""
   mysql:
-    <<: *mysql
+    <<: *mysql                             # DONNOT CHAGE THIS LINE, 不要修改此行
     db: dispatcher
 
 entrepot:
@@ -171,8 +207,10 @@ entrepot:
     tag: v2.0.0
   imagePullSecrets: ""
   mysql:
-    <<: *mysql
+    <<: *mysql                           # DONNOT CHAGE THIS LINE, 不要修改此行
     db: entrepot
+  redis:
+    <<: *redis                           # DONNOT CHAGE THIS LINE, 不要修改此行
 
 faas:
   image:
@@ -181,14 +219,14 @@ faas:
   imagePullSecrets: ""
   goBuildImage: docker.io/quanxiang/builder-go:v1.16
   mysql:
-    <<: *mysql
+    <<: *mysql                          # DONNOT CHAGE THIS LINE, 不要修改此行
     db: faas
   redis:
-    <<: *redis
+    <<: *redis                          # DONNOT CHAGE THIS LINE, 不要修改此行
   elastic:
-    <<: *elastic
+    <<: *elastic                        # DONNOT CHAGE THIS LINE, 不要修改此行
   kafka:
-    <<: *kafka
+    <<: *kafka                          # DONNOT CHAGE THIS LINE, 不要修改此行
   docker:
     name:  "faas-harbor"  # docker registry的 secret名字。不要修改。
     registry: "qxcr.io"  #docker registry配置地址
@@ -201,15 +239,18 @@ fileserver:
     repository: docker.io/quanxiang/fileserver
     tag: v2.0.0
   imagePullSecrets: ""
+  <<: *ingressClass
   mysql:
-    <<: *mysql
+    <<: *mysql                      # DONNOT CHAGE THIS LINE, 不要修改此行
     db: fileserver
   redis:
-    <<: *redis
+    <<: *redis                      # DONNOT CHAGE THIS LINE, 不要修改此行
   s3:
     buckets:
       readable: qxp-static
       private: default
+  storage:
+    <<: *storage
   ingress:
     enabled: true
     hosts:
@@ -229,9 +270,6 @@ flow:
   redis:
     <<: *redis
 
-fluent-bit:
-  namespace: builder
-
 form:
   images:
     premit:
@@ -245,11 +283,13 @@ form:
       tag: v2.0.0
   imagePullSecrets: ""
   mysql:
-    <<: *mysql
+    <<: *mysql                           # DONNOT CHAGE THIS LINE, 不要修改此行
     db: form
   redis:
-    <<: *redis
-  kafka: *kafka
+    <<: *redis                           # DONNOT CHAGE THIS LINE, 不要修改此行
+  mongo:
+    <<: *mongodb                         # DONNOT CHAGE THIS LINE, 不要修改此行
+  kafka: *kafka                          # DONNOT CHAGE THIS LINE, 不要修改此行
 
 goalie:
   image:
@@ -257,10 +297,10 @@ goalie:
     tag: v2.0.0
   imagePullSecrets: ""
   mysql:
-    <<: *mysql
+    <<: *mysql                           # DONNOT CHAGE THIS LINE, 不要修改此行
     db: goalie
   redis:
-    <<: *redis
+    <<: *redis                           # DONNOT CHAGE THIS LINE, 不要修改此行
 
 implant:
   image:
@@ -276,10 +316,10 @@ kms:
   imagePullSecrets: ""
   signKey: replace-this-place  # 替换此项的值，尽量复杂。
   mysql:
-    <<: *mysql
+    <<: *mysql                          # DONNOT CHAGE THIS LINE, 不要修改此行
     db: kms
   redis:
-    <<: *redis
+    <<: *redis                          # DONNOT CHAGE THIS LINE, 不要修改此行
 
 message:
   images:
@@ -293,12 +333,12 @@ message:
       repository: docker.io/quanxiang/letter
       tag: v2.0.0
   mysql:
-    <<: *mysql
+    <<: *mysql                         # DONNOT CHAGE THIS LINE, 不要修改此行
     db: message
   redis: 
-    <<: *redis
+    <<: *redis                         # DONNOT CHAGE THIS LINE, 不要修改此行
   kafka:
-    <<: *kafka
+    <<: *kafka                         # DONNOT CHAGE THIS LINE, 不要修改此行
   email:
     enabled: true
     host: smtp.lijy.me
@@ -313,30 +353,33 @@ organizations:
     repository: docker.io/quanxiang/organizations
     tag: v2.0.0
   mysql:
-    <<: *mysql
+    <<: *mysql                       # DONNOT CHAGE THIS LINE, 不要修改此行
     db: organizations
   redis:
-    <<: *redis
+    <<: *redis                       # DONNOT CHAGE THIS LINE, 不要修改此行
   elastic:
-    <<: *elastic
+    <<: *elastic                     # DONNOT CHAGE THIS LINE, 不要修改此行
 
 persona:
   image:
     repository: docker.io/quanxiang/persona
     tag: v2.0.0
   elastic:
-    <<: *elastic
+    <<: *elastic                    # DONNOT CHAGE THIS LINE, 不要修改此行
 
 polyapi:
   image:
     repo: docker.io/quanxiang
     name: polyapi
     tag: v2.0.0
+  <<: *ingressClass
   mysql:
-    <<: *mysql
+    <<: *mysql                      # DONNOT CHAGE THIS LINE, 不要修改此行
     db: polyapi
   redis:
-    <<: *redis
+    <<: *redis                     # DONNOT CHAGE THIS LINE, 不要修改此行
+  hostAliases: 
+    <<: *hostAliases               # DONNOT CHAGE THIS LINE, 不要修改此行
   ingress:
     enabled: true
     hosts:
@@ -345,16 +388,17 @@ polyapi:
       - fullName: polyapi
         path: /
         svcPort: 80
+
 process:
   image:
     repository: docker.io/quanxiang/process
     tag: v2.0.0
   imagePullSecrets: ""
   mysql:
-    <<: *mysql
+    <<: *mysql                    # DONNOT CHAGE THIS LINE, 不要修改此行
     db: process
-  process:
-    <<: *redis
+  redis:
+    <<: *redis                    # DONNOT CHAGE THIS LINE, 不要修改此行
 
 search:
   image: 
@@ -362,7 +406,7 @@ search:
     tag: v2.0.0
   imagePullSecrets: ""
   elastic:
-    <<: *elastic
+    <<: *elastic                    # DONNOT CHAGE THIS LINE, 不要修改此行
 
 qxp-web-home:
   image:
@@ -370,7 +414,8 @@ qxp-web-home:
     tag: v2.0.0
   imagePullSecrets: ""
   redis:
-    <<: *redis
+    <<: *redis                    # DONNOT CHAGE THIS LINE, 不要修改此行
+  <<: *ingressClass
 
 qxp-web-nginx:
   image:
@@ -383,6 +428,15 @@ qxp-web-portal:
     repository: docker.io/quanxiang/qxp-web-portal
     tag: v2.0.0
   imagePullSecrets: ""
+  redis:
+    <<: *redis                    # DONNOT CHAGE THIS LINE, 不要修改此行
+  <<: *ingressClass
+
+qxp-web-vendors:
+  image:
+    repository: docker.io/quanxiang/qxp-web-vendors
+    tag: v2.0.0
+  <<: *ingressClass
 
 warden:
   image:
@@ -390,16 +444,27 @@ warden:
     tag: v2.0.0
   imagePullSecrets: ""
   redis:
-    <<: *redis
+    <<: *redis                    # DONNOT CHAGE THIS LINE, 不要修改此行
   jwtKey: ""                           # jwt加密密钥，尽量复杂
   accessTokenExp: 2                    # access token 失效时间 默认2小时。
   refreshTokenExp: 24                  # refresh token 失效时间 默认24小时。
 
 web-process:
   image:
-    repo: docker.io/quanxiang/web-processors
+    repository: docker.io/quanxiang/web-processors
     tag: v2.0.0
   imagePullSecrets: ""
   hostAliases:
-    enabled: true
-    ip: 192.168.0.10
+    <<: *hostAliases
+
+init-job:
+  images:
+    initdb:
+      repository: qxcr.io/lowcode/initdb
+      tag: v2.0.0
+  mysql:
+    <<: *mysql                            # DONNOT CHAGE THIS LINE, 不要修改此行
+  git:
+    <<: *gitlab
+  docker:
+    <<: *docker

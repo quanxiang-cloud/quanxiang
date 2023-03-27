@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/version: v1
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 30m
-    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: {{ .Values.ingressClass }}
   rules:
   - host: {{ or .Values.global.portal_hostname  .Values.portal_hostname }}
     http:
@@ -20,7 +20,7 @@ spec:
             name: qxp-web-portal
             port:
               number: 80
-      - path: /
+      - path: /dist
         pathType: Prefix
         backend:
           service:

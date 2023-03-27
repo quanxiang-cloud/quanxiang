@@ -24,9 +24,13 @@ version: 0.1.0
 appVersion: "1.16.0"
 
 
-dependencies: 
+dependencies:
+  - name: nginx-ingress
+    version: 0.16.1
+    repository: "file://../nginx-ingress"
+    condition: nginx-ingress.enabled
   - name: mysql
-    version: 9.4.6
+    version: 1.6.9
     repository: "file://../mysql"
     condition: mysql.enabled
   - name: redis-cluster
@@ -41,10 +45,6 @@ dependencies:
     version: 5.0.33
     repository: "file://../minio"
     condition: minio.enabled
-  - name: fluent-bit
-    version: 2.10.3
-    repository: "file://../fluent-bit"
-    condition: fluent-bit.enabled
   - name: kafka
     version: 20.0.2
     repository: "file://../kafka"
@@ -109,3 +109,9 @@ dependencies:
     version: "0.1.0"
   - name: qxp-web-vendors
     version: "0.1.0"
+  # init
+  - name: init-job
+    version: "0.1.0"
+  - name: fluent-bit
+    version: 2.10.3
+    condition: fluent-bit.enabled

@@ -7,11 +7,11 @@ mysql: {}
 
 redis: {}
 
-storage:
+storage: 
   #如果global.minio.enabled为true 此处不需要改动，否则请根据您的minio的信息填写
   type: minio
   protocol: http
-  endpendpoint: http://fs.example.com
+  endpoint: http://fs.example.com
   accessKey: Minio
   secretKey: Minio123456
   location: us-east-1

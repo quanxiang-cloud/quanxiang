@@ -1,28 +1,17 @@
-annotations:
-  category: Database
-apiVersion: v2
-appVersion: 8.0.31
-dependencies:
-- name: common
-  repository: https://charts.bitnami.com/bitnami
-  tags:
-  - bitnami-common
-  version: 2.x.x
-description: MySQL is a fast, reliable, scalable, and easy to use open source relational
-  database system. Designed to handle mission-critical, heavy-load production applications.
-home: https://github.com/bitnami/charts/tree/main/bitnami/mysql
-icon: https://bitnami.com/assets/stacks/mysql/img/mysql-stack-220x234.png
+apiVersion: v1
+name: mysql
+version: 1.6.9
+appVersion: 5.7.30
+description: DEPRECATED - Fast, reliable, scalable, and easy to use open-source relational database
+  system.
 keywords:
 - mysql
 - database
 - sql
-- cluster
-- high availability
-maintainers:
-- name: Bitnami
-  url: https://github.com/bitnami/charts
-name: mysql
+home: https://www.mysql.com/
+icon: https://www.mysql.com/common/logos/logo-mysql-170x115.png
 sources:
-- https://github.com/bitnami/containers/tree/main/bitnami/mysql
-- https://mysql.com
-version: 9.4.6
+- https://github.com/kubernetes/charts
+- https://github.com/docker-library/mysql
+deprecated: true
+engine: gotpl
