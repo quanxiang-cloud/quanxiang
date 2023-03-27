@@ -135,14 +135,14 @@ KubeSphere cluster requirments:
 | Master    | 1        | CPU: 4 core, Memory: 8 GB, Disk: 80 GB |
 | Worker    | 5        | CPU: 4 core, Memory: 8 GB, Disk: 80 GB |
 
-##### OpenFunction
-
-- Deploy Openfunction manully, refer [office documentation](https://openfunction.dev/docs/getting-started/installation/)
-
 
 > **Notice**
 >
 > Scale nodes' resources to double and use PaaS that privode by cloud vendors, if you want to use QuanXiang as production.
+
+##### OpenFunction
+
+Deploy Openfunction manully, refer [office documentation](https://openfunction.dev/docs/getting-started/installation/)
 
 - Deploy OpenFunction with helm:
 
@@ -156,6 +156,28 @@ helm install openfunction openfunction/openfunction --version 0.1.0 -n openfunct
 #### Step 2 Deploy MetalLB (Optional)
 
 Persistence IP address is recommended, that is easily to access QuanXiang web site. Before you deploy MetalLB,  you should prepare several  IP addresses which should  be available.  Refer [official documentation](https://metallb.universe.tf/installation/) to more information about installation.
+
+- Following step is copied from MetalLB official web site. 
+
+If you’re using kube-proxy in IPVS mode, since Kubernetes v1.14.2 you have to enable strict ARP mode.
+
+*Note, you don’t need this if you’re using kube-router as service-proxy because it is enabling strict ARP by default.*
+
+You can achieve this by editing kube-proxy config in current cluster:
+
+```bash
+kubectl edit configmap -n kube-system kube-proxy
+```
+
+and set:
+
+```yaml
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "ipvs"
+ipvs:
+  strictARP: true
+```
 
 - Deploy MetalLB with helm:
 
@@ -190,7 +212,7 @@ spec:
 kubectl apply -f ip-pool.yaml
 ```
 
-#### Step 2. QuanXiang installation
+#### Step 3. QuanXiang installation
 
 **Helm Charts installation is enabled after v2.0.0.**
 
@@ -206,7 +228,7 @@ You can download the [release version](https://github.com/quanxiang-cloud/quanxi
 
 QuanxiangCloud deployment tool support production and demo:
 
-- For production, database, cache, message etc. should be installed, refer [configurations](https://github.com/quanxiang-cloud/quanxiang/blob/master/doc/install.md#Configurations) for more details.
+- For production, database, cache, message etc. should be installed before you deploy QuanXiang, refer [configurations](https://github.com/quanxiang-cloud/quanxiang/blob/master/doc/install.md#Configurations) for more details.
 - For demo, all services will be deployed in Kubernetes.
 
 ##### Configurations
@@ -246,7 +268,7 @@ hostAliases: &hostAliases
 
 ##### Installation
 
-Run `helm install` to install the trial version:
+Run `helm install` to install QuanXiang:
 
 ```bash
 cd quanxiang/deployment/charts
@@ -259,13 +281,11 @@ helm install lowcode -n lowcode ./quanxiang --create-namespace --timeout 1800s
 helm uninstall lowcode -n lowcode
 ```
 
-
-
 #### How to access
 
 ##### Configure gateway
 
-Refer [KubeSphere official documentation](https://kubesphere.io/docs/project-administration/project-gateway/) to configure gateway. LoadBalancer is recommend.
+Refer [KubeSphere official documentation](https://kubesphere.io/docs/project-administration/project-gateway/) to configure gateway if you do not use MetalLB or OpenELB. LoadBalancer is recommend.
 
 ##### Access QuanXiang
 
@@ -280,6 +300,8 @@ To access QuanxiangCloud console, you should configure your hosts file or add dn
 
 ##### initialize web configurations
 
+**Below step is necessary if some menu is lost.**
+
 Portal console does not initialize after installation, follow below steps to initialize:
 >
 > 1. Open QuanXiangCloud portal console by browser.
@@ -291,15 +313,7 @@ Portal console does not initialize after installation, follow below steps to ini
 Details please refer to the image:
 ![snippets](./doc/images/initialize_configuration.png)
 
-</details>
 
-
-<details>
-<summary><b>💸 Installing on a native KuberNetes environment</b></summary>
-
-Coming soon.
-
-</details>
 
 ## Get Started using QuanXiang
 

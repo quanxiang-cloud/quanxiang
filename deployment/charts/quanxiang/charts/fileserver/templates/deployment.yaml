@@ -65,11 +65,12 @@ spec:
       serviceAccountName: default
       serviceAccount: default
       {{- if .Values.hostAliases.enabled }}
-      hostAliases:
-        - hostnames:
-            - fs.{{ or .Values.global.domain .Values.domain }}
-            - {{ .Values.s3.buckets.private }}.fs.{{ or .Values.global.domain .Values.domain }}
-          ip: {{ .Values.hostAliases.ip }}
+      hostAliases: 
+        - ip: {{ .Values.hostAliases.loadBalancerIP }}
+          hostnames:
+            {{- range .Values.hostAliases.hostnames }}
+            - {{ . | quote }}
+            {{- end }}
       {{- end }}
       securityContext: {}
       imagePullSecrets:

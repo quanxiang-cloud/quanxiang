@@ -6,7 +6,7 @@ namespace: ""
 gitInitImage: docker.io/quanxiang/grc.io.git-init:v0.29.0
 swageImage: docker.io/quanxiang/swag:v1.1.2
 docker:
-  name: faas-docker
+  name: faas-harbor
   
 git:
   name: rsa

@@ -58,12 +58,13 @@ spec:
       serviceAccountName: default
       serviceAccount: default
       {{- if .Values.hostAliases.enabled }}
-      hostAliases:
-        - hostnames:
-            - 'fs.{{ or .Values.global.domain .Values.domain }}'
-            - 'default.fs.{{ or .Values.global.domain .Values.domain }}'
-          ip: {{ .Values.hostAliases.ip }}
-      {{- end}}
+      hostAliases: 
+        - ip: {{ .Values.hostAliases.loadBalancerIP }}
+          hostnames:
+            {{- range .Values.hostAliases.hostnames }}
+            - {{ . | quote }}
+            {{- end }}
+      {{- end }}
       securityContext: {}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}

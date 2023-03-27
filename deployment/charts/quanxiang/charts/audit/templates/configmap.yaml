@@ -44,7 +44,7 @@ data:
 
     # -------------------- elastic --------------------
     elastic:
-      {{- with.Values.elastic.host }}
+      {{- with .Values.elastic.host }}
       host:
         {{- toYaml . | nindent 8 }}
       {{- end }}

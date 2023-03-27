@@ -101,3 +101,17 @@ data:
       {{- end }}
       username: {{ .Values.redis.username }}
       password: {{ .Values.redis.password }}
+    # -------------------- handler --------------------
+    handler:
+      # topic kafka topic  
+      topic: audit-log
+      # group kafka group  
+      group: audit
+      numOfProcessor: 3
+      buffer: 100 
+    # -------------------- kafka --------------------
+    kafka:
+      {{- with .Values.kafka.broker }}
+      broker:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -60,6 +60,8 @@ data:
       resetCode: org_resetcode
       forgetCode: org_forgetcode
       resetPWD: org_resetpwd
+      registerCode: org_registercode
+      newPWD: org_new_code
 
     #  -------------------- internalNet --------------------
     internalNet:

@@ -14,9 +14,6 @@ dependencies:
 - name: minio
   repository: file://../minio
   version: 5.0.33
-- name: fluent-bit
-  repository: file://../fluent-bit
-  version: 2.10.3
 - name: kafka
   repository: file://../kafka
   version: 20.0.2
@@ -101,5 +98,8 @@ dependencies:
 - name: init-job
   repository: ""
   version: 0.1.0
-digest: sha256:ee4aa501e1a96c6355c3a9090506e1b19fd4bc9e459c9e259b7c8a8b4afc3e0f
-generated: "2023-02-01T16:26:34.004025+08:00"
+- name: fluent-bit
+  repository: ""
+  version: 2.10.3
+digest: sha256:9e53a0ca330cd2be8d24f116afb8751e21a656c0ca92838553fa76d0f752d468
+generated: "2023-03-27T13:59:34.070257+08:00"
