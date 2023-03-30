@@ -269,7 +269,8 @@ helm install lowcode -n lowcode ./quanxiang --create-namespace --timeout 1800s
 ```
 helm uninstall lowcode -n lowcode
 ```
-
+</details>
+  
 #### 访问环境
 
 ##### 配置网关
