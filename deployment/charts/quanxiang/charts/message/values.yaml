@@ -1,0 +1,28 @@
+images:
+  message:
+    repository: docker.io/quanxiang/message
+    tag: v2.0.0
+  email:
+    repository: docker.io/quanxiang/email
+    tag: v2.0.0
+  letter:
+    repository: docker.io/quanxiang/letter
+    tag: v2.0.0
+  auth:
+    repository: docker.io/quanxiang/auth
+    tag: v2.0.0
+namespace: ""
+
+kafka:
+  broker:
+    - kafka:9092
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+mysql: {}
+redis: {}
+app:
+  kubernetes:
+    io:
+      name: backend

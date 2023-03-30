@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: flow
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: flow
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: flow
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 8081
+    - name: flow-rpc
+      protocol: TCP
+      port: {{ .Values.service.rpcPort }}
+      targetPort: {{ .Values.service.rpcPort }}
+  selector:
+    app: flow
+    app.kubernetes.io/version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  type: {{ .Values.service.type }}
+  sessionAffinity: None

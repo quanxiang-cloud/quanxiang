@@ -1,0 +1,23 @@
+image:
+  repository: docker.io/quanxiang/qxp-web-home
+  tag: v2.0.0
+imagePullSecrets: ""
+namespace: ""
+websocket_hostname: ws.example.com
+home_hostname: home.example.com
+portal_hostname: portal.example.com
+vendor:
+  protocol: http
+  hostname: vendors.example.com
+  port: 80
+domain: example.com
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+redis: {}
+
+app:
+  kubernetes:
+    io:
+      name: fronted

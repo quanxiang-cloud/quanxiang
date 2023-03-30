@@ -91,7 +91,7 @@ QuanXiang builds a low-code ecosystem around application design, development, de
 
 QuanXiang uses a loosely-coupled architecture that separates the frontend from the backend. It provides a plug-and-play, microservices architecture and embraces the diversity of languages and developer frameworks. The platform is divided into: application layer, docking layer, data processing layer and basic layer.
 
-![architecture_en](/doc/images/architecture_en.png)
+![architecture_en](./doc/images/architecture_en.png)
 
 
 
@@ -106,8 +106,20 @@ QuanXiang privodes a deployment tool, which can help user to quckly deploy QuanX
 
 - Kubernetes cluster environment  v1.21.*
 - OpenFunction v0.6.0
+- MetalLb  v0.13.7 (*optional*)
 
 ### Deploy QuanXiang on KubeShpere(recommend)
+
+#### Prerequisite
+
+Before deploying QuanXiang, below options are required in local environment:
+
+- Accessible KubeSphere cluster.
+- 'kubectl' is installed on local. refer [kubectl installation](https://kubernetes.io/docs/tasks/tools/) to install kubectl.
+- Kubeconfig is configured. refer below steps to configure kubeconfig
+  - Get QKE kubeconfig from QingCloud console.
+  - For KubeSphere kubeconfig, refer to [documentation](https://kubernetes.io/docs/tasks/tools/) or ask [community](https://github.com/kubesphere) for more help.
+- Helm3 is required. refer [helm3 installation](https://helm.sh/docs/intro/install/) to install helm3.
 
 #### Step 1. Deploy KubeSphere and Openfunction
 
@@ -123,126 +135,172 @@ KubeSphere cluster requirments:
 | Master    | 1        | CPU: 4 core, Memory: 8 GB, Disk: 80 GB |
 | Worker    | 5        | CPU: 4 core, Memory: 8 GB, Disk: 80 GB |
 
-##### OpenFunction
-
-- Deploy Openfunction manully, refer [office documentation](https://openfunction.dev/docs/getting-started/installation/)
-
 
 > **Notice**
 >
-> Scale nodes' resources to double and use PaaS that privode by cloud vendors, if you want to use QuanxiangCloud as production.
+> Scale nodes' resources to double and use PaaS that privode by cloud vendors, if you want to use QuanXiang as production.
 
+##### OpenFunction
 
+Deploy Openfunction manully, refer [office documentation](https://openfunction.dev/docs/getting-started/installation/)
 
-#### Step 2. QuanXiang installation
+- Deploy OpenFunction with helm:
 
-##### Prerequisite
+```
+kubectl create namespace openfunction
+helm repo add openfunction https://openfunction.github.io/charts/
+helm update
+helm install openfunction openfunction/openfunction --version 0.1.0 -n openfunction
+```
 
-Before deploying QuanXiang, below options are required in local environment:
+#### Step 2 Deploy MetalLB (Optional)
 
-- Accessible KubeSphere cluster.
-- 'kubectl' is installed on local. refer [kubectl installation](https://kubernetes.io/docs/tasks/tools/) to install kubectl.
-- Kubeconfig is configured. refer below steps to configure kubeconfig
-  - Get QKE kubeconfig from QingCloud console.
-  - For KubeSphere kubeconfig, refer to [documentation](https://kubernetes.io/docs/tasks/tools/) or ask [community](https://github.com/kubesphere) for more help.
-- Helm3 is required. refer [helm3 installation](https://helm.sh/docs/intro/install/) to install helm3.
+Persistence IP address is recommended, that is easily to access QuanXiang web site. Before you deploy MetalLB,  you should prepare several  IP addresses which should  be available.  Refer [official documentation](https://metallb.universe.tf/installation/) to more information about installation.
+
+- Following step is copied from MetalLB official web site. 
+
+If you’re using kube-proxy in IPVS mode, since Kubernetes v1.14.2 you have to enable strict ARP mode.
+
+*Note, you don’t need this if you’re using kube-router as service-proxy because it is enabling strict ARP by default.*
+
+You can achieve this by editing kube-proxy config in current cluster:
+
+```bash
+kubectl edit configmap -n kube-system kube-proxy
+```
+
+and set:
+
+```yaml
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "ipvs"
+ipvs:
+  strictARP: true
+```
+
+- Deploy MetalLB with helm:
+
+```
+helm repo add metallb https://metallb.github.io/metallb
+helm repo update
+helm install metallb metallb/metallb -n metallb-system --create-namespace
+```
+
+- Assign IP pool  to Kubernetes from file ip-pool.yaml, 
+
+```
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: lowcode
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.208.190-192.168.208.195  # replace this to your ips
+```
+
+>**Notice**
+>
+>Those IP address must be accessable and available to use.
+>
+>
+
+- Apply the IP Pools by "kubectl apply".
+
+```
+kubectl apply -f ip-pool.yaml
+```
+
+#### Step 3. QuanXiang installation
+
+**Helm Charts installation is enabled after v2.0.0.**
 
 ##### Download release
 
-You can download the [release version](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0) directly. **QuanXiang privodes various architecture package.**
-
-##### Build from source code
-
-To build QianXiang deployment tool, that golang 1.16 is needed and special correct GOOS, GOARCH. Example command with Linux and amd64.
+You can download the [release version](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0) directly or clone the source code from github.
 
 ```bash
  git clone https://github.com/quanxiang-cloud/quanxiang.git
- cd quanxiang/deployment
- CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o installApp main.go
 ```
-
-> **Notice**
->
-> - GOOS: darwin, Linux, Windows, FreeBSD etc.
-> - GOARCH: amd64, 386, arm etc.
 
 #### Deploy QuanXiang
 
 QuanxiangCloud deployment tool support production and demo:
 
-- For production, database, cache, message etc. should be installed, refer [configurations](https://github.com/quanxiang-cloud/quanxiang/blob/master/doc/install.md#Configurations) for more details.
+- For production, database, cache, message etc. should be installed before you deploy QuanXiang, refer [configurations](https://github.com/quanxiang-cloud/quanxiang/blob/master/doc/install.md#Configurations) for more details.
 - For demo, all services will be deployed in Kubernetes.
 
 ##### Configurations
 
-For production, you cat set `enable` to `false` to disable middle services in configuration file `configs/configs.yml` . refer to notes in configuration file for more details.
+For production, you cat set `enable` to `false` to disable middle services in configuration file `quanxiang/values.yaml` . refer to notes in values file for more details.
 
 ```bash
- vim configs/configs.yml
-    #Middleware Services 中间件服务
-    mysql:
-      enabled: true
-      rootPassword: qxp1234     #It is required to set the root user password if enabled equal to true    设置root用户密码 enabled为true时必填
-    redis:
-      enabled: true
-      password: cXhwMTIzNA==    #The password here is the base64 code of the password. For example, the base64 code of qxp1234 is cxhwmjm0cg==  这里的password为密码的base64编码，比如qxp1234的base64编码为cXhwMjM0Cg==
-    kafka:
+# Default values for quanxiang.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#replicaCount: 1
+
+global:
+  namespace: ""
+  domain: example.com                  # replace value to your domain. 修改成您自己的域名。
+  websocket_hostname: ws.example.com   # socket server访问地址
+  home_hostname: home.example.com     # 用户端访问地址
+  portal_hostname: portal.example.com  # 管理端访问地址
+  vendor:
+    protocol: http                 # 前端渲染配置访问协议。
+    hostname: vendors.example.com      # 前端渲染配置访问地址。
+    port: 80                       # 前端渲染配置端口。
+  faas:
+    enabled: true                  # 是否安装faas。
+  loadBalancer: &lb
+     loadBalancerIP:  '192.168.208.190' # DONNOT CHAGE  &lbIP, 不要修改 &lbIP  ---此处填写LB的可用地址,如果使用了MetalLB，在定义的IP pool里的可用地址。
+
+hostAliases: &hostAliases
+  enabled: true                # 没有可用的DNS服务做解析时，需要将此处设置为true，配置容器内hosts文件。
+  <<: *lb                      # DONNOT CHAGE THIS LINE, 不要修改此行
+  hostnames:
+    - 'qxp-static.fs.example.com'
+    - 'default.fs.example.com'  
               .....
 ```
 
 ##### Installation
 
-Run `installApp` to install the trial version:
+Run `helm install` to install QuanXiang:
 
 ```bash
-./installApp start -k ~/.kube/config  -i -n lowcode
+cd quanxiang/deployment/charts
+helm install lowcode -n lowcode ./quanxiang --create-namespace --timeout 1800s
 ```
-
-Parameters description:
-
-| parameter            | purpose                                                      | Description                                                  |
-| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| -c/--configfile      | relative or absolute path of the configuration file          | Indicates the absolute or relative path of the current project configs / configs.yml |
-| -d/--deploymentFile  | absolute or relative path of deployment folder               | absolute or relative path to the current project deployment folder |
-| -k/--kubeconfig      | the profile path than can access to k8s cluster              | If the file is in the default location ~ /. Kube / config, you can not specify this parameter. |
-| -i/--middlerwareInit | middleware initialization                                    | If specified, perform middleware initialization.             |
-| -n/--namespace       | The namespace in which the service is deployed in the k8s cluster | If not specified, the default namespace is default.          |
 
 ##### Uninstall
 
 ```bash
-./installApp uninstall -k ~/.kube/config -n lowcode
+helm uninstall lowcode -n lowcode
 ```
-
-Parameters description:
-
-| parameter                 | purpose                                                      | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| -d/--deploymentFile       | The path to the deployment folder                            | Absolute or relative path to the current project deployment folder. |
-| -k/--kubeconfig           | the profile path than can access to k8s cluster              | If the file is in the default location ~ /. Kube / config, you can not specify this parameter. |
-| -n/--namespace            | The namespace in which the service is deployed in the k8s cluster | If not specified, the default namespace is default.          |
-| -u/--uninstallMiddlerware | Do you need to uninstall the middleware deployed by the tool | If there is no middleware deployed using this tool, you can not add this parameter. When the middleware is loaded and unloaded, it will be reported that there is no such resource and can be ignored. |
-
-
 
 #### How to access
 
 ##### Configure gateway
 
-Refer [KubeSphere official documentation](https://kubesphere.io/docs/project-administration/project-gateway/) to configure gateway. LoadBalancer is recommend.
+Refer [KubeSphere official documentation](https://kubesphere.io/docs/project-administration/project-gateway/) to configure gateway if you do not use MetalLB or OpenELB. LoadBalancer is recommend.
 
 ##### Access QuanXiang
 
 To access QuanxiangCloud console, you should configure your hosts file or add dns records into dns server. Use default admin user and password `admin@quanxiang.dev/654321a..` to login.
 
-- Go to [http://portal.qxp.com](http://portal.qxp.com/) to access QuanxiangCloud administration console.
-- Go to [http://home.qxp.com](http://home.qxp.com/) to access QuanxiangCloud client console.
+- Go to http://portal.example.com to access QuanxiangCloud administration console.
+- Go to http://home.example.com to access QuanxiangCloud client console.
 
 > **Notice**
 >
 > Refer [KubeSphere office documentation](https://kubesphere.io/zh/docs/project-user-guide/application-workloads/routes/) to customize the domain.
 
 ##### initialize web configurations
+
+**Below step is necessary if some menu is lost.**
 
 Portal console does not initialize after installation, follow below steps to initialize:
 >
@@ -255,15 +313,7 @@ Portal console does not initialize after installation, follow below steps to ini
 Details please refer to the image:
 ![snippets](./doc/images/initialize_configuration.png)
 
-</details>
 
-
-<details>
-<summary><b>💸 Installing on a native KuberNetes environment</b></summary>
-
-Coming soon.
-
-</details>
 
 ## Get Started using QuanXiang
 

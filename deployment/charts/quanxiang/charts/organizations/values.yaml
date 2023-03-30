@@ -1,0 +1,20 @@
+image:
+  repository: docker.io/quanxiang/organizations
+  tag: v2.0.0
+namespace: ""
+
+mysql: {}
+  
+redis: {}
+
+elastic: {}
+
+app:
+  kubernetes:
+    io:
+      name: backend
+
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0

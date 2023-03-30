@@ -1,0 +1,11 @@
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: message-email
+  namespace: {{ .Release.Namespace }}
+spec:
+  topic: lowcode.Email
+  route:  /send
+  pubsubname: message-kafka-pubsub
+scopes:
+- email

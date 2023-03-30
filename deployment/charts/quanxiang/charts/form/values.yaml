@@ -1,0 +1,37 @@
+images:
+    permit:
+      repository: docker.io/quanxiang/permit
+      tag: v2.0.0
+    structor:
+      repository: docker.io/quanxiang/structor
+      tag: v2.0.0
+    form:
+      repository: docker.io/quanxiang/form
+      tag: v2.0.0
+imagePullSecrets: ""
+namespace: ""
+mysql: {}
+redis: {}
+kafka:
+  broker:
+  - kafka:9092
+mongo:
+  hosts:
+  - mongodb:27017
+  direct: false
+  credential:
+    authMechanism: SCRAM-SHA-1
+    authSource: admin
+    username: root
+    password: qxp1234
+    passwordSet: false
+
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 8080
+
+app:
+  kubernetes:
+    io:
+      name: backend

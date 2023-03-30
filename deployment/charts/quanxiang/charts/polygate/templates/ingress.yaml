@@ -1,0 +1,26 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: polygate
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/version: v1
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 30m
+spec:
+  ingressClassName: {{ .Values.ingressClass }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+        {{- range .paths }}
+        - path: {{ .path }}
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ .fullName }}
+              port:
+                number: {{ .svcPort }}
+        {{- end }}
+    {{- end }}

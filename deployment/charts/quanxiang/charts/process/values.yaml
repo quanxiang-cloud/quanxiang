@@ -1,0 +1,22 @@
+image: 
+  repository: docker.io/quanxiang/process
+  tag: v2.0.0
+namespace: ""
+imagePullSecrets: ""
+mysql:
+  db: process
+  host: mysql.{{.}}.svc.cluster.local:3306
+  user: root
+  password: qxp1234
+  log: true
+redis: {}
+
+app:
+  kubernetes:
+    io:
+      name: backend
+
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0

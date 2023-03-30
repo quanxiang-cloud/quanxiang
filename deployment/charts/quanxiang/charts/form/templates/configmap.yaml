@@ -1,0 +1,109 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: form
+  namespace: {{ .Release.Namespace }}
+
+data:
+  config.yml: |-
+    # port 端口
+    # e.g :80
+    port: :80
+    portInner: :8080
+
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: debug
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    # -------------------- mysql --------------------
+    mysql:
+      db: {{ .Values.mysql.db }}
+      host: {{ .Values.mysql.host }}
+      user: {{ .Values.mysql.user }}
+      password: {{ .Values.mysql.password }}
+      log: {{ .Values.mysql.log }}
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    pubSubName : form-pubsub
+    # -------------------- service --------------------
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}
+   
+    dapr:
+      pubSubName : form-pubsub
+      topicFlow: form.Flow
+    # -------------------- other service --------------------
+    endpoint:
+      appCenter: "http://app-center"
+      org: "http://org"
+      polyInner: "http://polyapi:9090"
+      structor: "localhost:8081"
+  db_database: structor
+  db_host: '{{ join "," .Values.mongo.hosts }}'
+  db_password: {{ .Values.mongo.credential.password }}
+  db_user_name: {{ .Values.mongo.credential.username }}
+  permit.yml: |+
+    # port 端口
+    port: :40001
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    # --------------------- endpoint -------------
+    endpoint:
+      poly: "http://polyapi"
+      form: "http://localhost:80"
+      formInner: "http://localhost:8080"
+      search: "http://search"
+    # --------------------- transport -----------------
+    transport:
+      timeout: 20s
+      keepAlive: 20s
+      maxIdleConns: 10
+      idleConnTimeout: 20s
+      tlsHandshakeTimeout: 10s
+      expectContinueTimeout: 1s
+
+
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}

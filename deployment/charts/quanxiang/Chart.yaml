@@ -1,0 +1,117 @@
+apiVersion: v2
+name: quanxiang
+description: A Helm chart for Kubernetes
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.1.0
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+# It is recommended to use it with quotes.
+appVersion: "1.16.0"
+
+
+dependencies:
+  - name: nginx-ingress
+    version: 0.16.1
+    repository: "file://../nginx-ingress"
+    condition: nginx-ingress.enabled
+  - name: mysql
+    version: 1.6.9
+    repository: "file://../mysql"
+    condition: mysql.enabled
+  - name: redis-cluster
+    version: 7.1.0
+    repository: "file://../redis-cluster"
+    condition: redis-cluster.enabled
+  - name: mongodb
+    version: 13.6.2
+    repository: "file://../mongodb"
+    condition: mongodb.enabled
+  - name: minio
+    version: 5.0.33
+    repository: "file://../minio"
+    condition: minio.enabled
+  - name: kafka
+    version: 20.0.2
+    repository: "file://../kafka"
+    condition: kafka.enabled
+  - name: elasticsearch
+    version: 17.9.24
+    repository: "file://../elasticsearch"
+    condition: elasticsearch.enabled
+
+  # backend
+  - name: polygate
+    version: "0.1.0"
+  - name: audit
+    version: "0.1.0"
+  - name: entrepot
+    version: "0.1.0"
+  - name: fileserver
+    version: "0.1.0"
+  - name: implant
+    version: "0.1.0"
+  - name: serving
+    version: "0.1.0"
+  - name: appcenter
+    version: "0.1.0"
+  - name: form
+    version: "0.1.0"
+  - name: flow
+    version: "0.1.0"
+  - name: goalie
+    version: "0.1.0"
+  - name: polyapi
+    version: "0.1.0"
+  - name: process
+    version: "0.1.0"
+  - name: kms
+    version: "0.1.0"
+  - name: search
+    version: "0.1.0"
+  - name: dispatcher
+    version: "0.1.0"
+  - name: organizations
+    version: "0.1.0"
+  - name: persona
+    version: "0.1.0"
+  - name: faas
+    version: "0.1.0"
+  - name: message
+    version: "0.1.0"
+  - name: warden
+    version: "0.1.0"
+  # - name: builder
+  #   version: "0.1.0"
+
+  # web
+  - name: web-process
+    version: "0.1.0"
+  - name: qxp-web-nginx
+    version: "0.1.0"
+  - name: qxp-web-home
+    version: "0.1.0"
+  - name: qxp-web-portal
+    version: "0.1.0"
+  - name: qxp-web-vendors
+    version: "0.1.0"
+  # init
+  - name: init-job
+    version: "0.1.0"
+  - name: fluent-bit
+    version: 2.10.3
+    condition: fluent-bit.enabled

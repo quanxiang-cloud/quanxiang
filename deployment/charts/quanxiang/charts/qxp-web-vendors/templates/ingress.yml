@@ -1,0 +1,22 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: qxp-web-vendors
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/version: v1
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 30m
+spec:
+  ingressClassName: {{ .Values.ingressClass }}
+  rules:
+  - host: {{ or .Values.global.vendor.hostname .Values.vendor.hostname }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: qxp-web-vendors
+            port:
+              number: 80

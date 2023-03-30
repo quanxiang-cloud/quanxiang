@@ -1,0 +1,37 @@
+image:
+  repository: quanxiang/polygate
+  tag: v2.0.0
+namespace: ""
+domain: example.com
+
+imagePullSecrets: ""
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 9090
+ 
+redis:
+  addrs:
+  - redis-cluster-0.redis-cluster-headless.{{.}}.svc.cluster.local:6379
+  - redis-cluster-1.redis-cluster-headless.{{.}}.svc.cluster.local:6379
+  - redis-cluster-2.redis-cluster-headless.{{.}}.svc.cluster.local:6379
+  username: ""
+  password: qxp1234
+  
+ingress:
+  enabled: true
+  hosts:
+  - host: ws.example.com
+    paths:
+    - fullName: message
+      path: /
+      svcPort: 8080
+  - host: api.example.com
+    paths:
+    - fullName: polygate
+      path: /
+      svcPort: 80
+app:
+  kubernetes:
+    io:
+      name: lowcode

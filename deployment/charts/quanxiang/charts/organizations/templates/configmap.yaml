@@ -1,0 +1,107 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: organizations
+  namespace: {{ .Release.Namespace }}
+
+data:
+  config.yml: |-
+    port: :80
+    # model 模式 debug|release
+    # debug模式，可以输出更加详细的日志，但是运行速度会减慢
+    model: release
+    maxLoginErrNum: 6
+    # 锁定帐户时间 单位：小时
+    lockAccountTime: 24
+    templateName: "人员导入模版.xlsx"
+    poc: false
+
+    #-------------------mysql配置---------------------
+    mysql:
+      db: {{ .Values.mysql.db }}
+      host: {{ .Values.mysql.host }}
+      user: {{ .Values.mysql.user }}
+      password: {{ .Values.mysql.password }}
+      log: {{ .Values.mysql.log }}
+
+    #  -------------------- log --------------------
+    # comply with zap log specification
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    #-------------------redis配置-----------------
+    redis:
+      {{- with .Values.redis.addrs }}
+      addrs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      username: {{ .Values.redis.username }}
+      password: {{ .Values.redis.password }}
+
+
+    # ----------------------redis缓存的verificationCode----------------------
+    verificationCode:
+      loginCode: "code:login"
+      resetCode: "code:reset"
+      forgetCode: "code:forget"
+      expireTime: 300
+
+    #--------------------使用的消息模版-------------------
+    messageTemplate:
+      loginCode: org_logincode
+      resetCode: org_resetcode
+      forgetCode: org_forgetcode
+      resetPWD: org_resetpwd
+      registerCode: org_registercode
+      newPWD: org_new_code
+
+    #  -------------------- internalNet --------------------
+    internalNet:
+      timeout: 20
+      maxIdleConns: 10
+
+    # -------------------- elastic --------------------
+    elastic:
+      {{- with.Values.elastic.host }}
+      host:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      log: {{ .Values.elastic.log }}
+
+
+    ldap:
+      open: false
+      regex: yunify.com  #以邮箱后缀名为此的
+  octopus.yml: |-
+    port: :8080
+    model: debug
+    templateName: "人员导入模版.xlsx"
+    orgHost: "http://127.0.0.1"
+    poc: false
+    #  -------------------- log --------------------
+    log:
+      level: -1
+      development: false
+      sampling:
+        initial: 100
+        thereafter: 100
+      outputPath:
+        - stderr
+      errorOutputPath:
+        - stderr
+
+    #-------------------mysql配置---------------------
+    mysql:
+      db: {{ .Values.mysql.db }}
+      host: {{ .Values.mysql.host }}
+      user: {{ .Values.mysql.user }}
+      password: {{ .Values.mysql.password }}
+      log: {{ .Values.mysql.log }}

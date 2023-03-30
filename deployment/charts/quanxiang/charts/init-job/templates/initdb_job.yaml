@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "init-job"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  template:
+    metadata:
+      name: "init-job"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: initdb-job
+        image: {{ .Values.images.initdb.repository }}:{{ .Values.images.initdb.tag }}
+        imagePullPolicy: Always
+        env:
+          - name: DBTYPE
+            value: mysql
+          - name: DBHOST
+            value: {{ quote .Values.mysql.host }}
+          - name: DBUSER
+            value: {{quote .Values.mysql.user }}
+          - name: DBPASSWORD
+            value: {{quote .Values.mysql.password }}
+          - name: DOCKERNAME
+            value: {{ quote .Values.docker.name }}
+          - name: DOCKERREGISTRY
+            value: {{ quote .Values.docker.registry }}
+          - name: DOCKERNAMESPACE
+            value: {{ quote .Values.docker.nameSpace }}
+          - name: DOCKERUSER
+            value: {{ quote .Values.docker.username }}
+          - name: DOCKERPWD
+            value: {{ quote .Values.docker.password }}
+          - name: GITNAME
+            value: {{ quote .Values.git.name }}
+          - name: GITHOST
+            value: {{ quote .Values.git.host }}
+          - name: KNOWNHOSTSSCAN
+            value: >-
+             {{ quote .Values.git.known_hosts_scan }}
+          - name: GITSSHHOST
+            value: {{ quote .Values.git.gitSSHAddress }}
+          - name: GITSSHPORT
+            value: {{ quote .Values.git.gitSSHPort }}
+          - name: GITTOKEN
+            value: {{ quote .Values.git.token }}
+          - name: GITSSHPRIVATEKEY
+            value: >-
+             {{ quote .Values.git.sshPrivatekey }}
+          - name: ESHOST
+            value: {{ quote (first .Values.elastic.host) }}

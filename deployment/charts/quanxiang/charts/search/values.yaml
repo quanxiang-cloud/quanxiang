@@ -1,0 +1,18 @@
+image: 
+  repository: docker.io/quanxiang/search
+  tag: v2.0.0
+namespace: ""
+imagePullSecrets: ""
+elastic: {}
+
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+
+app:
+  kubernetes:
+    io:
+      name: lowcode
+
+

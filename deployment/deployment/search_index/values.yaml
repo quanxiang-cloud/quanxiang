@@ -1,6 +1,0 @@
-image:
-  name: search_index
-  repo: docker.io/quanxiang
-  tag: v1.1.2
-namespace: ""
-imagePullSecrets: ""

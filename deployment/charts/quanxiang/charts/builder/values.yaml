@@ -1,0 +1,19 @@
+image:
+  name: ""
+  repo: docker.io/quanxiang
+  tag: v1.1.2
+namespace: ""
+gitInitImage: docker.io/quanxiang/grc.io.git-init:v0.29.0
+swageImage: docker.io/quanxiang/swag:v1.1.2
+docker:
+  name: faas-harbor
+  
+git:
+  name: rsa
+  host: ""                # git server的访问地址，例如：http://git.quanxiang.dev 或者 http://192.168.0.3
+  known_hosts_scan: ""    # 使用 ssh-keyscan -p 22端口 gitlab域名或者ip |base64 -w 0 生成
+  sshPrivatekey: ""       # 使用  ssh-keygen -t rsa -f git_rsa -C "admin@quanxiang.dev" 生成ssh key, 将私钥使用base64编码, cat git_rsa|base64 -w 0
+  gitSSHAddress: ""       # git server 的域名或者IP，例如：git.quanxiang.dev 或者 192.168.0.3
+  gitSSHPort: 22          # git server 对外暴露的ssh端口，例如：22
+  token: ""              # 将公钥写入gitlab并生成token放到这里
+  

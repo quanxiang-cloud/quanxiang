@@ -1,0 +1,27 @@
+image:
+  repository: docker.io/quanxiang/qxp-web-portal
+  tag: v2.0.0
+namespace: ""
+websocket_hostname: ws.example.com
+home_hostname: home.example.com
+portal_hostname: portal.example.com
+vendor:
+  protocol: http
+  hostname: vendors.example.com
+  port: 80
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+redis:
+    addrs:
+    - redis-cluster-0.redis-cluster-headless:6379
+    - redis-cluster-1.redis-cluster-headless:6379
+    - redis-cluster-2.redis-cluster-headless:6379
+    username: ""
+    password: qxp1234
+
+app:
+  kubernetes:
+    io:
+      name: fronted

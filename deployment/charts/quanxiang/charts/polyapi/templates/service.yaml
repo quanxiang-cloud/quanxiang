@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: polyapi
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: polyapi
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    kubesphere.io/serviceType: statelessservice
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  ports:
+    - name: polyapi
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 80
+    - name: polyapi-inner
+      protocol: TCP
+      port: {{ .Values.service.rpcPort }}
+      targetPort: 9090
+    - name: faas-proxy
+      protocol: TCP
+      port: 9999
+      targetPort: 9999
+  selector:
+    app: polyapi
+    app.kubernetes.io/version: v1
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+  type: {{ .Values.service.type }}
+  sessionAffinity: None

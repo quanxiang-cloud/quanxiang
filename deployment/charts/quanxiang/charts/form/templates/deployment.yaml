@@ -1,0 +1,142 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: form
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: form
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    servicemesh.kubesphere.io/enabled: 'false'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: form
+      app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+      app.kubernetes.io/version: v1
+      version: v1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: form
+        app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+        app.kubernetes.io/version: v1
+        version: v1
+      annotations:
+        dapr.io/app-id: permit
+        dapr.io/enabled: 'true'
+        dpar.io/port: '40001'
+        kubesphere.io/containerSecrets: '{"container":"docker-registry"}'
+        logging.kubesphere.io/logsidecar-config: '{}'
+        sidecar.istio.io/inject: 'false'
+    spec:
+      volumes:
+        - name: volume
+          configMap:
+            name: form
+            defaultMode: 420
+      containers:
+        - name: permit
+          image: '{{ .Values.images.permit.repository }}:{{ .Values.images.permit.tag }}'
+          command:
+            - ./cmd/permit
+          args:
+            - '--config=/configs/permit.yml'
+          ports:
+            - name: permit
+              containerPort: 40001
+              protocol: TCP
+          resources: { }
+          volumeMounts:
+            - name: volume
+              readOnly: true
+              mountPath: /configs
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+        - name: form
+          image: '{{ .Values.images.form.repository }}:{{ .Values.images.form.tag }}'
+          command:
+            - ./cmd/form
+          args:
+            - '--config=/configs/config.yml'
+          ports:
+            - name: form
+              containerPort: 80
+              protocol: TCP
+            - name: form-iner
+              containerPort: 8080
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: volume
+              readOnly: true
+              mountPath: /configs
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+        - name: structor
+          image: '{{ .Values.images.structor.repository }}:{{ .Values.images.structor.tag }}'
+          command:
+            - ./cmd/structor
+          args:
+            - '--mongo-host=$(DB_HOST)'
+            - '--mongo-username=$(DB_UDERNSME)'
+            - '--mongo-password=$(DB_PASSWORD)'
+            - '--mongo-database=$(DB_DATABASE)'
+            - '--mongo-direct=true'
+            - '--mongo-auth-mechanism=SCRAM-SHA-1'
+            - '--mongo-auth-source=admin'
+            - '--mongo-password-set=false'
+            - '--port=:8081'
+          ports:
+            - name: structor
+              containerPort: 8081
+              protocol: TCP
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: form
+                  key: db_host
+            - name: DB_UDERNSME
+              valueFrom:
+                configMapKeyRef:
+                  name: form
+                  key: db_user_name
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: form
+                  key: db_password
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: form
+                  key: db_database
+          resources: { }
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: default
+      serviceAccount: default
+      securityContext: {}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      affinity: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

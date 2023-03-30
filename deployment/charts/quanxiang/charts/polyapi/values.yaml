@@ -1,0 +1,25 @@
+image:
+  repository: docker.io/quanxiang/polyapi
+  tag: v2.0.0
+namespace: ""
+
+mysql: {}
+redis: {}
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 9090
+
+app:
+  kubernetes:
+    io:
+      name: backend
+
+ingress:
+  enabled: true
+  hosts:
+  - host: polyapi.example.com
+    paths:
+    - fullName: polyapi
+      path: /
+      svcPort: 80

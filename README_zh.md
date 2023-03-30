@@ -113,7 +113,7 @@ QuanXiang 围绕应用设计、开发、部署、运维全生命周期管理，�
 - 已安装好 Kubernetes  环境 (<= v1.21.*)。
 - 已安装好 OpenFunction 环境 (v0.5.0 及以上)。
 
-#### 第 1 步：安装 KubeSphere
+#### 第 1 步：安装 KubeSphere和OpenFuction
 
 ##### KubeSPhere
 
@@ -129,114 +129,152 @@ KubeSphere 部署环境的要求如下：
 | master      | 1        | CPU：4 核， 内存：8GB， 硬盘：80GB |
 | worker 节点 | 5        | CPU：4 核， 内存：8GB， 硬盘：80GB |
 
-##### OpenFunction
-
-- 手动安装OpenFunction，详细步骤请参照[官方文档](https://openfunction.dev/docs/getting-started/installation/)
-
-> **注意**
+>  **注意**
 >
 > 如果集群将用于生产或者准生产的话，建议将 worker 节点的内存和硬盘至少提高 1 倍，中间件部分推荐使用云厂商提供的 PaaS 或者服务。
 
-#### 第 2 步：安装全象云低代码平台
+##### OpenFunction
 
-##### 前提条件
+手动安装OpenFunction，详细步骤请参照[官方文档](https://openfunction.dev/docs/getting-started/installation/)
 
-安装全象云低代码平台前，您首先需要确保满足以下条件，然后再从我们的 release 中可以选择您需要的版本。
+- 使用helm 安装OpenFunction
 
-- 运行安装程序的系统可以访问 KubeSphere 集群。
-- 已正确安装 kubectl，如果没有请先 [安装 kubectl](https://kubernetes.io/docs/tasks/tools/)。
-- 已正确配置 kubeconfig，若没配置请先完成配置。
-  - QKE  kubeconfig 可通过 QingCloud 控制台获取；
-  - KubeSphere  kubeconfig 请参见 [官方文档](https://kubesphere.com.cn/docs/) 或者 [求助社区](https://github.com/kubesphere) 完成配置。
-- 已安装 helm3，安装过程请参见 [官方文档](https://helm.sh/docs/intro/install/)。
-
-##### 使用发行版
-
-如果不希望自己编译的话可以直接使用我们发行版，点击 [下载地址](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0)。***注意区别不同版本的系统架构***。
-
-##### 使用源码编译 
-
-需要先 git clone 项目源代码进行编译。需要注意的是修改指令中的 GOOS 和 GOARCH 以匹配系统架构，以 Linux amd64 为例：
-
-```bash
- git clone https://github.com/quanxiang-cloud/quanxiang.git
- cd quanxiang/deployment
- CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o installApp main.go
+```
+kubectl create namespace openfunction
+helm repo add openfunction https://openfunction.github.io/charts/
+helm update
+helm install openfunction openfunction/openfunction --version 0.1.0 -n openfunction
 ```
 
-> **说明**
+#### 第 2 步：安装MetalLB (可选)
+
+推荐使用固态IP，它可以使您更容易的访问到全象云低代码平台。在使用MetalLB之前，需要准备和您的环境在同一环境下的一些可用的IP地址，并且可以被您访问到。详细信息可以参考 [官方文档](https://metallb.universe.tf/installation/) 。
+
+- 下面步骤摘录自MetalLB的官方安装文档。
+
+如果IPVS运行在kube-proxy模式下，且Kubernetes的版本为v1.14.2，你需要启用 strict ARP模式。如果使用的是kube-router的话，默认ARP为开启状态。
+
+启用IPVS使用操作：
+
+```
+kubectl edit configmap -n kube-system kube-proxy
+```
+
+修改一些内容
+
+```
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "ipvs"
+ipvs:
+  strictARP: true
+```
+
+- 使用helm安装MetalLB
+
+```
+helm repo add metallb https://metallb.github.io/metallb
+helm repo update
+helm install metallb metallb/metallb -n metallb-system --create-namespace
+```
+
+- 为Kubernetes添加IP地址，比如文件名为 ip-pool.yaml
+
+```
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: lowcode
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.208.190-192.168.208.195  # replace this to your ips
+```
+
+> 注意：
 >
-> - GOOS 可用系统：darwin、Linux、windows、freebsd 等;
-> - GOARCH 可用架构：amd64、386、arm 等。
+>  这些IP必须可用，并且能被您访问到。
 
+- 使用kubectl使IP池生效。
 
+```
+kubectl apply -f ip-pool.yaml
+```
 
-#### 开始安装
+#### 第 3 步：安装全象云低代码平台
 
-全象云低代码平台支持生产部署和试用部署：
+**V2.0.0（不包含）之后的将使用helm charts安装**
 
-- 生产环境可以先部署好中间件，具体内容可以参考 [修改配置文件](#修改配置文件)。
-- 试用部署可以选择全部容器部署。
+- 下载相应安装版本
 
+ 您可以从我们的[官方发行版地址下载](https://github.com/quanxiang-cloud/quanxiang/releases/tag/v1.1.0) 也可以直接git clone对应的tag
 
+```
+git clone https://github.com/quanxiang-cloud/quanxiang.git
+```
 
-##### 修改配置文件
+- 安装全象云低代码平台
 
-如果您已经部署好中间件服务，并打算将其用于全象低代码平台安装，可以在配置文件  `configs/configs.yml`  中将对应的中间件中 `enabled: true` 改为 `false`。**具体配置请参照下文内注释**。
+全象云低代码平台可以支持生产环境和试用环境：
 
-```bash shell
-  vim configs/configs.yml
-    #Middleware Services 中间件服务
-    mysql:
-      enabled: true
-      rootPassword: qxp1234     #It is required to set the root user password if enabled equal to true    设置root用户密码 enabled为true时必填
-    redis:
-      enabled: true
-      password: cXhwMTIzNA==    #The password here is the base64 code of the password. For example, the base64 code of qxp1234 is cxhwmjm0cg==  这里的password为密码的base64编码，比如qxp1234的base64编码为cXhwMjM0Cg==
-    kafka:
+> - 生产环境：我们推荐您在安装全象前安装好数据库，缓存等中间件，参考配置选项内容。
+> - 试用环境：安装工具会安装所有组件。
+
+##### 配置项简介
+
+生产环境，您需要将对应的中间件启用选项禁用，我们的配置文件在`quanxiang/values.yaml`, 下面是配置文件的一部分。
+
+```
+# Default values for quanxiang.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#replicaCount: 1
+
+global:
+  namespace: ""
+  domain: example.com                  # replace value to your domain. 修改成您自己的域名。
+  websocket_hostname: ws.example.com   # socket server访问地址
+  home_hostname: home.example.com     # 用户端访问地址
+  portal_hostname: portal.example.com  # 管理端访问地址
+  vendor:
+    protocol: http                 # 前端渲染配置访问协议。
+    hostname: vendors.example.com      # 前端渲染配置访问地址。
+    port: 80                       # 前端渲染配置端口。
+  faas:
+    enabled: true                  # 是否安装faas。
+  loadBalancer: &lb
+     loadBalancerIP:  '192.168.208.190' # DONNOT CHAGE  &lbIP, 不要修改 &lbIP  ---此处填写LB的可用地址,如果使用了MetalLB，在定义的IP pool里的可用地址。
+
+hostAliases: &hostAliases
+  enabled: true                # 没有可用的DNS服务做解析时，需要将此处设置为true，配置容器内hosts文件。
+  <<: *lb                      # DONNOT CHAGE THIS LINE, 不要修改此行
+  hostnames:
+    - 'qxp-static.fs.example.com'
+    - 'default.fs.example.com'  
               .....
 ```
 
 ##### 安装
 
-通过执行 `installApp` 指令来安装全象云低代码平台，试用版执行如下指令安装：
+使用helm安装全象
 
-```bash shell
-./installApp start -k ~/.kube/config -i -n lowcode
 ```
-
-参数说明：
-
-| 参数                 | 作用                          | 使用说明                                                |
-| -------------------- | ----------------------------- | ------------------------------------------------------- |
-| -c/--configfile      | 配置文件路径                  | 当前项目 configs/configs.yml 的绝对或者相对路径。       |
-| -d/--deploymentFile  | 部署文件夹的路径              | 当前项目 deployment 文件夹的绝对或相对路径。            |
-| -k/--kubeconfig      | 访问 k8s 集群的配置文件路径   | 如果该文件在默认位置 ～/.kube/config 可以不指定该参数。 |
-| -i/--middlerwareInit | 中间件是否需要初始化          | 如果指定则对中间件进行初始化。                          |
-| -n/--namespace       | 服务部署于 k8s 集群的命名空间 | 如果不指定默认为 default。                              |
+cd quanxiang/deployment/charts
+helm install lowcode -n lowcode ./quanxiang --create-namespace --timeout 1800s
+```
 
 ##### 卸载
 
-通过执行 `installApp` 指令进行卸载操作：
-
-```bash shell
-./installApp uninstall -n lowcode
 ```
-
-参数的详细解释如下：
-
-| 参数                      | 作用                                | 使用说明                                                     |
-| ------------------------- | ----------------------------------- | ------------------------------------------------------------ |
-| -d/--deploymentFile       | 部署文件夹的路径                    | 当前项目 deployment 文件夹的绝对或相对路径。                 |
-| -k/--kubeconfig           | 访问 k8s 集群的配置文件路径         | 如果该文件在默认位置 ～/.kube/config 可以不指定该参数。      |
-| -n/--namespace            | 卸载的服务部署于 k8s 集群的命名空间 | 如果不指定默认为 default。                                   |
-| -u/--uninstallMiddlerware | 是否需要卸载工具部署的中间件        | 若没有使用工具部署的中间件可以不引用此参数。若使用，卸载时报错没有此资源，忽略即可。 |
+helm uninstall lowcode -n lowcode
+```
 
 #### 访问环境
 
 ##### 配置网关
 
-参考 KubeSphere 的[官方文档](https://kubesphere.io/zh/docs/project-administration/project-gateway/)。我们推荐使用 LoadBalancer 方式配置网关。
+如果未使用MetalLB或者OpenELB的话，可以参考 KubeSphere 的[官方文档](https://kubesphere.io/zh/docs/project-administration/project-gateway/)配置网关。我们推荐使用 LoadBalancer 方式配置网关。
 
 ##### 配置访问
 
@@ -251,7 +289,10 @@ KubeSphere 部署环境的要求如下：
 
 ##### 初始化Web配置
 
+**如果出现部分菜单栏没有出现的情况，请使用此节内容进行初始化前端界面**
+
 Portal 控制台需要在安装完成后进行初始化，参照以下步骤进行初始化:
+
 >
 > 1. 在浏览器中打开全象云的管理端控制台
 > 2. 在浏览器中打开开发者工具. MacOS快捷键 "Option + command + I", Windows/Linux快捷键"F12" 或者 "Control + Alt + I"
@@ -262,13 +303,8 @@ Portal 控制台需要在安装完成后进行初始化，参照以下步骤进�
 下图是执行脚本的位置：
 ![snippets](./doc/images/initialize_configuration.png)
 
- </details>
 
-<details>
-<summary><b>💸在原生 KuberNetes 环境上安装</b></summary>
 
-敬请期待。
-</details>
 
 
 ## 快速开始
@@ -280,27 +316,26 @@ Portal 控制台需要在安装完成后进行初始化，参照以下步骤进�
 | 组件名称 | 组件功能 | 组件链接 |
 | --- | --- | --- |
 | app-center | 应用管理中心：应用基本信息及应用权限管理 |	https://github.com/quanxiang-cloud/appcenter |
-| audit |	无	|
-| dispatcher |	时间调度服务： 定时回掉指定任务接口 |	
+| audit |	审计服务。	||
+| dispatcher |	时间调度服务： 定时回掉指定任务接口 ||
 | entrepot	| 任务管理中心：异步任务管理中心	| https://github.com/quanxiang-cloud/entrepot |
 | fileserver |	文件服务：支持 aws s3 协议的对象存储上传与下载 |	https://github.com/quanxiang-cloud/fileserver |
-| flow |	低代码流程引擎：低代码流程定义、低代码业务节点扩展和低代码其它业务整合 | https://github.com/quanxiang-cloud/flow |	
+| flow |	低代码流程引擎：低代码流程定义、低代码业务节点扩展和低代码其它业务整合 | https://github.com/quanxiang-cloud/flow |
 | form |	表单引擎：表单高级组件、以及 schema 的处理，与 structor 配合使用	| https://github.com/quanxiang-cloud/form |
-| goalie |	权限管理：角色权限管理，RBAC 权限模型	|
+| goalie |	权限管理：角色权限管理，RBAC 权限模型	||
 | kms| 	密钥管理：平台密钥管理及签名验证，外部密钥代理及鉴权	| https://github.com/quanxiang-cloud/kms |
 | message |	消息服务：消息内容管理，邮件、站内信分发 | https://github.com/quanxiang-cloud/message |
-| nurturing |	已废弃	|
 | organizations |	组织服务：人员部门等信息管理，内置人员扩展字段服务功能	| https://github.com/quanxiang-cloud/organizations |
 | persona |	应用配置中心：应用个性化配置数据存储	| https://github.com/quanxiang-cloud/persona |
 |polyapi |	API 管理：API 注册，API 文档管理，第三方 API 代理，API 编排，API 统一调用	| https://github.com/quanxiang-cloud/polyapi |
 | polygate	| API 网关：token/signature 认证，透明代理	| https://github.com/quanxiang-cloud/polygate |
 | process |	流程引擎内核：流程模型定义、流程调度和实例数据记录	| https://github.com/quanxiang-cloud/process |
 | qxp-web-home | web 用户端服务	| https://github.com/quanxiang-cloud/qxp-web |
-| qxp-web-nginx	| web 静态文件，后面要废弃 |
-| qxp-web-portal |	web 管理端服务	|
+| qxp-web-nginx	| web 静态文件，后面要废弃 ||
+| qxp-web-portal |	web 管理端服务	||
 | structor |	元数据管理：CURD 数据抽象，对接数据库管理	| https://github.com/quanxiang-cloud/structor |
-| transaction |	已废弃	|
-| warden |	认证服务：jwt 协议认证，生产管理 accesstoken，refreshtoken，支持第三方 jwt 协议 sso；|
+| transaction |	已废弃	||
+| warden |	认证服务：jwt 协议认证，生产管理 accesstoken，refreshtoken，支持第三方 jwt 协议 sso；||
 
 除此之外，还有我们的博客版块，该部分内容全部是全象开发团队写作分享的一些技术干货，原计划在官网下一版本更新中增加，大家有兴趣可以点击 [Blog](https://github.com/quanxiang-cloud/website/tree/main/content/zh/blogs) 进行查看，也可以访问我们的公众号/[知乎号](https://www.zhihu.com/people/quan-xiang-yun-di-dai-ma/posts)（全象云低代码）查看历史内容。
 

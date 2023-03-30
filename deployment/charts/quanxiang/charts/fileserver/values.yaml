@@ -1,0 +1,43 @@
+image:
+  repository: docker.io/quanxiang/fileserver
+  tag: v2.0.0
+namespace: ""
+domain: example.com
+mysql: {}
+
+redis: {}
+
+storage: 
+  #如果global.minio.enabled为true 此处不需要改动，否则请根据您的minio的信息填写
+  type: minio
+  protocol: http
+  endpoint: http://fs.example.com
+  accessKey: Minio
+  secretKey: Minio123456
+  location: us-east-1
+  bucketName: default  
+
+s3:
+  buckets:
+    readable: qxp-static
+    private: default
+
+hostAliases:
+  enabled: true
+  ip: 192.168.0.10
+ingress:
+  enabled: false
+  hosts:
+  - host: '*.fs.example.com'
+    paths:
+    - fullName: minio
+      path: /
+      svcPort: 9000
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+app:
+  kubernetes:
+    io:
+      name: backend

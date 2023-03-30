@@ -1,0 +1,23 @@
+image: 
+  repository: docker.io/quanxiang/entrepot
+  tag: v1.1.2
+imagePullSecrets: ""
+namespace: ""
+mysql: {}
+
+redis: {}
+domain: example.com
+
+hostAliases:
+  enabled: true
+  ip: 192.168.0.10
+
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+
+app:
+  kubernetes:
+    io:
+      name: lowcode

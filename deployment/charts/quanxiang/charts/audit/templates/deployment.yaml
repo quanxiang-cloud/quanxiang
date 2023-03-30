@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: audit
+    app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+    app.kubernetes.io/version: v1
+    version: v1
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    servicemesh.kubesphere.io/enabled: 'false'
+  name: audit-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      version: v1
+      app: audit
+      app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+      app.kubernetes.io/version: v1
+  template:
+    metadata:
+      labels:
+        version: v1
+        app: audit
+        app.kubernetes.io/name: {{ .Values.app.kubernetes.io.name }}
+        app.kubernetes.io/version: v1
+      annotations:
+        kubesphere.io/containerSecrets: '{"container-kudq8k":"docker"}'
+        logging.kubesphere.io/logsidecar-config: '{}'
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+        - name: container-kudq8k
+          imagePullPolicy: Always
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          ports:
+            - name: tcp-80
+              protocol: TCP
+              containerPort: 80
+#              servicePort: 80
+          volumeMounts:
+            - name: volume
+              readOnly: true
+              mountPath: configs
+      serviceAccount: default
+      affinity: {}
+      initContainers: []
+      volumes:
+        - name: volume
+          configMap:
+            name: audit
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+

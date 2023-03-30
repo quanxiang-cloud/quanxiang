@@ -1,6 +1,0 @@
-image:
-  name: setauth
-  repo: docker.io/quanxiang
-  tag: v1.1.2_nofaas
-namespace: ""
-imagePullSecrets: qxcr

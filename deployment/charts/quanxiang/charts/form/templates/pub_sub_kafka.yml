@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: form-pubsub
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+    # Kafka broker connection setting
+    - name: brokers
+      value: {{ join "," .Values.kafka.broker }}
+    - name: authRequired
+      value: "false"
+    - name: authType # Required.
+      value: "none"
+    - name: maxMessageBytes
+      value: 1024
+    - name: disableTls
+      value: "true"

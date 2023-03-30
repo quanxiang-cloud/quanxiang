@@ -1,0 +1,19 @@
+image:
+  repository: docker.io/quanxiang/warden
+  tag: v2.0.0
+imagePullSecrets: ""
+namespace: ""
+jwtKey: c0b4d808-1b55-42fa-b12a-6149d716a88e
+accessTokenExp: 2                    # access token 失效时间 默认2小时。
+refreshTokenExp: 24                  # refresh token 失效时间 默认24小时。
+mysql: {}
+
+redis: {}
+service:
+  type: ClusterIP
+  port: 80
+  rpcPort: 0
+app:
+  kubernetes:
+    io:
+      name: backend
