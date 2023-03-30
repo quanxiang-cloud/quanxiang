@@ -461,7 +461,7 @@ persona:
 qxp-web-home:
   image:
     repository: docker.io/quanxiang/qxp-web-home
-    tag: v2.0.0
+    tag: v20230328
   imagePullSecrets: ""
   redis:
     <<: *redis                    # DONNOT CHAGE THIS LINE, 不要修改此行
@@ -469,12 +469,12 @@ qxp-web-home:
 qxp-web-nginx:
   image:
     repository: docker.io/quanxiang/qxp-web-nginx
-    tag: v2.0.0
+    tag: v20230328
   imagePullSecrets: ""
 qxp-web-portal:
   image:
     repository: docker.io/quanxiang/qxp-web-portal
-    tag: v2.0.0
+    tag: v20230328
   imagePullSecrets: ""
   redis:
     <<: *redis                    # DONNOT CHAGE THIS LINE, 不要修改此行
@@ -496,8 +496,8 @@ web-process:
 init-job:
   images:
     initdb:
-      repository: qxcr.io/lowcode/initdb
-      tag: v0.2
+      repository: docker.io/quanxiang/initdb
+      tag: v20230330
   mysql:
     <<: *mysql                            # DONNOT CHAGE THIS LINE, 不要修改此行
   git:
