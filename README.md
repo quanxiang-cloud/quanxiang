@@ -1,9 +1,9 @@
 <p align="center">
-  <a href="https://docs.clouden.io" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
+  <a href="https://quanxiang.dev" target="blank"><img src="https://qxp-public.pek3b.qingstor.com/qxp_vertical_logo.svg" width="300" alt="Quanxiang Cloud Logo" /></a>
 </p>
 <p align="center">
   <br/>
-  <a href="https://docs.clouden.io" target="blank">
+  <a href="https://quanxiang.dev" target="blank">
     QuanXiang
   </a>
 </p>
@@ -318,7 +318,7 @@ Details please refer to the image:
 
 ## Get Started using QuanXiang
 
-See our [Getting Started](https://docs.clouden.io/quickstart/app_modeling/) guide over in our docs.
+See our [Getting Started](https://quanxiang.dev/quickstart/app_modeling/) guide over in our docs.
 
 ## Component Open Source Project
 

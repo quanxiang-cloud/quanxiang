@@ -33,9 +33,9 @@
     <span> | </span>
     演示
     <span> | </span>
-    <a href="https://docs.clouden.io/" target="_blank">文档</a>
+    <a href="https://quanxiang.dev/" target="_blank">文档</a>
     <span> | </span>
-    <a href="https://docs.clouden.io/manual/application/new/" target="_blank">操作指南</a>
+    <a href="https://quanxiang.dev/manual/application/new/" target="_blank">操作指南</a>
     <span> | </span>
     <a href="https://github.com/quanxiang-cloud/quanxiang/discussions" target="_blank">论坛</a>
   </h3>
@@ -310,7 +310,7 @@ Portal 控制台需要在安装完成后进行初始化，参照以下步骤进�
 
 ## 快速开始
 
-请参考官方文档[快速入门](https://docs.clouden.io/quickstart/app_modeling/)。
+请参考官方文档[快速入门](https://quanxiang.dev/quickstart/app_modeling/)。
 
 ## 全象开源组件及功能列表
 
