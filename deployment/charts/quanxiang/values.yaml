@@ -497,7 +497,7 @@ init-job:
   images:
     initdb:
       repository: docker.io/quanxiang/initdb
-      tag: v20230330
+      tag: v20230629
   mysql:
     <<: *mysql                            # DONNOT CHAGE THIS LINE, 不要修改此行
   git:

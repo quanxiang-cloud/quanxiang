@@ -20,7 +20,7 @@ data:
 
 
     # app-center host
-    formHost: http://form
+    formHost: http://form:8081
 
 
     fileServerHost: http://fileserver

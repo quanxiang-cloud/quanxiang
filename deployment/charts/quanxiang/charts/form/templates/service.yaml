@@ -21,6 +21,10 @@ spec:
       protocol: TCP
       port: {{ .Values.service.rpcPort }}
       targetPort: 8080
+    - name: form-nosafe
+      protocol: TCP
+      port: 8081
+      targetPort: 80
   selector:
     app: form
     app.kubernetes.io/version: v1
