@@ -148,4 +148,4 @@ QuanXiang 围绕应用设计、开发、部署、运维全生命周期管理，�
 - 🙌 [交流论坛](https://github.com/quanxiang-cloud/quanxiang/discussions)：如果在使用过程中遇到了问题，或发现了 bug，可以在 QuanXiang 的[讨论版块](https://github.com/quanxiang-cloud/quanxiang/discussions)中反馈。或者提 issue 也可。
 - 微信群
 
-![](./doc/images/wechat.png)
+![](./doc/images/wechat.jpeg)

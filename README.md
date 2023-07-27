@@ -123,4 +123,4 @@ See our [Getting Started](https://quanxiang.dev/quickstart/app_modeling/) guide 
 - 🙌 [Forum](https://github.com/quanxiang-cloud/quanxiang/discussions)
 - 💬 WeChat Group
 
-![](./doc/images/wechat.png)
+![](./doc/images/wechat.jpeg)
